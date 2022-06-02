@@ -3,6 +3,7 @@ package potaymaster.aws.lambda.jasperreports;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
+import java.io.FileReader;
 import java.io.IOException;
 import java.io.OutputStream;
 import java.nio.charset.StandardCharsets;
@@ -13,6 +14,7 @@ import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Map;
 
 import org.apache.commons.io.FileUtils;
@@ -35,10 +37,14 @@ import net.sf.jasperreports.engine.JREmptyDataSource;
 import net.sf.jasperreports.engine.data.JRMapCollectionDataSource;
 import software.amazon.awssdk.utils.BinaryUtils;
 
+import com.opencsv.CSVReader;
+import com.opencsv.bean.CsvBindByName;
+
 public class ReportGenerator {
 
 	static final String outFile = "/tmp/Reports.pdf";
-	static final String fileName = "/tmp/template.jrxml";
+	static final String tmpTemplate = "/tmp/template.jrxml";
+	static final String tmpCSV = "/tmp/test.csv";
 
 	private LambdaLogger logger;
 	private JRDataSource mainDataSource;
@@ -66,7 +72,7 @@ public class ReportGenerator {
 
 	public void generateReport(JSONObject postBody, OutputStream outputSteam) throws JRException {
 		
-		JasperReport jasperDesign = JasperCompileManager.compileReport(fileName);
+		JasperReport jasperDesign = JasperCompileManager.compileReport(tmpTemplate);
 		try {
 			Map<String, Object> parameters = new HashMap<String, Object>();
 						
@@ -81,18 +87,18 @@ public class ReportGenerator {
 	}
 
 	private void processPostBody(JSONObject postBody, Map<String, Object> parameters) {
-		String title = "Default title";
-
-		if (postBody.get("title")!=null){
-			title = (String) postBody.get("title");
-		}
-		parameters.put("title", new String(title));
-
-		JSONObject jsonParameters = (JSONObject)postBody.get("parameters");
-
-		for (Object parameterName : jsonParameters.keySet()) {
-			addToMap(parameters, parameterName.toString(), (JSONObject)jsonParameters.get(parameterName.toString()));
-		}
+		List<String[]> r = new ArrayList<>();
+        try (CSVReader reader = new CSVReader(new FileReader(tmpCSV))) {
+            r = reader.readAll();
+            r.forEach(x -> System.out.println(Arrays.toString(x)));
+        }catch(Exception e){
+        	logger.log("Exception reading CSV file "+ tmpCSV + e);
+        }		
+        
+		String title = "Sample Test from CSV";
+		parameters.put("title", title);
+		parameters.put(r.get(0)[0], r.get(1)[0]);
+		parameters.put(r.get(0)[1], r.get(1)[1]);
 	}
 
 	private void addToMap(Map<String, Object> parameters, String name, JSONObject jsonValue){

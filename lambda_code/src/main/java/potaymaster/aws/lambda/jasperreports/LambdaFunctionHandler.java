@@ -29,7 +29,8 @@ public class LambdaFunctionHandler implements RequestStreamHandler
 			processInputStream(inputStream);
 			
 			AmazonS3Consumer s3Consumer = new AmazonS3Consumer(this.logger);
-			s3Consumer.retrieveTemplateFromS3(this.template);
+			s3Consumer.retrieveTemplateFromS3(this.template);			
+			s3Consumer.retrieveCSVFromS3();
 							
 			ReportGenerator reportGenerator = new ReportGenerator(this.logger);
 			String encodedReport = reportGenerator.generateBase64EncodedReport(this.postBody);
