@@ -17,6 +17,7 @@ public class AmazonS3Consumer {
     
 	static final String tmpTemplate = "/tmp/template.jrxml";
 	static final String tmpCSV = "/tmp/test.csv";
+	Region region = Region.US_EAST_2;
 	
 	private LambdaLogger logger;
 
@@ -26,9 +27,8 @@ public class AmazonS3Consumer {
 	
 	public void retrieveTemplateFromS3(String key_name) throws IOException {
 		String bucket_name = System.getenv("BUCKET_NAME");
-    	logger.log("Downloading file " + key_name + " from bucket " + bucket_name + "...\n");
-
-		Region region = Region.US_EAST_2;
+    	logger.log("Downloading file " + key_name + " from bucket " + bucket_name);
+		
         S3Client s3 = S3Client.builder()
                 .region(region)
                 .build();
@@ -42,7 +42,6 @@ public class AmazonS3Consumer {
             ResponseBytes<GetObjectResponse> objectBytes = s3.getObjectAsBytes(objectRequest);
             byte[] data = objectBytes.asByteArray();
 
-            // Write the data to a local file
             File myFile = new File(tmpTemplate);
             OutputStream os = new FileOutputStream(myFile);
             os.write(data);
@@ -60,10 +59,11 @@ public class AmazonS3Consumer {
 	
 	public void retrieveCSVFromS3() throws IOException {
 		String bucket_name = System.getenv("BUCKET_NAME");
+		//TODO: Retrieve the corresponding CSV name according with the report 
 		String csv_name = "test.csv";
-    	logger.log("Downloading file " + csv_name + " from bucket " + bucket_name + "...\n");
+		
+    	logger.log("Downloading file " + csv_name + " from bucket " + bucket_name);
 
-		Region region = Region.US_EAST_2;
         S3Client s3 = S3Client.builder()
                 .region(region)
                 .build();
@@ -77,7 +77,6 @@ public class AmazonS3Consumer {
             ResponseBytes<GetObjectResponse> objectBytes = s3.getObjectAsBytes(objectRequest);
             byte[] data = objectBytes.asByteArray();
 
-            // Write the data to a local file
             File myFile = new File(tmpCSV);
             OutputStream os = new FileOutputStream(myFile);
             os.write(data);
