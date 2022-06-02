@@ -15,7 +15,8 @@ import software.amazon.awssdk.core.ResponseBytes;
 
 public class AmazonS3Consumer {
     
-	static final String fileName = "/tmp/template.jrxml";
+	static final String tmpTemplate = "/tmp/template.jrxml";
+	static final String tmpCSV = "/tmp/test.csv";
 	
 	private LambdaLogger logger;
 
@@ -27,7 +28,7 @@ public class AmazonS3Consumer {
 		String bucket_name = System.getenv("BUCKET_NAME");
     	logger.log("Downloading file " + key_name + " from bucket " + bucket_name + "...\n");
 
-		Region region = Region.EU_WEST_1;
+		Region region = Region.US_EAST_2;
         S3Client s3 = S3Client.builder()
                 .region(region)
                 .build();
@@ -42,7 +43,7 @@ public class AmazonS3Consumer {
             byte[] data = objectBytes.asByteArray();
 
             // Write the data to a local file
-            File myFile = new File(fileName);
+            File myFile = new File(tmpTemplate);
             OutputStream os = new FileOutputStream(myFile);
             os.write(data);
             logger.log("Successfully obtained bytes from an S3 object");
@@ -53,6 +54,41 @@ public class AmazonS3Consumer {
 			throw ex;
         } catch (S3Exception e) {
 			logger.log("There was an error when creating the output template file: " + e.getMessage());
+		   throw e;
+        }
+    }
+	
+	public void retrieveCSVFromS3() throws IOException {
+		String bucket_name = System.getenv("BUCKET_NAME");
+		String csv_name = "test.csv";
+    	logger.log("Downloading file " + csv_name + " from bucket " + bucket_name + "...\n");
+
+		Region region = Region.US_EAST_2;
+        S3Client s3 = S3Client.builder()
+                .region(region)
+                .build();
+
+		try {
+			GetObjectRequest objectRequest = GetObjectRequest.builder()
+				.bucket(bucket_name)
+				.key(csv_name)
+				.build();
+		
+            ResponseBytes<GetObjectResponse> objectBytes = s3.getObjectAsBytes(objectRequest);
+            byte[] data = objectBytes.asByteArray();
+
+            // Write the data to a local file
+            File myFile = new File(tmpCSV);
+            OutputStream os = new FileOutputStream(myFile);
+            os.write(data);
+            logger.log("Successfully obtained bytes from an S3 object");
+            os.close();
+
+        } catch (IOException ex) {
+            logger.log("There was an error when reading CSV file: " + ex.getMessage());
+			throw ex;
+        } catch (S3Exception e) {
+			logger.log("There was an error when creating the output temporal CSV file: " + e.getMessage());
 		   throw e;
         }
     }
