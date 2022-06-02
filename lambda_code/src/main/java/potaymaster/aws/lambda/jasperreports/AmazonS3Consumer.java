@@ -84,12 +84,13 @@ public class AmazonS3Consumer {
             logger.log("Successfully obtained bytes from an S3 object");
             os.close();
 
-        } catch (IOException ex) {
-            logger.log("There was an error when reading CSV file: " + ex.getMessage());
+        } catch (IOException ex) {         	
+            logger.log("There was an error when reading CSV file: " + ex.getMessage());            
 			throw ex;
-        } catch (S3Exception e) {
-			logger.log("There was an error when creating the output temporal CSV file: " + e.getMessage());
-		   throw e;
+			
+        } catch (S3Exception e) {        	
+			logger.log("There was an error when creating the output temporal CSV file: " + e.getMessage());	
+			throw e;		   
         }
     }
 }

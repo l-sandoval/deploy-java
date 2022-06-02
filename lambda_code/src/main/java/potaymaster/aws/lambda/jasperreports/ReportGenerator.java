@@ -16,7 +16,6 @@ import java.util.List;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Map;
-import java.util.Scanner;  
 
 import org.apache.commons.io.FileUtils;
 
@@ -91,26 +90,15 @@ public class ReportGenerator {
 		List<String[]> r = new ArrayList<>();
         try (CSVReader reader = new CSVReader(new FileReader(tmpCSV))) {
             r = reader.readAll();
-            //r.forEach(x -> parameters.put("name", Arrays.toString(x)));
+            r.forEach(x -> System.out.println(Arrays.toString(x)));
         }catch(Exception e){
         	logger.log("Exception reading CSV file "+ tmpCSV + e);
         }		
         
-		String title = "Test from CSV";
+		String title = "Sample Test from CSV";
 		parameters.put("title", title);
 		parameters.put(r.get(0)[0], r.get(1)[0]);
 		parameters.put(r.get(0)[1], r.get(1)[1]);
-
-	/*	if (postBody.get("title")!=null){
-			title = (String) postBody.get("title");
-		}
-		parameters.put("title", r.get(0)[0]);//new String(title));
-
-		JSONObject jsonParameters = (JSONObject)postBody.get("parameters");
-
-		for (Object parameterName : jsonParameters.keySet()) {
-			addToMap(parameters, parameterName.toString(), (JSONObject)jsonParameters.get(parameterName.toString()));
-		}*/
 	}
 
 	private void addToMap(Map<String, Object> parameters, String name, JSONObject jsonValue){
