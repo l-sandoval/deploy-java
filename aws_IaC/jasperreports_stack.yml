@@ -15,7 +15,7 @@ Parameters:
     Default: jasperreports-templates
   LambdaPackagedFile:
     Type: String
-    Default: jasperreports-1.0.0.jar
+    Default: jasperreports-1.0.1.jar
   ProductName:
     Type: String
     Default: JasperReports
