@@ -13,7 +13,7 @@ The use of [SDK1](https://github.com/aws/aws-sdk-java) has also been changed to 
 * Java Maven code
 * AWS IaC Files: CloudFormation stack & API swagger
 * Test files: JasperReports test template & Postman collection
-* Basic scripts to automate process: build application, create AWS buckets, syncronize resources & launch CloudFormation stack
+* Basic scripts to automate process: create AWS buckets, syncronize resources & launch CloudFormation stack
 
 ## Requirements
 * AWS-CLI installed.
