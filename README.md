@@ -1,4 +1,4 @@
-# generic-jasper-reports-with-aws-lambda
+# Reliq.ReportGenerator
 Generic [JasperReports](https://community.jaspersoft.com/project/jasperreports-library) Service using [AWS Lambda](https://aws.amazon.com/es/lambda/)
 
 This repo contains code for a Java JasperReport Lambda function.
