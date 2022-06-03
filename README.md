@@ -25,7 +25,7 @@ The use of [SDK1](https://github.com/aws/aws-sdk-java) has also been changed to 
 2. Configure AWS credentials for AWS-Cli (https://docs.aws.amazon.com/cli/latest/userguide/cli-configure-files.html).
 3. Configure region for AWS-Cli ($aws configure set region <SELECTED_REGION>).
 4. Review *lambda_config.sh* file to ensure correct values for all properties, specially *region*, *files_s3_bucket* and *templates_s3_bucket*. The two last properties must be unique in AWS. Otherwise these cannot be created. See [Amazon S3 Bucket Naming Requirements](https://docs.aws.amazon.com/awscloudtrail/latest/userguide/cloudtrail-s3-bucket-naming-requirements.html).
-5. Also, review the `api_swagger.yml` and `jasperreports_stack.yml` located in the `aws_laC` folder to validate that *region*, *files_s3_bucket* and *templates_s3_bucket* are correct. 
+5. Also, review the `api_swagger.yml` and `jasperreports_stack.yml` located in the `aws_laC` folder to validate that the *region*, *files_s3_bucket* and *templates_s3_bucket* parameters are correct. 
 5. Set execute permissions to all *.sh* files.
 6. Execute *00.launch_all_steps.sh*.
 7. When all scripts ends, go to AWS Web Console to check CloudFormation creation stack status.
