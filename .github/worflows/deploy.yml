@@ -28,15 +28,15 @@ jobs:
         if: endsWith(github.ref, '/main')
         run: |
           echo "AWS_LAMBDA_FUNCTION_NAME=Dev_ReportGenerator" >> $GITHUB_ENV
-          echo "FILES_BUCKET=Dev_ReportGeneratorFilesBucket" >> $GITHUB_ENV
-          echo "TEMPLATES_BUCKET=Dev_ReportGeneratorTemplatesBucket" >> $GITHUB_ENV
+          echo "FILES_BUCKET=dev-report-generator-files-bucket" >> $GITHUB_ENV
+          echo "TEMPLATES_BUCKET=dev-report-generator-templates-bucket" >> $GITHUB_ENV
 
       - name: Set variables for production
         if: endsWith(github.ref, '/release')
         run: |
           echo "AWS_LAMBDA_FUNCTION_NAME=Prod_ReportGenerator" >> $GITHUB_ENV
-          echo "FILES_BUCKET=Prod_ReportGeneratorFilesBucket" >> $GITHUB_ENV
-          echo "TEMPLATES_BUCKET=Prod_ReportGeneratorTemplatesBucket" >> $GITHUB_ENV
+          echo "FILES_BUCKET=prod-report-generator-files-bucket" >> $GITHUB_ENV
+          echo "TEMPLATES_BUCKET=prod-report-generator-files-bucket" >> $GITHUB_ENV
 
       - name: Set up JDK
         uses: actions/setup-java@v1
