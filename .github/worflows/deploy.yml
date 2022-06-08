@@ -36,7 +36,7 @@ jobs:
         run: |
           echo "AWS_LAMBDA_FUNCTION_NAME=Prod_ReportGenerator" >> $GITHUB_ENV
           echo "FILES_BUCKET=prod-report-generator-files-bucket" >> $GITHUB_ENV
-          echo "TEMPLATES_BUCKET=prod-report-generator-files-bucket" >> $GITHUB_ENV
+          echo "TEMPLATES_BUCKET=prod-report-generator-templates-bucket" >> $GITHUB_ENV
 
       - name: Set up JDK
         uses: actions/setup-java@v1
