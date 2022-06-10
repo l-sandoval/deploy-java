@@ -1,16 +1,12 @@
 package potaymaster.aws.lambda.jasperreports;
 
-import java.io.BufferedReader;
+import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
-import java.io.InputStreamReader;
 import java.io.OutputStream;
 import java.io.OutputStreamWriter;
-import java.io.Reader;
 
 import org.json.simple.JSONObject;
-import org.json.simple.parser.JSONParser;
-import org.json.simple.parser.ParseException;
 
 import com.amazonaws.services.lambda.runtime.Context;
 import com.amazonaws.services.lambda.runtime.LambdaLogger;
@@ -19,26 +15,52 @@ import com.amazonaws.services.lambda.runtime.RequestStreamHandler;
 public class LambdaFunctionHandler implements RequestStreamHandler
 {
 	LambdaLogger logger;
-	String template;
-	JSONObject postBody;
+	
+	static final String IUGOLOGO = "images/iUGO Care W@3x.png"; //TODO: Move to config file IPM-7990		
 
 	public void handleRequest(InputStream inputStream, OutputStream outputStream, Context context) throws IOException {
 		this.logger = context.getLogger();
 		JSONObject responseJson = new JSONObject();
 		try {
-			processInputStream(inputStream);
+			AmazonS3Consumer s3Consumer = new AmazonS3Consumer(this.logger);				
+			s3Consumer.retrieveFileFromS3(IUGOLOGO, StringLiterals.IMAGE);	
 			
-			AmazonS3Consumer s3Consumer = new AmazonS3Consumer(this.logger);
-			s3Consumer.retrieveTemplateFromS3(this.template);			
-			s3Consumer.retrieveCSVFromS3();
-							
-			ReportGenerator reportGenerator = new ReportGenerator(this.logger);
-			String encodedReport = reportGenerator.generateBase64EncodedReport(this.postBody);
+			/*ReportGenerator reportGenerator = new ReportGenerator(this.logger);
+			String encodedReport = reportGenerator.generateBase64EncodedReport();*/
 			
-			buildSuccessfulResponse(encodedReport, responseJson);
-		}
-		catch (ParseException e) {
-			this.buildErrorResponse(e.getMessage(), 400, responseJson);
+			s3Consumer.retrieveFileFromS3("compliance-billing/csv/IUGOReport_2022-01-31_12345678_monthly_compliance_billing.xml", StringLiterals.XML);
+			research rs = new research();
+			rs.generateReport("xls",
+            		"ComplianceBillingReport",
+            		StringLiterals.tmpXML,
+                    "xls",//type == IUGOReportsApp.TYPE_PDF ? JASPER_PATH_PDF : JASPER_PATH_XLS,
+                    "compliance-billing/csv",
+                    "compliance-billing/output");
+			
+
+		     /*   File folder = new File("compliance-billing/csv/");
+		        for (File file : folder.listFiles()) {
+		            // find the correct xml file
+		            if (file.getName().toLowerCase().contains(XML_SUFFIX)) {
+		                String reportXmlFile = file.getAbsolutePath();
+		                System.err.println("generateReport xml found: " + file.getName());
+
+		                rs.generateReport("xls",
+		                		"ComplianceBillingReport",
+		                        reportXmlFile,
+		                        "xls",//type == IUGOReportsApp.TYPE_PDF ? JASPER_PATH_PDF : JASPER_PATH_XLS,
+		                        "compliance-billing/csv/",
+		                        "compliance-billing/output/");
+		                break;
+		            }
+		        }*/
+		    
+			
+			
+			
+			
+			
+			//buildSuccessfulResponse(encodedReport, responseJson);
 		}
 		catch (Exception e) {
 			this.buildErrorResponse(e.getMessage(), 500, responseJson);
@@ -46,36 +68,6 @@ public class LambdaFunctionHandler implements RequestStreamHandler
 		OutputStreamWriter writer = new OutputStreamWriter(outputStream, "UTF-8");
 		writer.write(responseJson.toString());
 		writer.close();
-	}
-
-	private void processInputStream(InputStream inputStream) throws ParseException, IOException {
-		JSONParser parser = new JSONParser();
-		BufferedReader reader = new BufferedReader(new InputStreamReader(inputStream));
-		JSONObject queryParameters = null;
-		this.template = "default";
-		this.postBody = null;
-		try {
-			JSONObject event = (JSONObject) parser.parse((Reader) reader);
-			if (event.get("body") != null) {
-				this.postBody = (JSONObject)parser.parse((String)event.get("body"));
-			}
-			if (event.get("queryStringParameters") != null) {
-				queryParameters = (JSONObject)event.get("queryStringParameters");
-				if (queryParameters.get((Object)"template") != null) {
-					this.template = (String)queryParameters.get((Object)"template");
-				}
-			}
-			if (!this.template.contains(".jrxml")){
-				this.template = this.template + ".jrxml";
-			}
-		}
-		catch (ParseException e) {
-			logger.log("Error when parsing inputstream.");
-			throw e;
-		} catch (IOException e) {
-			logger.log("Error extracting inputstream.");
-			throw e;
-		}
 	}
 
 	@SuppressWarnings("unchecked")

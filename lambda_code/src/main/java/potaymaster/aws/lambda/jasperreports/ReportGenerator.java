@@ -3,30 +3,19 @@ package potaymaster.aws.lambda.jasperreports;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
-import java.io.FileReader;
 import java.io.IOException;
 import java.io.OutputStream;
 import java.nio.charset.StandardCharsets;
-import java.text.DateFormat;
-import java.text.SimpleDateFormat;
-import java.util.Date;
 import java.util.HashMap;
-import java.util.Iterator;
 import java.util.List;
-import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Map;
 
 import org.apache.commons.io.FileUtils;
 
 import com.amazonaws.services.lambda.runtime.LambdaLogger;
 
-import org.json.simple.JSONObject;
-import org.json.simple.JSONArray;
-import org.json.simple.parser.JSONParser;
-import org.json.simple.parser.ParseException;
-
 import net.sf.jasperreports.engine.JRException;
+import net.sf.jasperreports.engine.JRPrintPage;
 import net.sf.jasperreports.engine.JasperCompileManager;
 import net.sf.jasperreports.engine.JasperExportManager;
 import net.sf.jasperreports.engine.JasperFillManager;
@@ -34,18 +23,11 @@ import net.sf.jasperreports.engine.JasperPrint;
 import net.sf.jasperreports.engine.JasperReport;
 import net.sf.jasperreports.engine.JRDataSource;
 import net.sf.jasperreports.engine.JREmptyDataSource;
-import net.sf.jasperreports.engine.data.JRMapCollectionDataSource;
+import net.sf.jasperreports.engine.data.JRCsvDataSource;
+import net.sf.jasperreports.engine.util.JRLoader;
 import software.amazon.awssdk.utils.BinaryUtils;
 
-import com.opencsv.CSVReader;
-import com.opencsv.bean.CsvBindByName;
-
-public class ReportGenerator {
-
-	static final String outFile = "/tmp/Reports.pdf";
-	static final String tmpTemplate = "/tmp/template.jrxml";
-	static final String tmpCSV = "/tmp/test.csv";
-
+public class ReportGenerator {	
 	private LambdaLogger logger;
 	private JRDataSource mainDataSource;
 
@@ -54,11 +36,11 @@ public class ReportGenerator {
 		this.mainDataSource = new JREmptyDataSource();
 	}
 
-	public String generateBase64EncodedReport(JSONObject postBody) throws JRException, IOException {
-		try {
-			File file = new File(outFile);
-			OutputStream outputSteam = new FileOutputStream(file);
-			generateReport(postBody, outputSteam);
+	public String generateBase64EncodedReport() throws JRException, IOException {
+		try {			
+			File file = new File(StringLiterals.outFile);
+			OutputStream outputSteam = new FileOutputStream(file);						
+			generateReport(outputSteam);			
 			byte[] encoded = BinaryUtils.toBase64Bytes(FileUtils.readFileToByteArray(file));
 			return new String(encoded, StandardCharsets.US_ASCII);
 		} catch (FileNotFoundException e) {
@@ -70,90 +52,51 @@ public class ReportGenerator {
 		}
 	}
 
-	public void generateReport(JSONObject postBody, OutputStream outputSteam) throws JRException {
-		
-		JasperReport jasperDesign = JasperCompileManager.compileReport(tmpTemplate);
-		try {
-			Map<String, Object> parameters = new HashMap<String, Object>();
-						
-			processPostBody(postBody, parameters);
-
-			JasperPrint jasperPrint = JasperFillManager.fillReport(jasperDesign, parameters, this.mainDataSource);
-			JasperExportManager.exportReportToPdfStream(jasperPrint, outputSteam);
-		} catch (JRException e) {
-			logger.log("There was an error while generating the report: " + e.getMessage());
-			throw e;
-		}
-	}
-
-	private void processPostBody(JSONObject postBody, Map<String, Object> parameters) {
-		List<String[]> r = new ArrayList<>();
-        try (CSVReader reader = new CSVReader(new FileReader(tmpCSV))) {
-            r = reader.readAll();
-            r.forEach(x -> System.out.println(Arrays.toString(x)));
-        }catch(Exception e){
-        	logger.log("Exception reading CSV file "+ tmpCSV + e);
-        }		
-        
-		String title = "Sample Test from CSV";
-		parameters.put("title", title);
-		parameters.put(r.get(0)[0], r.get(1)[0]);
-		parameters.put(r.get(0)[1], r.get(1)[1]);
-	}
-
-	private void addToMap(Map<String, Object> parameters, String name, JSONObject jsonValue){
-		String type = (String)jsonValue.get("type");
-		try {
-			switch (type) {
-				case "String":
-					parameters.put(name,new String((String)jsonValue.get("value")));
-					break;
-			
-				case "Double":
-					parameters.put(name, Double.parseDouble((String)jsonValue.get("value")));
-					break;
-	
-				case "Date":
-					parameters.put(name, new SimpleDateFormat("dd/MM/yyyy").parse((String)jsonValue.get("value")));
-					break;
-
-				case "Boolean":
-					parameters.put(name, Boolean.parseBoolean((String)jsonValue.get("value")));
-					break;
-	
-				case "Datasource":
-					parameters.put(name, createDataSource((JSONArray)jsonValue.get("value")));
-					break;
-
-				case "MainDatasource":
-					this.mainDataSource = createDataSource((JSONArray)jsonValue.get("value"));
-					break;
-
-				default:
-					break;
-			}	
-		} catch (Exception e) {
-			logger.log("Exception parsing value of "+name);
-		}
-	}
-
-	private JRMapCollectionDataSource createDataSource(JSONArray jsonArray){
-		List<Map<String, ?>> elements = new ArrayList<>();
-
-		if (jsonArray!=null && jsonArray.size()>0){
-			Iterator<JSONObject> iterator = jsonArray.iterator();
-			while (iterator.hasNext()) {
-				JSONObject jsonElement = iterator.next();
-				Map<String, Object> element = new HashMap<String, Object>();
-				for (Object parameterName : jsonElement.keySet()) {
-					addToMap(element, parameterName.toString(), (JSONObject)jsonElement.get(parameterName.toString()));
-				}
-				elements.add(element);
+	public void generateReport(OutputStream outputSteam) throws JRException {
+		ComplianceBillingReportGenerator reportGenerator = new ComplianceBillingReportGenerator();
+		SourceFiles[] csv_list = reportGenerator.retrieveSourceFilesToGenerateReport();
+		AmazonS3Consumer s3Consumer = new AmazonS3Consumer(this.logger);
+		JasperPrint[] jasperPrints = new JasperPrint[csv_list.length];
+		for (int i = 0; i < csv_list.length; i++) {
+			try {
+				s3Consumer.retrieveFileFromS3(csv_list[i].template, StringLiterals.TEMPLATE);
+				s3Consumer.retrieveFileFromS3(csv_list[i].csv, StringLiterals.CSV);	
+			} catch (IOException e) {
+				logger.log(e.getMessage());
 			}
-		}	
 
-		JRMapCollectionDataSource dataSource = new JRMapCollectionDataSource(elements);
-		return dataSource;
+			JasperReport jasperDesign = JasperCompileManager.compileReport(StringLiterals.tmpTemplate);
+			try {
+				Map<String, Object> parameters = new HashMap<String, Object>();		
+				parameters.put("iUGOLogo", StringLiterals.tmpImage);
+
+				this.mainDataSource = getDataSource();
+
+				jasperPrints[i] = JasperFillManager.fillReport(jasperDesign, parameters, this.mainDataSource);	
+			} catch (JRException e) {
+				logger.log("There was an error while generating the report: " + e.getMessage());
+				throw e;
+			}
+		}
+		
+		for (int i = 0; i < jasperPrints.length; i++) {
+			if (i != 0) {
+				List<JRPrintPage> pages = jasperPrints[i].getPages();
+				for (int j = 0; j < pages.size(); j++) {
+					JRPrintPage object = (JRPrintPage)pages.get(j);
+					jasperPrints[0].addPage(object);
+				}
+			}			
+		}
+
+		JasperExportManager.exportReportToPdfStream(jasperPrints[0], outputSteam);
+	}	
+	
+	private JRCsvDataSource getDataSource() throws JRException
+	{
+		JRCsvDataSource ds = new JRCsvDataSource(JRLoader.getLocationInputStream(StringLiterals.tmpCSV));
+		ds.setRecordDelimiter("\r\n");
+		ds.setUseFirstRowAsHeader(true); 
+		return ds;
 	}
-
 }
