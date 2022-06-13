@@ -41,22 +41,19 @@ import com.opencsv.CSVReader;
 import com.opencsv.bean.CsvBindByName;
 
 public class ReportGenerator {
-
-	static final String outFile = "/tmp/Reports.pdf";
-	static final String tmpTemplate = "/tmp/template.jrxml";
-	static final String tmpCSV = "/tmp/test.csv";
-
 	private LambdaLogger logger;
+	private ReportGeneratorConfig config;
 	private JRDataSource mainDataSource;
 
-	public ReportGenerator(LambdaLogger logger) {
+	public ReportGenerator(LambdaLogger logger, ReportGeneratorConfig reportGeneratorConfig) {
 		this.logger = logger;
+		this.config = reportGeneratorConfig;
 		this.mainDataSource = new JREmptyDataSource();
 	}
 
 	public String generateBase64EncodedReport(JSONObject postBody) throws JRException, IOException {
 		try {
-			File file = new File(outFile);
+			File file = new File(this.config.get("out.file"));
 			OutputStream outputSteam = new FileOutputStream(file);
 			generateReport(postBody, outputSteam);
 			byte[] encoded = BinaryUtils.toBase64Bytes(FileUtils.readFileToByteArray(file));
@@ -72,7 +69,7 @@ public class ReportGenerator {
 
 	public void generateReport(JSONObject postBody, OutputStream outputSteam) throws JRException {
 		
-		JasperReport jasperDesign = JasperCompileManager.compileReport(tmpTemplate);
+		JasperReport jasperDesign = JasperCompileManager.compileReport(this.config.get("temp.template"));
 		try {
 			Map<String, Object> parameters = new HashMap<String, Object>();
 						
@@ -88,11 +85,11 @@ public class ReportGenerator {
 
 	private void processPostBody(JSONObject postBody, Map<String, Object> parameters) {
 		List<String[]> r = new ArrayList<>();
-        try (CSVReader reader = new CSVReader(new FileReader(tmpCSV))) {
+        try (CSVReader reader = new CSVReader(new FileReader(this.config.get("temp.csv")))) {
             r = reader.readAll();
             r.forEach(x -> System.out.println(Arrays.toString(x)));
         }catch(Exception e){
-        	logger.log("Exception reading CSV file "+ tmpCSV + e);
+        	logger.log("Exception reading CSV file "+ this.config.get("temp.csv") + e);
         }		
         
 		String title = "Sample Test from CSV";

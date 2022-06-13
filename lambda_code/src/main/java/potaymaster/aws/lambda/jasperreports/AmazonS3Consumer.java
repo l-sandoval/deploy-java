@@ -14,9 +14,6 @@ import software.amazon.awssdk.services.s3.model.GetObjectResponse;
 import software.amazon.awssdk.core.ResponseBytes;
 
 public class AmazonS3Consumer {
-    
-	static final String tmpTemplate = "/tmp/template.jrxml";
-	static final String tmpCSV = "/tmp/test.csv";
 	Region region;
 	private LambdaLogger logger;
 	private ReportGeneratorConfig config;
@@ -44,7 +41,7 @@ public class AmazonS3Consumer {
             ResponseBytes<GetObjectResponse> objectBytes = s3.getObjectAsBytes(objectRequest);
             byte[] data = objectBytes.asByteArray();
 
-            File myFile = new File(tmpTemplate);
+            File myFile = new File(this.config.get("temp.template"));
             OutputStream os = new FileOutputStream(myFile);
             os.write(data);
             logger.log("Successfully obtained bytes from an S3 object");
@@ -79,7 +76,7 @@ public class AmazonS3Consumer {
             ResponseBytes<GetObjectResponse> objectBytes = s3.getObjectAsBytes(objectRequest);
             byte[] data = objectBytes.asByteArray();
 
-            File myFile = new File(tmpCSV);
+            File myFile = new File(this.config.get("temp.csv"));
             OutputStream os = new FileOutputStream(myFile);
             os.write(data);
             logger.log("Successfully obtained bytes from an S3 object");

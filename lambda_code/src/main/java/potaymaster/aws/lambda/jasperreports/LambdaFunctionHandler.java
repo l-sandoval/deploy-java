@@ -34,7 +34,7 @@ public class LambdaFunctionHandler implements RequestStreamHandler
 			s3Consumer.retrieveTemplateFromS3(this.template);			
 			s3Consumer.retrieveCSVFromS3();
 							
-			ReportGenerator reportGenerator = new ReportGenerator(this.logger);
+			ReportGenerator reportGenerator = new ReportGenerator(this.logger, this.config);
 			String encodedReport = reportGenerator.generateBase64EncodedReport(this.postBody);
 			
 			buildSuccessfulResponse(encodedReport, responseJson);
