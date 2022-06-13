@@ -17,12 +17,14 @@ public class AmazonS3Consumer {
     
 	static final String tmpTemplate = "/tmp/template.jrxml";
 	static final String tmpCSV = "/tmp/test.csv";
-	Region region = Region.US_EAST_2;
-	
+	Region region;
 	private LambdaLogger logger;
+	private ReportGeneratorConfig config;
 
-	public AmazonS3Consumer(LambdaLogger logger) {
+	public AmazonS3Consumer(LambdaLogger logger, ReportGeneratorConfig reportGeneratorConfig) {
+		this.config = reportGeneratorConfig;
 		this.logger = logger;
+		this.region = Region.of(config.get("aws.region"));
 	}
 	
 	public void retrieveTemplateFromS3(String key_name) throws IOException {
