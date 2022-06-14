@@ -41,6 +41,10 @@ import com.opencsv.CSVReader;
 import com.opencsv.bean.CsvBindByName;
 
 public class ReportGenerator {
+	static final String outFile = "/tmp/Reports.pdf";
+	static final String tmpTemplate = "/tmp/template.jrxml";
+	static final String tmpCSV = "/tmp/test.csv";
+
 	private LambdaLogger logger;
 	private ReportGeneratorConfig config;
 	private JRDataSource mainDataSource;
@@ -53,7 +57,7 @@ public class ReportGenerator {
 
 	public String generateBase64EncodedReport(JSONObject postBody) throws JRException, IOException {
 		try {
-			File file = new File(this.config.get("out.file"));
+			File file = new File(outFile);
 			OutputStream outputSteam = new FileOutputStream(file);
 			generateReport(postBody, outputSteam);
 			byte[] encoded = BinaryUtils.toBase64Bytes(FileUtils.readFileToByteArray(file));
@@ -69,7 +73,7 @@ public class ReportGenerator {
 
 	public void generateReport(JSONObject postBody, OutputStream outputSteam) throws JRException {
 		
-		JasperReport jasperDesign = JasperCompileManager.compileReport(this.config.get("temp.template"));
+		JasperReport jasperDesign = JasperCompileManager.compileReport(tmpTemplate);
 		try {
 			Map<String, Object> parameters = new HashMap<String, Object>();
 						
@@ -85,11 +89,11 @@ public class ReportGenerator {
 
 	private void processPostBody(JSONObject postBody, Map<String, Object> parameters) {
 		List<String[]> r = new ArrayList<>();
-        try (CSVReader reader = new CSVReader(new FileReader(this.config.get("temp.csv")))) {
+        try (CSVReader reader = new CSVReader(new FileReader(tmpCSV))) {
             r = reader.readAll();
             r.forEach(x -> System.out.println(Arrays.toString(x)));
         }catch(Exception e){
-        	logger.log("Exception reading CSV file "+ this.config.get("temp.csv") + e);
+        	logger.log("Exception reading CSV file "+ tmpCSV + e);
         }		
         
 		String title = "Sample Test from CSV";
