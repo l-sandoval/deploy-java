@@ -21,18 +21,20 @@ public class LambdaFunctionHandler implements RequestStreamHandler
 	LambdaLogger logger;
 	String template;
 	JSONObject postBody;
+	ReportGeneratorConfig config;
 
 	public void handleRequest(InputStream inputStream, OutputStream outputStream, Context context) throws IOException {
 		this.logger = context.getLogger();
+		this.config = new ReportGeneratorConfig();
 		JSONObject responseJson = new JSONObject();
 		try {
 			processInputStream(inputStream);
 			
-			AmazonS3Consumer s3Consumer = new AmazonS3Consumer(this.logger);
+			AmazonS3Consumer s3Consumer = new AmazonS3Consumer(this.logger, this.config);
 			s3Consumer.retrieveTemplateFromS3(this.template);			
 			s3Consumer.retrieveCSVFromS3();
 							
-			ReportGenerator reportGenerator = new ReportGenerator(this.logger);
+			ReportGenerator reportGenerator = new ReportGenerator(this.logger, this.config);
 			String encodedReport = reportGenerator.generateBase64EncodedReport(this.postBody);
 			
 			buildSuccessfulResponse(encodedReport, responseJson);

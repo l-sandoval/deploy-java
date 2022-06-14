@@ -41,16 +41,17 @@ import com.opencsv.CSVReader;
 import com.opencsv.bean.CsvBindByName;
 
 public class ReportGenerator {
-
 	static final String outFile = "/tmp/Reports.pdf";
 	static final String tmpTemplate = "/tmp/template.jrxml";
 	static final String tmpCSV = "/tmp/test.csv";
 
 	private LambdaLogger logger;
+	private ReportGeneratorConfig config;
 	private JRDataSource mainDataSource;
 
-	public ReportGenerator(LambdaLogger logger) {
+	public ReportGenerator(LambdaLogger logger, ReportGeneratorConfig reportGeneratorConfig) {
 		this.logger = logger;
+		this.config = reportGeneratorConfig;
 		this.mainDataSource = new JREmptyDataSource();
 	}
 
