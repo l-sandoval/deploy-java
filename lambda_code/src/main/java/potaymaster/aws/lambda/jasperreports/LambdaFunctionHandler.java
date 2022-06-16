@@ -13,9 +13,7 @@ import com.amazonaws.services.lambda.runtime.RequestStreamHandler;
 
 public class LambdaFunctionHandler implements RequestStreamHandler
 {
-	LambdaLogger logger;
-	
-	static final String IUGOLOGOPATH = "images/iUGO Care W@3x.png"; //TODO: Move to config file IPM-7972		
+	LambdaLogger logger;	
 
 	ReportGeneratorConfig config;
 
@@ -25,7 +23,7 @@ public class LambdaFunctionHandler implements RequestStreamHandler
 		this.config = new ReportGeneratorConfig();
 		try {
 			AmazonS3Consumer s3Consumer = new AmazonS3Consumer(this.logger, this.config);				
-			s3Consumer.retrieveFileFromS3(IUGOLOGOPATH, StringLiterals.IMAGE);	
+			s3Consumer.retrieveFileFromS3(this.config.get("path.iugoLogo"), StringLiterals.IMAGE);	
 			
 			//TODO: Call to ReportGenerator IPM-7972
 			/*s3Consumer.retrieveFileFromS3("", StringLiterals.XML);
@@ -33,6 +31,8 @@ public class LambdaFunctionHandler implements RequestStreamHandler
 			byte[] report = reportGenerator.generateReport(parameters);
 			
 			s3Consumer.uploadFileToS3("", report);*/
+			
+			s3Consumer.uploadFileToS3("compliance-billing/output/outputt.xls", report);
 		}
 		catch (Exception e) {
 			this.buildErrorResponse(e.getMessage(), 500, responseJson);
