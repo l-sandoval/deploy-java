@@ -18,12 +18,14 @@ import software.amazon.awssdk.core.sync.RequestBody;
 
 public class AmazonS3Consumer {
     
-	Region region = Region.US_EAST_2; //TODO: Move to config file IPM-7990
-	
+	Region region;
 	private LambdaLogger logger;
+	private ReportGeneratorConfig config;
 
-	public AmazonS3Consumer(LambdaLogger logger) {
+	public AmazonS3Consumer(LambdaLogger logger, ReportGeneratorConfig reportGeneratorConfig) {
+		this.config = reportGeneratorConfig;
 		this.logger = logger;
+		this.region = Region.of(config.get("aws.region"));
 	}	
 
 	public void retrieveFileFromS3(String key_name, String file_type) throws IOException {
@@ -39,6 +41,7 @@ public class AmazonS3Consumer {
 				tmp_file = StringLiterals.TMP_XML; break;
 			default: break;
 		}
+
 		String bucket_name = System.getenv("BUCKET_NAME");
 		logger.log("Downloading file " + key_name + " from bucket " + bucket_name);
 		

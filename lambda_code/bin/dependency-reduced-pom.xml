@@ -5,11 +5,6 @@
   <artifactId>jasperreports</artifactId>
   <version>1.0.1</version>
   <build>
-    <resources>
-      <resource>
-        <directory>src/resources/</directory>
-      </resource>
-    </resources>
     <plugins>
       <plugin>
         <artifactId>maven-compiler-plugin</artifactId>

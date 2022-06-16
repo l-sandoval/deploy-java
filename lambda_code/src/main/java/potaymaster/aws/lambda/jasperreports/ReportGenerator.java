@@ -20,12 +20,20 @@ import java.io.File;
 import java.io.IOException;
 import java.util.*;
 
-public class ReportGenerator {    
+import net.sf.jasperreports.engine.JRException;
+import net.sf.jasperreports.engine.JasperCompileManager;
+import net.sf.jasperreports.engine.JasperFillManager;
+import net.sf.jasperreports.engine.JasperPrint;
+import net.sf.jasperreports.engine.JasperReport;
+import net.sf.jasperreports.engine.JRDataSource;
 
-	private LambdaLogger logger;	
+public class ReportGenerator {
+	private LambdaLogger logger;
+	private ReportGeneratorConfig config;
 
-	public ReportGenerator(LambdaLogger logger) {
+	public ReportGenerator(LambdaLogger logger, ReportGeneratorConfig reportGeneratorConfig) {
 		this.logger = logger;
+		this.config = reportGeneratorConfig;
 	}
 
 	private long startTime = System.currentTimeMillis();    
@@ -191,7 +199,7 @@ public class ReportGenerator {
 	 * Retrieve file from S3 bucket
 	 */
 	private void retrieveFileFromS3 (String key_name, String file_type){
-		AmazonS3Consumer s3Consumer = new AmazonS3Consumer(this.logger);
+		AmazonS3Consumer s3Consumer = new AmazonS3Consumer(this.logger, this.config);
 		try {
 			s3Consumer.retrieveFileFromS3(key_name, file_type);
 		} catch (IOException e) {
