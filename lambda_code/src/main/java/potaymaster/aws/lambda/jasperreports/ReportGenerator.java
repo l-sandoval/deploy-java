@@ -58,7 +58,7 @@ public class ReportGenerator {
 			) throws JRException {
 
 		HelperFunctions helper = new HelperFunctions(this.logger);			
-		
+
 		String jasperSource = jasperPath + File.separator + reportName + ".jrxml";
 
 		logger.log("GenerateReport: " + reportName + "t=" + (System.currentTimeMillis() - startTime));
@@ -71,7 +71,7 @@ public class ReportGenerator {
 		if (dataSource.canRead()) {
 			logger.log("Report... : Fill from : " + xmlFile);
 			Document document = JRXmlUtils.parse(JRLoader.getLocationInputStream(dataSource.getPath()));
-			
+
 			parameters.put(StringLiterals.IUGOLOGO, StringLiterals.TMP_IMAGE);
 			parameters.put(JRXPathQueryExecuterFactory.PARAMETER_XML_DATA_DOCUMENT, document);
 			parameters.put(JRXPathQueryExecuterFactory.XML_DATE_PATTERN, "yyyy-MM-dd");
@@ -110,17 +110,17 @@ public class ReportGenerator {
 			sheetNames[0] = StringLiterals.HOME_NAME;
 
 			createSheetsFromCSVData(sheetNameList, sheetNames, jasperPath, dataPath, fileNameList, jpMaster);
-			
+
 			// find the file type required
 			if (type == null && parameters.containsKey(StringLiterals.FILE_TYPE)) {
 				type = parameters.get(StringLiterals.FILE_TYPE).toString().toLowerCase();   
 			}
-			
+
 			return generateReportFile(type, jpMaster, sheetNames);
 		}
 		return null;
 	}
-	
+
 	/**
 	 * Generate the report file according to the file type
 	 * @throws JRException 
@@ -182,19 +182,19 @@ public class ReportGenerator {
 
 			exporter.exportReport();	
 		}		
-		
+
 		byte[] fileByteArray = null;
 		try {
 			fileByteArray = FileUtils.readFileToByteArray(destFile);
 		} catch (IOException e) {
 			logger.log(e.getMessage());
 		}
-		
+
 		logger.log("Export " + type + " :" + destFile + ", creation time : " + (System.currentTimeMillis() - startTime));
 
 		return fileByteArray;
 	}
-	
+
 	/**
 	 * Retrieve file from S3 bucket
 	 */
@@ -206,7 +206,7 @@ public class ReportGenerator {
 			logger.log(e.getMessage());
 		}
 	}
-	
+
 	/**
 	 * Create each sheet from the associated CSV data file
 	 * @throws JRException 

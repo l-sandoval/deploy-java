@@ -24,15 +24,13 @@ public class LambdaFunctionHandler implements RequestStreamHandler
 		try {
 			AmazonS3Consumer s3Consumer = new AmazonS3Consumer(this.logger, this.config);				
 			s3Consumer.retrieveFileFromS3(this.config.get("path.iugoLogo"), StringLiterals.IMAGE);	
-			
+
 			//TODO: Call to ReportGenerator IPM-7972
 			/*s3Consumer.retrieveFileFromS3("", StringLiterals.XML);
 			ReportGenerator reportGenerator = new ReportGenerator(this.logger, this.config);
 			byte[] report = reportGenerator.generateReport(parameters);
-			
+
 			s3Consumer.uploadFileToS3("", report);*/
-			
-			s3Consumer.uploadFileToS3("compliance-billing/output/outputt.xls", report);
 		}
 		catch (Exception e) {
 			this.buildErrorResponse(e.getMessage(), 500, responseJson);
