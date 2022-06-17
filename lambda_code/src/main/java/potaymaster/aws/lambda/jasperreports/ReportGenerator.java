@@ -230,7 +230,7 @@ public class ReportGenerator {
 			File sourceFile = new File(StringLiterals.TMP_TEMPLATE);
 			File dataFile = new File(StringLiterals.TMP_CSV);               
 
-			if (sourceFile.canRead() && dataFile.canRead() && ! (sourceFileBK.getPath().equals("compliance-billing/excel-templates/PatientSummary.jrxml"/*"compliance-billing/pdf-templates/PatientSummary.jrxml"*/)) && ! (sourceFileBK.getPath().equals("compliance-billing/excel-templates/ReadingSummary.jrxml"/*"compliance-billing/pdf-templates/ReadingSummary.jrxml"*/))     ) {
+			if (sourceFile.canRead() && dataFile.canRead() ) {
 				logger.log("Fill...t=" + (System.currentTimeMillis() - startTime));
 				JRCsvDataSource source = new JRCsvDataSource(JRLoader.getInputStream(dataFile));
 				source.setRecordDelimiter("\r\n");
