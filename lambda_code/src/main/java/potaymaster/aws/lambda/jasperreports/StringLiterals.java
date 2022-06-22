@@ -16,7 +16,7 @@ public class StringLiterals {
 	static final String IMAGE = "image";
 	static final String XML = "xml";
 	
-	static final String IUGOLOGO = "iUGOLogo";
+	static final String IUGOLOGO = "IUGOReport-Logo";
 	static final String PAGE_NUMBER = "IUGOReport-PageNumber";
 	static final String PAGE_COUNT = "IUGOReport-PageCount";
 	static final String FILE_TYPE = "IUGOReport-FileType";
