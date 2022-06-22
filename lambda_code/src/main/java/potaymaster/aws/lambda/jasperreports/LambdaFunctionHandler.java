@@ -27,6 +27,7 @@ public class LambdaFunctionHandler implements RequestStreamHandler
 
 			//TODO: Call to ReportGenerator IPM-7972
 			/*s3Consumer.retrieveFileFromS3("", StringLiterals.XML);
+			ReportGenerator reportGenerator = new ReportGenerator(this.logger, this.config);
 			byte[] report = reportGenerator.generateReport(parameters);
 			
 			s3Consumer.uploadFileToS3("", report);*/
