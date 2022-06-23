@@ -11,6 +11,8 @@ import com.amazonaws.services.lambda.runtime.Context;
 import com.amazonaws.services.lambda.runtime.LambdaLogger;
 import com.amazonaws.services.lambda.runtime.RequestStreamHandler;
 
+import potaymaster.aws.lambda.jasperreports.ComplianceBillingReport.ComplianceBillingReport;
+
 public class LambdaFunctionHandler implements RequestStreamHandler
 {
 	LambdaLogger logger;	
@@ -23,14 +25,10 @@ public class LambdaFunctionHandler implements RequestStreamHandler
 		this.config = new ReportGeneratorConfig();
 		try {
 			AmazonS3Consumer s3Consumer = new AmazonS3Consumer(this.logger, this.config);				
-			s3Consumer.retrieveFileFromS3(this.config.get("path.iugoLogo"), StringLiterals.IMAGE);	
+			s3Consumer.retrieveFileFromS3(this.config.get("s3path.IUGOReport-Logo"), StringLiterals.IMAGE);	
 
-			//TODO: Call to ReportGenerator IPM-7972
-			/*s3Consumer.retrieveFileFromS3("", StringLiterals.XML);
-			ReportGenerator reportGenerator = new ReportGenerator(this.logger, this.config);
-			byte[] report = reportGenerator.generateReport(parameters);
-
-			s3Consumer.uploadFileToS3("", report);*/
+			ComplianceBillingReport compliancebillingReport = new ComplianceBillingReport(this.logger, this.config);
+			compliancebillingReport.generateReport();		
 		}
 		catch (Exception e) {
 			this.buildErrorResponse(e.getMessage(), 500, responseJson);

@@ -12,6 +12,8 @@ import software.amazon.awssdk.services.s3.S3Client;
 import software.amazon.awssdk.services.s3.model.GetObjectRequest;
 import software.amazon.awssdk.services.s3.model.S3Exception;
 import software.amazon.awssdk.services.s3.model.GetObjectResponse;
+import software.amazon.awssdk.services.s3.model.ListObjectsRequest;
+import software.amazon.awssdk.services.s3.model.ListObjectsResponse;
 import software.amazon.awssdk.services.s3.model.PutObjectRequest;
 import software.amazon.awssdk.core.ResponseBytes;
 import software.amazon.awssdk.core.sync.RequestBody;
@@ -67,6 +69,31 @@ public class AmazonS3Consumer {
 		} catch (IOException ex) {
 			logger.log("There was an error when reading file from S3: " + ex.getMessage());
 			throw ex;
+		} catch (S3Exception e) {
+			logger.log("There was an error when creating the output temporal file: " + e.getMessage());
+			throw e;
+		}
+	}
+	
+	public ListObjectsResponse listObjectsFromS3Folder(String key_name) throws IOException {
+		String bucket_name = System.getenv("BUCKET_NAME");
+		logger.log("Downloading folder " + key_name + " from bucket " + bucket_name);
+
+		S3Client s3 = S3Client.builder()
+				.region(region)
+				.build();
+
+		try {
+			ListObjectsRequest listObjectsRequest = ListObjectsRequest.builder()
+                    .bucket(bucket_name)
+                    .prefix(key_name + File.separator)
+                    .build();
+			
+			ListObjectsResponse objects = s3.listObjects(listObjectsRequest);
+			
+			logger.log("Successfully obtained objects from an S3 folder");
+			
+			return objects;	
 		} catch (S3Exception e) {
 			logger.log("There was an error when creating the output temporal file: " + e.getMessage());
 			throw e;
