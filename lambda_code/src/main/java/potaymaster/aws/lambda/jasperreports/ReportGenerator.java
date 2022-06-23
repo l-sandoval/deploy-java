@@ -74,7 +74,6 @@ public class ReportGenerator {
 			logger.log("Report... : Fill from : " + xmlFile);
 			Document document = JRXmlUtils.parse(JRLoader.getLocationInputStream(dataSource.getPath()));
 
-			//parameters.put(StringLiterals.IUGOLOGO, StringLiterals.TMP_IMAGE);
 			parameters.put(JRXPathQueryExecuterFactory.PARAMETER_XML_DATA_DOCUMENT, document);
 			parameters.put(JRXPathQueryExecuterFactory.XML_DATE_PATTERN, "yyyy-MM-dd");
 			parameters.put(JRXPathQueryExecuterFactory.XML_NUMBER_PATTERN, "#,##0.##");
