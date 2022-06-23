@@ -43,12 +43,12 @@ public class ReportGenerator {
 	 * Generate a report according to the type
 	 * @param type 		: "PDF", "XLS" or "XLSX"  (one or more are allowed), if null, the type(s) are read from the XML file
 	 * @param reportName: name of the report e.g. "ComplianceBillingReport"
-	 * @param xmlFile 	: report XML file
-	 * @param jasperPath: location for the templates
-	 * @param dataPath	: data sources (CSV, XML)
-	 * @param buildPath : destination for the output reports
+	 * @param xmlFile 	: XML file with the report parameters
+	 * @param jasperPath: path for the templates
+	 * @param dataPath	: path for the raw data sources (CSV, XML)
+	 * @param buildPath : destination path for the output reports
 	 */
-	public byte[] generateReport(
+	public void generateReport(
 			String type,
 			String reportName,
 			String xmlFile,
@@ -66,12 +66,14 @@ public class ReportGenerator {
 		parameters = new HashMap<String, Object>();
 		ArrayList<String> sheetNameList = new ArrayList<String>();
 		ArrayList<String> fileNameList = new ArrayList<String>();
+		
+		retrieveFileFromS3(xmlFile, StringLiterals.XML);	
 
-		File dataSource = new File(xmlFile);
+		File dataSource = new File(StringLiterals.TMP_XML);
 		if (dataSource.canRead()) {
 			logger.log("Report... : Fill from : " + xmlFile);
 			Document document = JRXmlUtils.parse(JRLoader.getLocationInputStream(dataSource.getPath()));
-			
+
 			parameters.put(JRXPathQueryExecuterFactory.PARAMETER_XML_DATA_DOCUMENT, document);
 			parameters.put(JRXPathQueryExecuterFactory.XML_DATE_PATTERN, "yyyy-MM-dd");
 			parameters.put(JRXPathQueryExecuterFactory.XML_NUMBER_PATTERN, "#,##0.##");
@@ -117,9 +119,13 @@ public class ReportGenerator {
 				type = parameters.get(StringLiterals.FILE_TYPE).toString().toLowerCase();   
 			}
 
-			return generateReportFile(type, jpMaster, sheetNames);
+			byte[] fileByteArray = generateReportFile(type, jpMaster, sheetNames);
+			
+			uploadFileToS3(buildPath + File.separator + reportName + "." + type , fileByteArray);
+
+			logger.log("Export " + type + " :" + buildPath + ", creation time : " + (System.currentTimeMillis() - startTime));
+
 		}
-		return null;
 	}
 
 	/**
@@ -189,9 +195,7 @@ public class ReportGenerator {
 			fileByteArray = FileUtils.readFileToByteArray(destFile);
 		} catch (IOException e) {
 			logger.log(e.getMessage());
-		}
-
-		logger.log("Export " + type + " :" + destFile + ", creation time : " + (System.currentTimeMillis() - startTime));
+		}		
 
 		return fileByteArray;
 	}
@@ -203,6 +207,18 @@ public class ReportGenerator {
 		AmazonS3Consumer s3Consumer = new AmazonS3Consumer(this.logger, this.config);
 		try {
 			s3Consumer.retrieveFileFromS3(key_name, file_type);
+		} catch (IOException e) {
+			logger.log(e.getMessage());
+		}
+	}
+	
+	/**
+	 * Upload file to S3 bucket
+	 */
+	private void uploadFileToS3 (String key_name, byte[] bytes){
+		AmazonS3Consumer s3Consumer = new AmazonS3Consumer(this.logger, this.config);
+		try {
+			s3Consumer.uploadFileToS3(key_name, bytes);
 		} catch (IOException e) {
 			logger.log(e.getMessage());
 		}
