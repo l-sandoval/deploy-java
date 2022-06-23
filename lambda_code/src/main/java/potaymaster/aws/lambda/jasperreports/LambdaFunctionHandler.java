@@ -28,7 +28,7 @@ public class LambdaFunctionHandler implements RequestStreamHandler
 			s3Consumer.retrieveFileFromS3(this.config.get("s3path.IUGOReport-Logo"), StringLiterals.IMAGE);	
 
 			ComplianceBillingReport compliancebillingReport = new ComplianceBillingReport(this.logger, this.config);
-			compliancebillingReport.generateReport();		
+			compliancebillingReport.generateReport();
 		}
 		catch (Exception e) {
 			this.buildErrorResponse(e.getMessage(), 500, responseJson);

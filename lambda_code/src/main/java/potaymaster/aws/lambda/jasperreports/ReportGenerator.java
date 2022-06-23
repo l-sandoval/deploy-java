@@ -236,13 +236,11 @@ public class ReportGenerator {
 			sheetNames[i + 1] = sheetName;
 
 			// set the page number in the report
-			parameters.put(StringLiterals.PAGE_NUMBER, Integer.toString(i + 1));
-			File sourceFileBK = new File(jasperPath + File.separator + sheetNameList.get(i) + ".jrxml");
-			File dataFileBK = new File(dataPath + File.separator + fileNameList.get(i));
-			logger.log("Fill...sheet=" + sourceFileBK + " csv=" + dataFileBK + "\r\n");
+			parameters.put(StringLiterals.PAGE_NUMBER, Integer.toString(i + 1));			
 
 			retrieveFileFromS3(jasperPath + File.separator + sheetNameList.get(i) + ".jrxml", StringLiterals.TEMPLATE);
 			retrieveFileFromS3(dataPath + File.separator + fileNameList.get(i), StringLiterals.CSV);
+			logger.log("Retrieve from S3 template= " + sheetNameList.get(i) + ".jrxml" + " csv= " + fileNameList.get(i) + "\r\n");
 
 			File sourceFile = new File(StringLiterals.TMP_TEMPLATE);
 			File dataFile = new File(StringLiterals.TMP_CSV);               
