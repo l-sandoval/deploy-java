@@ -19,15 +19,13 @@ public class CustomerBillingReport {
     LambdaLogger logger;
     ReportGeneratorConfig config;
     public String reportName;
-    public String typeReportXls;
-    public String typeReportPdf;
+    public String typeReport;
     public String xmlSuffix;
     public CustomerBillingReport(LambdaLogger logger, ReportGeneratorConfig reportGeneratorConfig){
         this.logger = logger;
         this.config = reportGeneratorConfig;
         this.reportName = CustomerBillingReportLiterals.BILLING_SUMMARY_REPORT;
-        this.typeReportXls = StringLiterals.TYPE_XLS;
-        this.typeReportPdf = StringLiterals.TYPE_PDF;
+        this.typeReport = StringLiterals.TYPE_XLS;
         this.xmlSuffix = CustomerBillingReportLiterals.XML_SUFFIX;
     }
 
@@ -49,18 +47,10 @@ public class CustomerBillingReport {
                     String reportXmlFile = file.key();
                     logger.log("Found XML to retrieve parameters for " + reportName + ": " + reportXmlFile);
                     reportGenerator.generateReport(
-                            typeReportXls,
+                            typeReport,
                             reportName,
                             reportXmlFile,
                             this.config.get("s3path.Templates"),
-                            this.config.get("s3path.CSV"),
-                            this.config.get("s3path.Output"));
-
-                    reportGenerator.generateReport(
-                            typeReportPdf,
-                            reportName,
-                            reportXmlFile,
-                            this.config.get("s3path.Templates.pdf"),
                             this.config.get("s3path.CSV"),
                             this.config.get("s3path.Output"));
                 }
