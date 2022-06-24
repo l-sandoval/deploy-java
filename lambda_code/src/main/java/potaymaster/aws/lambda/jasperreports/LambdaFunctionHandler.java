@@ -12,6 +12,7 @@ import com.amazonaws.services.lambda.runtime.LambdaLogger;
 import com.amazonaws.services.lambda.runtime.RequestStreamHandler;
 
 import potaymaster.aws.lambda.jasperreports.ComplianceBillingReport.ComplianceBillingReport;
+import potaymaster.aws.lambda.jasperreports.CustomerBillingReport.CustomerBillingReport;
 
 public class LambdaFunctionHandler implements RequestStreamHandler
 {
@@ -28,7 +29,9 @@ public class LambdaFunctionHandler implements RequestStreamHandler
 			s3Consumer.retrieveFileFromS3(this.config.get("s3path.IUGOReport-Logo"), StringLiterals.IMAGE);	
 
 			ComplianceBillingReport compliancebillingReport = new ComplianceBillingReport(this.logger, this.config);
+			CustomerBillingReport customerBillingReport = new CustomerBillingReport(this.logger, this.config);
 			compliancebillingReport.generateReport();
+			customerBillingReport.generateReport();
 		}
 		catch (Exception e) {
 			this.buildErrorResponse(e.getMessage(), 500, responseJson);
