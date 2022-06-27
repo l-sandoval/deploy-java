@@ -41,8 +41,6 @@ public class CustomerBillingReport {
 
             // search in the S3 folder the corresponding XML file to the current date of report generation
             for (S3Object file : objects.contents()) {
-                logger.log("\ngot here and found the xml folder and files: "+file.key()+" - "+xmlSuffix+"\n");
-                logger.log("\ngenerationDate: "+generationDate+"\n");
                 if (file.key().contains(generationDate) && file.key().toLowerCase().contains(xmlSuffix)) {
                     String reportXmlFile = file.key();
                     logger.log("Found XML to retrieve parameters for " + reportName + ": " + reportXmlFile);
@@ -50,7 +48,7 @@ public class CustomerBillingReport {
                             typeReport,
                             reportName,
                             reportXmlFile,
-                            this.config.get("s3path.Templates"),
+                            this.config.get("s3path.Templates.Excel"),
                             this.config.get("s3path.CSV"),
                             this.config.get("s3path.Output"));
                 }

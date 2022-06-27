@@ -48,7 +48,7 @@ public class ComplianceBillingReport {
 	                		typeReport,
 	                		reportName,
 	                		reportXmlFile,
-	                        this.config.get("s3path.Templates"),
+	                        this.config.get("s3path.Templates.Excel"),
 	                        this.config.get("s3path.CSV"),
 	                        this.config.get("s3path.Output"));
 				}
