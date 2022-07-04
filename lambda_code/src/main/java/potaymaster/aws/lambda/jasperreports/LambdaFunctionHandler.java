@@ -13,6 +13,7 @@ import com.amazonaws.services.lambda.runtime.RequestStreamHandler;
 
 import potaymaster.aws.lambda.jasperreports.ComplianceBillingReport.ComplianceBillingReport;
 import potaymaster.aws.lambda.jasperreports.CustomerBillingReport.CustomerBillingReport;
+import potaymaster.aws.lambda.jasperreports.EmergencyRecoveryReport.EmergencyRecoveryReport;
 
 public class LambdaFunctionHandler implements RequestStreamHandler
 {
@@ -30,8 +31,10 @@ public class LambdaFunctionHandler implements RequestStreamHandler
 
 			ComplianceBillingReport compliancebillingReport = new ComplianceBillingReport(this.logger, this.config);
 			CustomerBillingReport customerBillingReport = new CustomerBillingReport(this.logger, this.config);
+			EmergencyRecoveryReport emergencyRecoveryReport = new EmergencyRecoveryReport(this.logger, this.config);
 			compliancebillingReport.generateReport();
 			customerBillingReport.generateReport();
+			emergencyRecoveryReport.generateReport();
 		}
 		catch (Exception e) {
 			this.buildErrorResponse(e.getMessage(), 500, responseJson);
