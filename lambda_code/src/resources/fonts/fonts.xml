@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<fontFamilies>
+    <fontFamily name="Arial">
+        <normal>
+            <ttf><![CDATA[fonts/arial/arial.ttf]]></ttf>
+        </normal>
+        <exportFonts/>
+    </fontFamily>
+    <fontFamily name="Tahoma">
+        <normal>
+            <ttf><![CDATA[fonts/tahoma/tahoma.ttf]]></ttf>
+        </normal>
+        <exportFonts/>
+    </fontFamily>
+</fontFamilies>
