@@ -18,7 +18,6 @@
 	<property name="com.jaspersoft.studio.unit.columnWidth" value="pixel"/>
 	<property name="com.jaspersoft.studio.unit.columnSpacing" value="pixel"/>
 	<parameter name="IUGOReport-Provider" class="java.lang.String"/>
-	<parameter name="IUGOReport-NPI" class="java.lang.String"/>
 	<parameter name="IUGOReport-PlaceOfService" class="java.lang.String"/>
 	<parameter name="IUGOReport-Programs-RPM" class="java.lang.String"/>
 	<parameter name="IUGOReport-Programs-CCM" class="java.lang.String"/>
@@ -115,7 +114,7 @@
 		<band splitType="Stretch"/>
 	</background>
 	<title>
-		<band height="164" splitType="Stretch">
+		<band height="142" splitType="Stretch">
 			<property name="com.jaspersoft.studio.unit.height" value="px"/>
 			<image hAlign="Center" vAlign="Middle">
 				<reportElement mode="Opaque" x="1021" y="0" width="189" height="54" backcolor="#127EC2" uuid="ad81df25-eb0f-412c-ab1c-0a307268a3ee">
@@ -149,18 +148,7 @@
 				<textFieldExpression><![CDATA["Billing Summary: "+$P{IUGOReport-Provider}]]></textFieldExpression>
 			</textField>
 			<textField>
-				<reportElement mode="Opaque" x="0" y="54" width="1210" height="22" forecolor="#FFFFFF" backcolor="#127EC2" uuid="c048f43a-54b6-4b79-9ae0-4d7fafb142f4">
-					<property name="com.jaspersoft.studio.unit.height" value="px"/>
-					<property name="com.jaspersoft.studio.unit.width" value="px"/>
-				</reportElement>
-				<box padding="1"/>
-				<textElement textAlignment="Left" verticalAlignment="Middle">
-					<font fontName="Tahoma" size="12"/>
-				</textElement>
-				<textFieldExpression><![CDATA["NPI: "+$P{IUGOReport-NPI}]]></textFieldExpression>
-			</textField>
-			<textField>
-				<reportElement mode="Opaque" x="0" y="76" width="1210" height="22" forecolor="#FFFFFF" backcolor="#127EC2" uuid="01c9c744-3f17-4533-a9f8-b1f3e8c1a23a">
+				<reportElement mode="Opaque" x="0" y="54" width="1210" height="22" forecolor="#FFFFFF" backcolor="#127EC2" uuid="01c9c744-3f17-4533-a9f8-b1f3e8c1a23a">
 					<property name="com.jaspersoft.studio.unit.width" value="px"/>
 					<property name="com.jaspersoft.studio.unit.height" value="px"/>
 				</reportElement>
@@ -177,7 +165,7 @@
 				<textFieldExpression><![CDATA["Place of Service: "+$P{IUGOReport-PlaceOfService}]]></textFieldExpression>
 			</textField>
 			<textField>
-				<reportElement mode="Opaque" x="0" y="142" width="1210" height="22" forecolor="#FFFFFF" backcolor="#127EC2" uuid="ca35f342-1259-430b-a738-0f4187beaa89">
+				<reportElement mode="Opaque" x="0" y="120" width="1210" height="22" forecolor="#FFFFFF" backcolor="#127EC2" uuid="ca35f342-1259-430b-a738-0f4187beaa89">
 					<property name="com.jaspersoft.studio.unit.width" value="px"/>
 					<property name="com.jaspersoft.studio.unit.height" value="px"/>
 				</reportElement>
@@ -197,7 +185,7 @@
 							+ ($P{IUGOReport-Programs-BHI}.equals("true")?"BHI ":"")]]></textFieldExpression>
 			</textField>
 			<textField>
-				<reportElement mode="Opaque" x="0" y="98" width="1210" height="22" forecolor="#FFFFFF" backcolor="#127EC2" uuid="0a56d55d-0d7c-4727-bc3a-4382e97debf3">
+				<reportElement mode="Opaque" x="0" y="76" width="1210" height="22" forecolor="#FFFFFF" backcolor="#127EC2" uuid="0a56d55d-0d7c-4727-bc3a-4382e97debf3">
 					<property name="com.jaspersoft.studio.unit.width" value="px"/>
 					<property name="com.jaspersoft.studio.unit.height" value="px"/>
 				</reportElement>
@@ -214,7 +202,7 @@
 				<textFieldExpression><![CDATA["Date of Service: "+new java.text.SimpleDateFormat("MM/dd/YYYY").format(java.util.Date.from(java.time.OffsetDateTime.parse($P{IUGOReport-Date}).toInstant()))]]></textFieldExpression>
 			</textField>
 			<textField>
-				<reportElement mode="Opaque" x="0" y="120" width="1210" height="22" forecolor="#FFFFFF" backcolor="#127EC2" uuid="b628a98f-623a-44a1-aba1-cac37dedfe26">
+				<reportElement mode="Opaque" x="0" y="98" width="1210" height="22" forecolor="#FFFFFF" backcolor="#127EC2" uuid="b628a98f-623a-44a1-aba1-cac37dedfe26">
 					<property name="com.jaspersoft.studio.unit.width" value="px"/>
 					<property name="com.jaspersoft.studio.unit.height" value="px"/>
 				</reportElement>
