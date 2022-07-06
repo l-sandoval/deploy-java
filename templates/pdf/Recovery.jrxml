@@ -783,7 +783,6 @@
 			<textField textAdjust="StretchHeight" isBlankWhenNull="true">
 				<reportElement positionType="Float" stretchType="RelativeToTallestObject" x="365" y="0" width="108" height="21" uuid="b2b86e65-2c42-4a45-8fb7-18c598f7af2f">
 					<property name="com.jaspersoft.studio.spreadsheet.connectionID" value="b131210e-818d-48ab-874a-804f6fbc7abc"/>
-					<property name="net.sf.jasperreports.export.xls.pattern" value="###-###-####(a)"/>
 				</reportElement>
 				<box padding="1">
 					<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
