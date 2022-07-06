@@ -28,7 +28,7 @@
 	<field name="Patient First Name" class="java.lang.String"/>
 	<field name="Patient Middle Name" class="java.lang.String"/>
 	<field name="Patient Last Name" class="java.lang.String"/>
-	<field name="Patient Date of Birth" class="java.lang.String"/>
+	<field name="Patient Date of Birth" class="java.sql.Date"/>
 	<field name="Patient Gender" class="java.lang.String"/>
 	<field name="Patient Status" class="java.lang.String"/>
 	<field name="Patient Primary Phone Number" class="java.lang.String"/>
@@ -536,7 +536,7 @@
 					<font fontName="Arial" size="8"/>
 					<paragraph lineSpacing="Double"/>
 				</textElement>
-				<textFieldExpression><![CDATA[new SimpleDateFormat("dd/mm/yy").parse($F{Patient Date of Birth})]]></textFieldExpression>
+				<textFieldExpression><![CDATA[$F{Patient Date of Birth}]]></textFieldExpression>
 			</textField>
 			<textField textAdjust="StretchHeight" isBlankWhenNull="true">
 				<reportElement positionType="Float" stretchType="RelativeToTallestObject" x="220" y="0" width="35" height="21" uuid="497c1ad0-88d1-4d83-a4c4-aa8143ebce71">
@@ -783,7 +783,6 @@
 			<textField textAdjust="StretchHeight" isBlankWhenNull="true">
 				<reportElement positionType="Float" stretchType="RelativeToTallestObject" x="365" y="0" width="108" height="21" uuid="b2b86e65-2c42-4a45-8fb7-18c598f7af2f">
 					<property name="com.jaspersoft.studio.spreadsheet.connectionID" value="b131210e-818d-48ab-874a-804f6fbc7abc"/>
-					<property name="net.sf.jasperreports.export.xls.pattern" value="###-###-####(a)"/>
 				</reportElement>
 				<box padding="1">
 					<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>

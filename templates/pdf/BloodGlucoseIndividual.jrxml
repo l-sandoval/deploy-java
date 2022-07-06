@@ -87,8 +87,9 @@
 					<text><![CDATA[Time]]></text>
 				</staticText>
 				<staticText>
-					<reportElement mode="Opaque" x="320" y="30" width="170" height="20" forecolor="#FFFFFF" backcolor="#127EC2" uuid="37c76f3c-613e-47f5-ad45-b74ac2bccbc6">
+					<reportElement mode="Opaque" x="320" y="30" width="273" height="20" forecolor="#FFFFFF" backcolor="#127EC2" uuid="37c76f3c-613e-47f5-ad45-b74ac2bccbc6">
 						<property name="com.jaspersoft.studio.spreadsheet.connectionID" value="b9f69bc4-e33b-4194-b3cf-de6eadcf907a"/>
+						<property name="com.jaspersoft.studio.unit.width" value="px"/>
 					</reportElement>
 					<box padding="1">
 						<pen lineColor="#FFFFFF"/>
@@ -101,22 +102,6 @@
 						<font fontName="Tahoma"/>
 					</textElement>
 					<text><![CDATA[Blood Glucose]]></text>
-				</staticText>
-				<staticText>
-					<reportElement mode="Opaque" x="490" y="30" width="102" height="20" forecolor="#FFFFFF" backcolor="#127EC2" uuid="8930f5ab-e222-4b9a-9397-52e7e8993cdb">
-						<property name="com.jaspersoft.studio.spreadsheet.connectionID" value="2099ad81-839e-425e-9884-36ec501ba23d"/>
-					</reportElement>
-					<box padding="1">
-						<pen lineColor="#FFFFFF"/>
-						<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
-						<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
-						<bottomPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
-						<rightPen lineWidth="1.0" lineStyle="Solid" lineColor="#127EC2"/>
-					</box>
-					<textElement textAlignment="Center" verticalAlignment="Middle">
-						<font fontName="Tahoma"/>
-					</textElement>
-					<text><![CDATA[Unit]]></text>
 				</staticText>
 			</band>
 		</groupHeader>
@@ -237,9 +222,10 @@
 				<textFieldExpression><![CDATA[new java.text.SimpleDateFormat("MM/dd/YYYY").format(java.util.Date.from(java.time.OffsetDateTime.parse($F{DateTime}).toInstant()))]]></textFieldExpression>
 			</textField>
 			<textField>
-				<reportElement x="320" y="0" width="170" height="15" uuid="965c6c9c-c30a-4b28-a1c9-c6028fa3a9e6">
+				<reportElement x="320" y="0" width="272" height="15" uuid="965c6c9c-c30a-4b28-a1c9-c6028fa3a9e6">
 					<property name="com.jaspersoft.studio.spreadsheet.connectionID" value="82e62fa8-d06a-42e4-8e1d-47c06c670590"/>
 					<property name="com.jaspersoft.studio.unit.height" value="px"/>
+					<property name="com.jaspersoft.studio.unit.width" value="px"/>
 				</reportElement>
 				<box padding="1">
 					<pen lineColor="#FFFFFF"/>
@@ -251,24 +237,7 @@
 				<textElement textAlignment="Center" verticalAlignment="Middle">
 					<font fontName="Arial" size="8"/>
 				</textElement>
-				<textFieldExpression><![CDATA[$F{BloodGlucose}]]></textFieldExpression>
-			</textField>
-			<textField>
-				<reportElement x="490" y="0" width="102" height="15" uuid="581b3562-1d2e-49f6-910a-1e2443eee84b">
-					<property name="com.jaspersoft.studio.spreadsheet.connectionID" value="a6f77e89-9897-48a3-9420-67b3c5485f51"/>
-					<property name="com.jaspersoft.studio.unit.height" value="px"/>
-				</reportElement>
-				<box padding="1">
-					<pen lineColor="#FFFFFF"/>
-					<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#FFFFFF"/>
-					<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
-					<bottomPen lineWidth="0.5" lineStyle="Solid" lineColor="#127EC2"/>
-					<rightPen lineWidth="1.0" lineStyle="Solid" lineColor="#127EC2"/>
-				</box>
-				<textElement textAlignment="Center" verticalAlignment="Middle">
-					<font fontName="Arial" size="8"/>
-				</textElement>
-				<textFieldExpression><![CDATA[$F{Unit}]]></textFieldExpression>
+				<textFieldExpression><![CDATA[$F{BloodGlucose}+" "+$F{Unit}]]></textFieldExpression>
 			</textField>
 			<textField>
 				<reportElement x="160" y="0" width="160" height="15" uuid="1208458b-bfab-4419-abf3-f395d0518e20">
