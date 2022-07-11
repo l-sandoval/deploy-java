@@ -4,6 +4,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
 import java.io.OutputStreamWriter;
+import java.util.Date;
 import java.util.HashMap;
 
 import com.fasterxml.jackson.core.type.TypeReference;
@@ -36,12 +37,15 @@ public class LambdaFunctionHandler implements RequestStreamHandler
 			AmazonS3Consumer s3Consumer = new AmazonS3Consumer(this.logger, this.config);				
 			s3Consumer.retrieveFileFromS3(this.config.get("s3path.IUGOReport-Logo"), StringLiterals.IMAGE);
 
+			String[] environments = objectMapper.readValue(rootNode.get("environments").toString(), String[].class);
 			String[] reportsToBeGenerated = objectMapper.readValue(
 					rootNode.get("reportsToBeGenerated").toString(), String[].class);
-			HashMap<String, String[]> xmlFiles = objectMapper.convertValue(
-					rootNode.get("xmlFiles"), new TypeReference<HashMap<String, String[]>>() {});
-
-			ReportsGeneratorHandler handler = new ReportsGeneratorHandler(this.logger, this.config, reportsToBeGenerated, xmlFiles);
+			HashMap<String, HashMap<String, String[]>> xmlFiles = objectMapper.convertValue(
+					rootNode.get("xmlFiles"), new TypeReference<HashMap<String, HashMap<String, String[]>>>() {});
+			ReportsGeneratorHandler handler = new ReportsGeneratorHandler(
+					this.logger, this.config,
+					reportsToBeGenerated, xmlFiles,
+					environments);
 			handler.generateReports();
 		}
 		catch (Exception e) {

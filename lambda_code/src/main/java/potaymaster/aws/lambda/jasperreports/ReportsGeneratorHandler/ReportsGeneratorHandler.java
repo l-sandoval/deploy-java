@@ -6,23 +6,35 @@ import potaymaster.aws.lambda.jasperreports.ReportGeneratorConfig;
 import potaymaster.aws.lambda.jasperreports.ReportsLiterals;
 import potaymaster.aws.lambda.jasperreports.StringLiterals;
 
+import java.text.SimpleDateFormat;
+import java.util.Arrays;
+import java.util.Calendar;
+import java.util.Date;
 import java.util.HashMap;
 
 public class ReportsGeneratorHandler {
     LambdaLogger logger;
     ReportGeneratorConfig config;
     public String[] reportsToBeGenerated;
-    public HashMap<String, String[]> xmlFiles;
+    public HashMap<String, HashMap<String, String[]>> xmlFiles;
     public HashMap<String, String> reportTypes;
     public String[] reportsList;
+    public Date generationDate;
+    public String reportPeriodDate;
+    public String[] environments;
 
     public ReportsGeneratorHandler(LambdaLogger logger, ReportGeneratorConfig reportGeneratorConfig,
-                                   String[] reportsToBeGenerated, HashMap<String, String[]> xmlFiles) {
+                                   String[] reportsToBeGenerated, HashMap<String, HashMap<String, String[]>> xmlFiles,
+                                   String[] environments) {
         this.logger = logger;
         this.config = reportGeneratorConfig;
         this.reportsToBeGenerated = reportsToBeGenerated;
         this.xmlFiles = xmlFiles;
+        this.environments = environments;
+        this.generationDate = new Date();
         this.setReportTypes();
+
+        this.setReportPeriodDate();
 
         this.reportsList = new String[]{
                 ReportsLiterals.CUSTOMER_BILLING_REPORT,
@@ -41,9 +53,28 @@ public class ReportsGeneratorHandler {
         for (String report : reports) {
             validateIfReportIsSupported(report);
 
-            if(validateIfXmlFilesListIsProvided(report))
-                generateReport(this.xmlFiles.get(report), report);
+            for(String environment : this.environments){
+                if(validateIfXmlFilesListIsProvided(report, environment)){
+                    String[] xmlFiles = this.xmlFiles.get(environment).get(report);
+                    generateReport(xmlFiles, report, generateOutputFolder(environment, report));
+                }
+            }
         }
+    }
+
+    public String generateOutputFolder(String environment, String report){
+        SimpleDateFormat fullDateFormatter = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+        String fullDate = fullDateFormatter.format(this.generationDate);
+        return this.config.get("s3path.Output") + "/" +  this.reportPeriodDate + "/" + fullDate + "/" + environment;
+    }
+
+    public void setReportPeriodDate(){
+        SimpleDateFormat reportPeriodFormatter = new SimpleDateFormat("yyyy-MM");
+        Calendar calendar = Calendar.getInstance();
+        calendar.setTime(this.generationDate);
+        calendar.add(Calendar.MONTH, -1);
+        String reportPeriodDateFormatted = reportPeriodFormatter.format(calendar.getTime());
+        this.reportPeriodDate = reportPeriodDateFormatted;
     }
 
     public void validateIfReportIsSupported(String report) {
@@ -52,15 +83,16 @@ public class ReportsGeneratorHandler {
         }
     }
 
-    public boolean validateIfXmlFilesListIsProvided(String report) {
-        if(!this.xmlFiles.containsKey(report)) {
+    public boolean validateIfXmlFilesListIsProvided(String report, String environment) {
+        boolean isReportFilesListProvided = this.xmlFiles.get(environment).containsKey(report);
+        if(!isReportFilesListProvided) {
             this.logger.log("XML files list for report " + report + " was not provided");
             return false;
         }
         return true;
     }
 
-    public void generateReport(String[] xmlFiles, String reportName) throws Exception {
+    public void generateReport(String[] xmlFiles, String reportName, String outputFolder) throws Exception {
         ReportGenerator reportGenerator = new ReportGenerator(this.logger, this.config);
 
         String reportType = this.reportTypes.get(reportName);
@@ -78,10 +110,11 @@ public class ReportsGeneratorHandler {
             reportGenerator.generateReport(
                     reportType,
                     reportName,
-                    "xml/"+xmlFile,
+                    xmlFile,
                     templatesPath,
                     this.config.get("s3path.CSV"),
-                    this.config.get("s3path.Output"));
+                    outputFolder,
+                    this.generationDate);
         }
     }
 
