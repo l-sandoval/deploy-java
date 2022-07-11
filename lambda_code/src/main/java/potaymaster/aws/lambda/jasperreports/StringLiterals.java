@@ -1,7 +1,7 @@
 package potaymaster.aws.lambda.jasperreports;
 
 public class StringLiterals {
-	
+	public static final String REPORT_NAME_SUFFIX = "iugoreport_";
 	public static final String TMP_OUT_FILE_PDF = "/tmp/Reports.pdf";
 	public static final String TMP_OUT_FILE_XLS = "/tmp/Reports.xls";
 	public static final String TMP_OUT_FILE_XLSX = "/tmp/Reports.xlsx";
