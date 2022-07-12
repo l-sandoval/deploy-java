@@ -112,7 +112,7 @@ public class ReportsGeneratorHandler {
                     reportName,
                     xmlFile,
                     templatesPath,
-                    this.config.get("s3path.CSV"),
+                    this.config.get("s3path.RAW_DATA"),
                     outputFolder,
                     this.generationDate);
         }
