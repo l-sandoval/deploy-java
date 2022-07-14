@@ -18,6 +18,7 @@ import com.amazonaws.services.lambda.runtime.LambdaLogger;
 
 import java.io.File;
 import java.io.IOException;
+import java.text.SimpleDateFormat;
 import java.util.*;
 
 import net.sf.jasperreports.engine.JRException;
@@ -54,7 +55,8 @@ public class ReportGenerator {
 			String xmlFile,
 			String jasperPath,
 			String dataPath,
-			String buildPath
+			String buildPath,
+			Date generationDate
 			) throws JRException {
 
 		HelperFunctions helper = new HelperFunctions(this.logger);			
@@ -120,8 +122,12 @@ public class ReportGenerator {
 			}
 
 			byte[] fileByteArray = generateReportFile(type, jpMaster, sheetNames);
-			
-			uploadFileToS3(buildPath + File.separator + reportName + "." + type , fileByteArray);
+
+			SimpleDateFormat fullDateFormatter = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+			String fullDate = fullDateFormatter.format(generationDate);
+			String fileName = buildPath + File.separator + StringLiterals.REPORT_NAME_SUFFIX + fullDate + "_" + reportName + "." + type;
+
+			uploadFileToS3( fileName, fileByteArray);
 
 			logger.log("Export " + type + " :" + buildPath + ", creation time : " + (System.currentTimeMillis() - startTime));
 

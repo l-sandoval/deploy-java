@@ -4,15 +4,19 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
 import java.io.OutputStreamWriter;
+import java.util.Date;
+import java.util.HashMap;
 
+import com.fasterxml.jackson.core.type.TypeReference;
 import org.json.simple.JSONObject;
+import com.fasterxml.jackson.databind.JsonNode;
+import com.fasterxml.jackson.databind.ObjectMapper;
 
 import com.amazonaws.services.lambda.runtime.Context;
 import com.amazonaws.services.lambda.runtime.LambdaLogger;
 import com.amazonaws.services.lambda.runtime.RequestStreamHandler;
 
-import potaymaster.aws.lambda.jasperreports.ComplianceBillingReport.ComplianceBillingReport;
-import potaymaster.aws.lambda.jasperreports.CustomerBillingReport.CustomerBillingReport;
+import potaymaster.aws.lambda.jasperreports.ReportsGeneratorHandler.ReportsGeneratorHandler;
 
 public class LambdaFunctionHandler implements RequestStreamHandler
 {
@@ -22,16 +26,27 @@ public class LambdaFunctionHandler implements RequestStreamHandler
 
 	public void handleRequest(InputStream inputStream, OutputStream outputStream, Context context) throws IOException {
 		this.logger = context.getLogger();
+
+		ObjectMapper objectMapper = new ObjectMapper();
+		JsonNode rootNode = objectMapper.readTree(inputStream);
+
 		JSONObject responseJson = new JSONObject();
+
 		this.config = new ReportGeneratorConfig();
 		try {
 			AmazonS3Consumer s3Consumer = new AmazonS3Consumer(this.logger, this.config);				
-			s3Consumer.retrieveFileFromS3(this.config.get("s3path.IUGOReport-Logo"), StringLiterals.IMAGE);	
+			s3Consumer.retrieveFileFromS3(this.config.get("s3path.IUGOReport-Logo"), StringLiterals.IMAGE);
 
-			ComplianceBillingReport compliancebillingReport = new ComplianceBillingReport(this.logger, this.config);
-			CustomerBillingReport customerBillingReport = new CustomerBillingReport(this.logger, this.config);
-			compliancebillingReport.generateReport();
-			customerBillingReport.generateReport();
+			String[] environments = objectMapper.readValue(rootNode.get("environments").toString(), String[].class);
+			String[] reportsToBeGenerated = objectMapper.readValue(
+					rootNode.get("reportsToBeGenerated").toString(), String[].class);
+			HashMap<String, HashMap<String, String[]>> xmlFiles = objectMapper.convertValue(
+					rootNode.get("xmlFiles"), new TypeReference<HashMap<String, HashMap<String, String[]>>>() {});
+			ReportsGeneratorHandler handler = new ReportsGeneratorHandler(
+					this.logger, this.config,
+					reportsToBeGenerated, xmlFiles,
+					environments);
+			handler.generateReports();
 		}
 		catch (Exception e) {
 			this.buildErrorResponse(e.getMessage(), 500, responseJson);
