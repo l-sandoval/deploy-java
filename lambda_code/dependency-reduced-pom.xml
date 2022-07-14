@@ -30,6 +30,14 @@
             <goals>
               <goal>shade</goal>
             </goals>
+            <configuration>
+              <transformers>
+                <transformer>
+                  <resource>jasperreports_extension.properties</resource>
+                </transformer>
+              </transformers>
+              <createDependencyReducedPom>true</createDependencyReducedPom>
+            </configuration>
           </execution>
         </executions>
       </plugin>
