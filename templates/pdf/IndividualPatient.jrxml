@@ -60,6 +60,9 @@
 	<parameter name="IUGOReport-PatientDemographics-InsuranceName" class="java.lang.String"/>
 	<parameter name="IUGOReport-PatientDemographics-InsuranceNumber" class="java.lang.String"/>
 	<parameter name="IUGOReport-Logo" class="java.lang.String"/>
+	<parameter name="DateFormatOut" class="java.lang.String" isForPrompting="false">
+		<defaultValueExpression><![CDATA["MM/dd/YYYY"]]></defaultValueExpression>
+	</parameter>
 	<queryString>
 		<![CDATA[]]>
 	</queryString>
@@ -83,17 +86,18 @@
 				<textFieldExpression><![CDATA[$P{IUGOReport-Organization}+" "+$P{IUGOReport-CarePlan}+" Patient Report"]]></textFieldExpression>
 			</textField>
 			<textField>
-				<reportElement mode="Transparent" x="403" y="54" width="189" height="24" forecolor="#000000" backcolor="#FFFFFF" uuid="a18d57c2-d898-4149-9c61-e6a798adf4a7">
+				<reportElement mode="Transparent" x="390" y="54" width="200" height="34" forecolor="#000000" backcolor="#FFFFFF" uuid="a18d57c2-d898-4149-9c61-e6a798adf4a7">
 					<property name="com.jaspersoft.studio.unit.height" value="px"/>
+					<property name="com.jaspersoft.studio.unit.width" value="px"/>
 				</reportElement>
 				<box padding="1"/>
 				<textElement textAlignment="Right" verticalAlignment="Middle">
 					<font fontName="Tahoma" size="14"/>
 				</textElement>
-				<textFieldExpression><![CDATA[$P{IUGOReport-PeriodStart}+" to "+$P{IUGOReport-PeriodEnd}]]></textFieldExpression>
+				<textFieldExpression><![CDATA[new java.text.SimpleDateFormat($P{DateFormatOut}).format(new java.text.SimpleDateFormat("yyyy-MM-dd").parse($P{IUGOReport-PeriodStart}))+" to "+new java.text.SimpleDateFormat($P{DateFormatOut}).format(new java.text.SimpleDateFormat("yyyy-MM-dd").parse($P{IUGOReport-PeriodEnd}))]]></textFieldExpression>
 			</textField>
 			<textField>
-				<reportElement mode="Transparent" x="0" y="54" width="403" height="24" forecolor="#000000" backcolor="#FFFFFF" uuid="874df3b8-3542-464c-ae26-4bd45965cbbc">
+				<reportElement mode="Transparent" x="0" y="54" width="360" height="34" forecolor="#000000" backcolor="#FFFFFF" uuid="874df3b8-3542-464c-ae26-4bd45965cbbc">
 					<property name="com.jaspersoft.studio.unit.height" value="px"/>
 					<property name="com.jaspersoft.studio.unit.width" value="px"/>
 				</reportElement>
@@ -181,7 +185,7 @@
 					<textElement verticalAlignment="Middle">
 						<font fontName="Arial" size="12"/>
 					</textElement>
-					<textFieldExpression><![CDATA[$P{IUGOReport-PatientDemographics-DoB}]]></textFieldExpression>
+					<textFieldExpression><![CDATA[new java.text.SimpleDateFormat($P{DateFormatOut}).format(new java.text.SimpleDateFormat("yyyy-MM-dd").parse($P{IUGOReport-PatientDemographics-DoB}))]]></textFieldExpression>
 				</textField>
 				<textField>
 					<reportElement x="90" y="150" width="165" height="28" uuid="b83353cc-db6f-415c-8642-e6dce945bc28">
@@ -336,7 +340,7 @@
 				</textField>
 			</frame>
 			<frame>
-				<reportElement x="290" y="20" width="290" height="300" uuid="77a20642-f953-484a-9b37-e67073117508">
+				<reportElement x="302" y="20" width="290" height="300" uuid="77a20642-f953-484a-9b37-e67073117508">
 					<property name="com.jaspersoft.studio.unit.height" value="px"/>
 					<property name="com.jaspersoft.studio.unit.width" value="px"/>
 				</reportElement>
@@ -549,7 +553,7 @@
 				</textField>
 			</frame>
 			<frame>
-				<reportElement x="290" y="370" width="290" height="200" uuid="897d4c8d-44e2-41b9-850e-15e6dfa2bb5e">
+				<reportElement x="302" y="370" width="290" height="200" uuid="897d4c8d-44e2-41b9-850e-15e6dfa2bb5e">
 					<property name="com.jaspersoft.studio.unit.height" value="px"/>
 					<property name="com.jaspersoft.studio.unit.width" value="px"/>
 					<property name="com.jaspersoft.studio.unit.x" value="px"/>
