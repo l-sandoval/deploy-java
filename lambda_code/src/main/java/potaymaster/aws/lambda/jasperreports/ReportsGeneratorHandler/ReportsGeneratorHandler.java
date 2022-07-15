@@ -7,7 +7,6 @@ import potaymaster.aws.lambda.jasperreports.ReportsLiterals;
 import potaymaster.aws.lambda.jasperreports.StringLiterals;
 
 import java.text.SimpleDateFormat;
-import java.util.Arrays;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.HashMap;
@@ -107,19 +106,20 @@ public class ReportsGeneratorHandler {
 
         for (String xmlFile : xmlFiles) {
             logger.log("Found XML to retrieve parameters for " + reportName + ": " + xmlFile);
+            
+
             reportGenerator.generateReport(
                     reportType,
                     reportName,
                     xmlFile,
                     templatesPath,
-                    this.config.get("s3path.RAW_DATA"),
                     outputFolder,
                     this.generationDate);
         }
     }
 
     private void setReportTypes() {
-        this.reportTypes = new HashMap();
+        this.reportTypes = new HashMap<String, String>();
         this.reportTypes.put(ReportsLiterals.CUSTOMER_BILLING_REPORT, StringLiterals.TYPE_XLS);
         this.reportTypes.put(ReportsLiterals.EMERGENCY_RECOVERY_REPORT, StringLiterals.TYPE_XLS);
         this.reportTypes.put(ReportsLiterals.COMPLIANCE_BILLING_REPORT, StringLiterals.TYPE_XLS);
