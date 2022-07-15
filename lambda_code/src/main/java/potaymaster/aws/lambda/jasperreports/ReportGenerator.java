@@ -36,33 +36,38 @@ public class ReportGenerator {
         this.config = reportGeneratorConfig;
     }
 
-    private long startTime = System.currentTimeMillis();
-    private Map<String, Object> parameters = new HashMap<String, Object>();
+    private long startTime = System.currentTimeMillis();    
+    private Map<String, Object> parameters = new HashMap<String, Object>();    
 
     /**
      * Generate a report according to the type
-     * 
-     * @param type        : "PDF", "XLS" or "XLSX" (one or more are allowed), if
-     *                    null, the type(s) are read from the XML file
+     * @param type      : "PDF", "XLS" or "XLSX"  (one or more are allowed), if null, the type(s) are read from the XML file
      * @param reportName: name of the report e.g. "ComplianceBillingReport"
-     * @param xmlFile     : XML file with the report parameters
+     * @param xmlFile   : XML file with the report parameters
      * @param jasperPath: path for the templates
-     * @param buildPath   : destination path for the output reports
+     * @param dataPath  : path for the raw data sources (CSV, XML)
+     * @param buildPath : destination path for the output reports
      */
-    public void generateReport(String type, String reportName, String xmlFile, String jasperPath, String buildPath,
-            Date generationDate) throws JRException {
+    public void generateReport(
+            String type,
+            String reportName,
+            String xmlFile,
+            String jasperPath,
+            String buildPath,
+            Date generationDate
+            ) throws JRException {
 
-        HelperFunctions helper = new HelperFunctions(this.logger);
+        HelperFunctions helper = new HelperFunctions(this.logger);          
 
         String jasperSource = jasperPath + File.separator + reportName + ".jrxml";
 
         logger.log("GenerateReport: " + reportName + "t=" + (System.currentTimeMillis() - startTime));
 
         parameters = new HashMap<String, Object>();
-        List<String> sheetNameList = new ArrayList<String>();
-        List<String> fileNameList = new ArrayList<String>();
-
-        retrieveFileFromS3(xmlFile, StringLiterals.XML);
+        ArrayList<String> sheetNameList = new ArrayList<String>();
+        ArrayList<String> fileNameList = new ArrayList<String>();
+        
+        retrieveFileFromS3(xmlFile, StringLiterals.XML);    
 
         File dataSource = new File(StringLiterals.TMP_XML);
         if (dataSource.canRead()) {
@@ -92,9 +97,9 @@ public class ReportGenerator {
                     fileNameList.add(subFileName);
                 }
             }
-
+            
             parameters.put(StringLiterals.IUGOLOGO, StringLiterals.TMP_IMAGE);
-            parameters.put(StringLiterals.PAGE_COUNT, Integer.toString(fileNameList.size()));
+            parameters.put(StringLiterals.PAGE_COUNT, Integer.toString(fileNameList.size()));        
 
             retrieveFileFromS3(jasperSource, StringLiterals.TEMPLATE);
 
@@ -111,28 +116,26 @@ public class ReportGenerator {
 
             // find the file type required
             if (type == null && parameters.containsKey(StringLiterals.FILE_TYPE)) {
-                type = parameters.get(StringLiterals.FILE_TYPE).toString().toLowerCase();
+                type = parameters.get(StringLiterals.FILE_TYPE).toString().toLowerCase();   
             }
 
             byte[] fileByteArray = generateReportFile(type, jpMaster, sheetNames);
-
+            
             String fileName = buildPath + File.separator
                     + xmlFile.substring(xmlFile.lastIndexOf("/") + 1, xmlFile.lastIndexOf(".")) + "." + type;
 
-            uploadFileToS3(fileName, fileByteArray);
+            uploadFileToS3( fileName, fileByteArray);
 
-            logger.log("Export " + type + " :" + buildPath + ", creation time : "
-                    + (System.currentTimeMillis() - startTime));
+            logger.log("Export " + type + " :" + buildPath + ", creation time : " + (System.currentTimeMillis() - startTime));
 
         }
     }
 
     /**
      * Generate the report file according to the file type
-     * 
-     * @throws JRException
+     * @throws JRException 
      */
-    private byte[] generateReportFile(String type, JasperPrint jpMaster, String[] sheetNames) throws JRException {
+    private byte[] generateReportFile (String type, JasperPrint jpMaster, String[] sheetNames) throws JRException{
         File destFile = null;
         // PDF
         if (type != null && type.contains(StringLiterals.TYPE_PDF)) {
@@ -169,7 +172,7 @@ public class ReportGenerator {
             configuration.setSheetNames(sheetNames);
             exporter.setConfiguration(configuration);
 
-            exporter.exportReport();
+            exporter.exportReport();    
         } // XLS
         else if (type != null && type.contains(StringLiterals.TYPE_XLS)) {
             destFile = new File(StringLiterals.TMP_OUT_FILE_XLS);
@@ -187,15 +190,15 @@ public class ReportGenerator {
             configuration.setSheetNames(sheetNames);
             exporter.setConfiguration(configuration);
 
-            exporter.exportReport();
-        }
+            exporter.exportReport();    
+        }       
 
         byte[] fileByteArray = null;
         try {
             fileByteArray = FileUtils.readFileToByteArray(destFile);
         } catch (IOException e) {
             logger.log(e.getMessage());
-        }
+        }       
 
         return fileByteArray;
     }
@@ -203,7 +206,7 @@ public class ReportGenerator {
     /**
      * Retrieve file from S3 bucket
      */
-    private void retrieveFileFromS3(String key_name, String file_type) {
+    private void retrieveFileFromS3 (String key_name, String file_type){
         AmazonS3Consumer s3Consumer = new AmazonS3Consumer(this.logger, this.config);
         try {
             s3Consumer.retrieveFileFromS3(key_name, file_type);
@@ -211,11 +214,11 @@ public class ReportGenerator {
             logger.log(e.getMessage());
         }
     }
-
+    
     /**
      * Upload file to S3 bucket
      */
-    private void uploadFileToS3(String key_name, byte[] bytes) {
+    private void uploadFileToS3 (String key_name, byte[] bytes){
         AmazonS3Consumer s3Consumer = new AmazonS3Consumer(this.logger, this.config);
         try {
             s3Consumer.uploadFileToS3(key_name, bytes);
@@ -226,15 +229,9 @@ public class ReportGenerator {
 
     /**
      * Create each sheet from the associated CSV data file
-     * 
-     * @throws JRException
+     * @throws JRException 
      */
-    private void createSheetsFromCSVData(List<String> sheetNameList, 
-            String[] sheetNames, 
-            String jasperPath, 
-            List<String> fileNameList, 
-            JasperPrint jpMaster) throws JRException {
-        
+    private void createSheetsFromCSVData (ArrayList<String> sheetNameList, String[] sheetNames, String jasperPath, ArrayList<String> fileNameList, JasperPrint jpMaster) throws JRException{
         for (int i = 0; i < sheetNameList.size(); i++) {
             String sheetName = sheetNameList.get(i);
 
@@ -242,17 +239,16 @@ public class ReportGenerator {
             sheetNames[i + 1] = sheetName;
 
             // set the page number in the report
-            parameters.put(StringLiterals.PAGE_NUMBER, Integer.toString(i + 1));
+            parameters.put(StringLiterals.PAGE_NUMBER, Integer.toString(i + 1));            
 
             retrieveFileFromS3(jasperPath + File.separator + sheetNameList.get(i) + ".jrxml", StringLiterals.TEMPLATE);
             retrieveFileFromS3(fileNameList.get(i), StringLiterals.CSV);
-            logger.log("Retrieve from S3 template= " + sheetNameList.get(i) + ".jrxml" + " csv= " + fileNameList.get(i)
-                    + "\r\n");
+            logger.log("Retrieve from S3 template= " + sheetNameList.get(i) + ".jrxml" + " csv= " + fileNameList.get(i) + "\r\n");
 
             File sourceFile = new File(StringLiterals.TMP_TEMPLATE);
-            File dataFile = new File(StringLiterals.TMP_CSV);
+            File dataFile = new File(StringLiterals.TMP_CSV);               
 
-            if (sourceFile.canRead() && dataFile.canRead()) {
+            if (sourceFile.canRead() && dataFile.canRead() ) {
                 logger.log("Fill...t=" + (System.currentTimeMillis() - startTime));
                 JRCsvDataSource source = new JRCsvDataSource(JRLoader.getInputStream(dataFile));
                 source.setRecordDelimiter("\r\n");
