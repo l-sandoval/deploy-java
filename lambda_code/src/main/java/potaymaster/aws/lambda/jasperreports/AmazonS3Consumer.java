@@ -33,15 +33,15 @@ public class AmazonS3Consumer {
 	public void retrieveFileFromS3(String key_name, String file_type) throws IOException {
 		String tmp_file = "";
 		switch (file_type) {
-		case StringLiterals.TEMPLATE: 
-			tmp_file = StringLiterals.TMP_TEMPLATE; break;
-		case StringLiterals.CSV: 
-			tmp_file = StringLiterals.TMP_CSV; break;
-		case StringLiterals.IMAGE: 
-			tmp_file = StringLiterals.TMP_IMAGE; break;
-		case StringLiterals.XML: 
-			tmp_file = StringLiterals.TMP_XML; break;
-		default: break;
+    		case StringLiterals.TEMPLATE: 
+    			tmp_file = StringLiterals.TMP_TEMPLATE; break;
+    		case StringLiterals.CSV: 
+    			tmp_file = StringLiterals.TMP_CSV; break;
+    		case StringLiterals.IMAGE: 
+    			tmp_file = StringLiterals.TMP_IMAGE; break;
+    		case StringLiterals.XML: 
+    			tmp_file = StringLiterals.TMP_XML; break;
+    		default: break;
 		}
 
 		String bucket_name = System.getenv("BUCKET_NAME");

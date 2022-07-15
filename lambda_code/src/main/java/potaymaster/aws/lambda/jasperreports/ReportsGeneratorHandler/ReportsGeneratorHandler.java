@@ -107,23 +107,12 @@ public class ReportsGeneratorHandler {
         for (String xmlFile : xmlFiles) {
             logger.log("Found XML to retrieve parameters for " + reportName + ": " + xmlFile);
             
-            String dataPath = "";
 
-			switch (reportName) {
-				case ReportsLiterals.CUSTOMER_BILLING_REPORT:
-					dataPath = xmlFile.substring(0, xmlFile.lastIndexOf("/"));
-					break;
-				default:
-					dataPath = this.config.get("s3path.RAW_DATA");
-					break;
-			}
-			
             reportGenerator.generateReport(
                     reportType,
                     reportName,
                     xmlFile,
                     templatesPath,
-                    dataPath,
                     outputFolder,
                     this.generationDate);
         }

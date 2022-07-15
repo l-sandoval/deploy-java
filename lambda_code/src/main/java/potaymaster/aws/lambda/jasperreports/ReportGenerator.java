@@ -28,246 +28,250 @@ import net.sf.jasperreports.engine.JasperReport;
 import net.sf.jasperreports.engine.JRDataSource;
 
 public class ReportGenerator {
-	private LambdaLogger logger;
-	private ReportGeneratorConfig config;
+    private LambdaLogger logger;
+    private ReportGeneratorConfig config;
 
-	public ReportGenerator(LambdaLogger logger, ReportGeneratorConfig reportGeneratorConfig) {
-		this.logger = logger;
-		this.config = reportGeneratorConfig;
-	}
+    public ReportGenerator(LambdaLogger logger, ReportGeneratorConfig reportGeneratorConfig) {
+        this.logger = logger;
+        this.config = reportGeneratorConfig;
+    }
 
-	private long startTime = System.currentTimeMillis();    
-	private Map<String, Object> parameters = new HashMap<String, Object>();    
+    private long startTime = System.currentTimeMillis();
+    private Map<String, Object> parameters = new HashMap<String, Object>();
 
-	/**
-	 * Generate a report according to the type
-	 * @param type 		: "PDF", "XLS" or "XLSX"  (one or more are allowed), if null, the type(s) are read from the XML file
-	 * @param reportName: name of the report e.g. "ComplianceBillingReport"
-	 * @param xmlFile 	: XML file with the report parameters
-	 * @param jasperPath: path for the templates
-	 * @param dataPath	: path for the raw data sources (CSV, XML)
-	 * @param buildPath : destination path for the output reports
-	 */
-	public void generateReport(
-			String type,
-			String reportName,
-			String xmlFile,
-			String jasperPath,
-			String dataPath,
-			String buildPath,
-			Date generationDate
-			) throws JRException {
+    /**
+     * Generate a report according to the type
+     * 
+     * @param type        : "PDF", "XLS" or "XLSX" (one or more are allowed), if
+     *                    null, the type(s) are read from the XML file
+     * @param reportName: name of the report e.g. "ComplianceBillingReport"
+     * @param xmlFile     : XML file with the report parameters
+     * @param jasperPath: path for the templates
+     * @param buildPath   : destination path for the output reports
+     */
+    public void generateReport(String type, String reportName, String xmlFile, String jasperPath, String buildPath,
+            Date generationDate) throws JRException {
 
-		HelperFunctions helper = new HelperFunctions(this.logger);			
+        HelperFunctions helper = new HelperFunctions(this.logger);
 
-		String jasperSource = jasperPath + File.separator + reportName + ".jrxml";
+        String jasperSource = jasperPath + File.separator + reportName + ".jrxml";
 
-		logger.log("GenerateReport: " + reportName + "t=" + (System.currentTimeMillis() - startTime));
+        logger.log("GenerateReport: " + reportName + "t=" + (System.currentTimeMillis() - startTime));
 
-		parameters = new HashMap<String, Object>();
-		ArrayList<String> sheetNameList = new ArrayList<String>();
-		ArrayList<String> fileNameList = new ArrayList<String>();
-		
-		retrieveFileFromS3(xmlFile, StringLiterals.XML);	
+        parameters = new HashMap<String, Object>();
+        List<String> sheetNameList = new ArrayList<String>();
+        List<String> fileNameList = new ArrayList<String>();
 
-		File dataSource = new File(StringLiterals.TMP_XML);
-		if (dataSource.canRead()) {
-			logger.log("Report... : Fill from : " + xmlFile);
-			Document document = JRXmlUtils.parse(JRLoader.getLocationInputStream(dataSource.getPath()));
+        retrieveFileFromS3(xmlFile, StringLiterals.XML);
 
-			parameters.put(JRXPathQueryExecuterFactory.PARAMETER_XML_DATA_DOCUMENT, document);
-			parameters.put(JRXPathQueryExecuterFactory.XML_DATE_PATTERN, "yyyy-MM-dd");
-			parameters.put(JRXPathQueryExecuterFactory.XML_NUMBER_PATTERN, "#,##0.##");
-			parameters.put(JRXPathQueryExecuterFactory.XML_LOCALE, Locale.ENGLISH);
-			parameters.put(JRParameter.REPORT_LOCALE, Locale.US);
+        File dataSource = new File(StringLiterals.TMP_XML);
+        if (dataSource.canRead()) {
+            logger.log("Report... : Fill from : " + xmlFile);
+            Document document = JRXmlUtils.parse(JRLoader.getLocationInputStream(dataSource.getPath()));
 
-			Node topNode = document.getChildNodes().item(0);
-			if (helper.extractXml(topNode, null, parameters)) {
-				logger.log("Report... : Map size=" + parameters.size());
-			}
+            parameters.put(JRXPathQueryExecuterFactory.PARAMETER_XML_DATA_DOCUMENT, document);
+            parameters.put(JRXPathQueryExecuterFactory.XML_DATE_PATTERN, "yyyy-MM-dd");
+            parameters.put(JRXPathQueryExecuterFactory.XML_NUMBER_PATTERN, "#,##0.##");
+            parameters.put(JRXPathQueryExecuterFactory.XML_LOCALE, Locale.ENGLISH);
+            parameters.put(JRParameter.REPORT_LOCALE, Locale.US);
 
-			// get the sheet names & source files from the parameters
-			Set<String> keys = parameters.keySet();
-			for (String key : keys) {
-				if (key.toLowerCase().contains(StringLiterals.SUBREPORT)) {
-					// get the key and filename
-					String tab = key.split(StringLiterals.FILENAME_FIELD_SEPARATOR)[2];
-					logger.log("Report... : key=" + tab);
-					sheetNameList.add(tab);
-					String subFileName = parameters.get(key).toString();
-					fileNameList.add(subFileName);
-				}
-			}
-			
-			parameters.put(StringLiterals.IUGOLOGO, StringLiterals.TMP_IMAGE);
-			parameters.put(StringLiterals.PAGE_COUNT, Integer.toString(fileNameList.size()));        
+            Node topNode = document.getChildNodes().item(0);
+            if (helper.extractXml(topNode, null, parameters)) {
+                logger.log("Report... : Map size=" + parameters.size());
+            }
 
-			retrieveFileFromS3(jasperSource, StringLiterals.TEMPLATE);
+            // get the sheet names & source files from the parameters
+            Set<String> keys = parameters.keySet();
+            for (String key : keys) {
+                if (key.toLowerCase().contains(StringLiterals.SUBREPORT)) {
+                    // get the key and filename
+                    String tab = key.split(StringLiterals.FILENAME_FIELD_SEPARATOR)[2];
+                    logger.log("Report... : key=" + tab);
+                    sheetNameList.add(tab);
+                    String subFileName = parameters.get(key).toString();
+                    fileNameList.add(subFileName);
+                }
+            }
 
-			JasperReport jasperDesign = JasperCompileManager.compileReport(StringLiterals.TMP_TEMPLATE);
-			JasperPrint jpMaster = JasperFillManager.fillReport(jasperDesign, parameters, (JRDataSource) null);
-			logger.log("Report... : Fill from : " + jasperSource);
-			logger.log("Filling time : " + (System.currentTimeMillis() - startTime));
+            parameters.put(StringLiterals.IUGOLOGO, StringLiterals.TMP_IMAGE);
+            parameters.put(StringLiterals.PAGE_COUNT, Integer.toString(fileNameList.size()));
 
-			// convert sheetNames list to array, add the home item
-			String[] sheetNames = new String[sheetNameList.size() + 1];
-			sheetNames[0] = StringLiterals.HOME_NAME;
+            retrieveFileFromS3(jasperSource, StringLiterals.TEMPLATE);
 
-			createSheetsFromCSVData(sheetNameList, sheetNames, jasperPath, dataPath, fileNameList, jpMaster);
+            JasperReport jasperDesign = JasperCompileManager.compileReport(StringLiterals.TMP_TEMPLATE);
+            JasperPrint jpMaster = JasperFillManager.fillReport(jasperDesign, parameters, (JRDataSource) null);
+            logger.log("Report... : Fill from : " + jasperSource);
+            logger.log("Filling time : " + (System.currentTimeMillis() - startTime));
 
-			// find the file type required
-			if (type == null && parameters.containsKey(StringLiterals.FILE_TYPE)) {
-				type = parameters.get(StringLiterals.FILE_TYPE).toString().toLowerCase();   
-			}
+            // convert sheetNames list to array, add the home item
+            String[] sheetNames = new String[sheetNameList.size() + 1];
+            sheetNames[0] = StringLiterals.HOME_NAME;
 
-			byte[] fileByteArray = generateReportFile(type, jpMaster, sheetNames);
+            createSheetsFromCSVData(sheetNameList, sheetNames, jasperPath, fileNameList, jpMaster);
 
-			String fileName = buildPath + File.separator + xmlFile.substring(xmlFile.lastIndexOf("/") + 1, xmlFile.lastIndexOf(".")) + "." + type;
+            // find the file type required
+            if (type == null && parameters.containsKey(StringLiterals.FILE_TYPE)) {
+                type = parameters.get(StringLiterals.FILE_TYPE).toString().toLowerCase();
+            }
 
-			uploadFileToS3( fileName, fileByteArray);
+            byte[] fileByteArray = generateReportFile(type, jpMaster, sheetNames);
 
-			logger.log("Export " + type + " :" + buildPath + ", creation time : " + (System.currentTimeMillis() - startTime));
+            String fileName = buildPath + File.separator
+                    + xmlFile.substring(xmlFile.lastIndexOf("/") + 1, xmlFile.lastIndexOf(".")) + "." + type;
 
-		}
-	}
+            uploadFileToS3(fileName, fileByteArray);
 
-	/**
-	 * Generate the report file according to the file type
-	 * @throws JRException 
-	 */
-	private byte[] generateReportFile (String type, JasperPrint jpMaster, String[] sheetNames) throws JRException{
-		File destFile = null;
-		// PDF
-		if (type != null && type.contains(StringLiterals.TYPE_PDF)) {
-			destFile = new File(StringLiterals.TMP_OUT_FILE_PDF);
-			JRPdfExporter exporter = new JRPdfExporter();
+            logger.log("Export " + type + " :" + buildPath + ", creation time : "
+                    + (System.currentTimeMillis() - startTime));
 
-			// export the final doc
-			exporter.setExporterInput(new SimpleExporterInput(jpMaster));
-			exporter.setExporterOutput(new SimpleOutputStreamExporterOutput(destFile));
+        }
+    }
 
-			// set the configuration for PDF
-			SimplePdfReportConfiguration configuration = new SimplePdfReportConfiguration();
-			configuration.setSizePageToContent(false);
-			configuration.setForceLineBreakPolicy(true);
-			exporter.setConfiguration(configuration);
+    /**
+     * Generate the report file according to the file type
+     * 
+     * @throws JRException
+     */
+    private byte[] generateReportFile(String type, JasperPrint jpMaster, String[] sheetNames) throws JRException {
+        File destFile = null;
+        // PDF
+        if (type != null && type.contains(StringLiterals.TYPE_PDF)) {
+            destFile = new File(StringLiterals.TMP_OUT_FILE_PDF);
+            JRPdfExporter exporter = new JRPdfExporter();
 
-			exporter.exportReport();
-		}
+            // export the final doc
+            exporter.setExporterInput(new SimpleExporterInput(jpMaster));
+            exporter.setExporterOutput(new SimpleOutputStreamExporterOutput(destFile));
 
-		// XLSX or XLS
-		if (type != null && type.contains(StringLiterals.TYPE_XLSX)) {
-			destFile = new File(StringLiterals.TMP_OUT_FILE_XLS);
-			JRXlsxExporter exporter = new JRXlsxExporter();
+            // set the configuration for PDF
+            SimplePdfReportConfiguration configuration = new SimplePdfReportConfiguration();
+            configuration.setSizePageToContent(false);
+            configuration.setForceLineBreakPolicy(true);
+            exporter.setConfiguration(configuration);
 
-			// export the final doc
-			exporter.setExporterInput(new SimpleExporterInput(jpMaster));
-			exporter.setExporterOutput(new SimpleOutputStreamExporterOutput(destFile));
+            exporter.exportReport();
+        }
 
-			// set the configuration for XLSX
-			SimpleXlsxReportConfiguration configuration = new SimpleXlsxReportConfiguration();
-			configuration.setOnePagePerSheet(true);
-			configuration.setDetectCellType(true);
-			configuration.setCollapseRowSpan(false);
-			configuration.setSheetNames(sheetNames);
-			exporter.setConfiguration(configuration);
+        // XLSX or XLS
+        if (type != null && type.contains(StringLiterals.TYPE_XLSX)) {
+            destFile = new File(StringLiterals.TMP_OUT_FILE_XLS);
+            JRXlsxExporter exporter = new JRXlsxExporter();
 
-			exporter.exportReport();	
-		} // XLS
-		else if (type != null && type.contains(StringLiterals.TYPE_XLS)) {
-			destFile = new File(StringLiterals.TMP_OUT_FILE_XLS);
-			JRXlsExporter exporter = new JRXlsExporter();
+            // export the final doc
+            exporter.setExporterInput(new SimpleExporterInput(jpMaster));
+            exporter.setExporterOutput(new SimpleOutputStreamExporterOutput(destFile));
 
-			// export the final doc
-			exporter.setExporterInput(new SimpleExporterInput(jpMaster));
-			exporter.setExporterOutput(new SimpleOutputStreamExporterOutput(destFile));
+            // set the configuration for XLSX
+            SimpleXlsxReportConfiguration configuration = new SimpleXlsxReportConfiguration();
+            configuration.setOnePagePerSheet(true);
+            configuration.setDetectCellType(true);
+            configuration.setCollapseRowSpan(false);
+            configuration.setSheetNames(sheetNames);
+            exporter.setConfiguration(configuration);
 
-			// set the configuration for XLS
-			SimpleXlsReportConfiguration configuration = new SimpleXlsReportConfiguration();
-			configuration.setOnePagePerSheet(true);
-			configuration.setDetectCellType(true);
-			configuration.setCollapseRowSpan(false);
-			configuration.setSheetNames(sheetNames);
-			exporter.setConfiguration(configuration);
+            exporter.exportReport();
+        } // XLS
+        else if (type != null && type.contains(StringLiterals.TYPE_XLS)) {
+            destFile = new File(StringLiterals.TMP_OUT_FILE_XLS);
+            JRXlsExporter exporter = new JRXlsExporter();
 
-			exporter.exportReport();	
-		}		
+            // export the final doc
+            exporter.setExporterInput(new SimpleExporterInput(jpMaster));
+            exporter.setExporterOutput(new SimpleOutputStreamExporterOutput(destFile));
 
-		byte[] fileByteArray = null;
-		try {
-			fileByteArray = FileUtils.readFileToByteArray(destFile);
-		} catch (IOException e) {
-			logger.log(e.getMessage());
-		}		
+            // set the configuration for XLS
+            SimpleXlsReportConfiguration configuration = new SimpleXlsReportConfiguration();
+            configuration.setOnePagePerSheet(true);
+            configuration.setDetectCellType(true);
+            configuration.setCollapseRowSpan(false);
+            configuration.setSheetNames(sheetNames);
+            exporter.setConfiguration(configuration);
 
-		return fileByteArray;
-	}
+            exporter.exportReport();
+        }
 
-	/**
-	 * Retrieve file from S3 bucket
-	 */
-	private void retrieveFileFromS3 (String key_name, String file_type){
-		AmazonS3Consumer s3Consumer = new AmazonS3Consumer(this.logger, this.config);
-		try {
-			s3Consumer.retrieveFileFromS3(key_name, file_type);
-		} catch (IOException e) {
-			logger.log(e.getMessage());
-		}
-	}
-	
-	/**
-	 * Upload file to S3 bucket
-	 */
-	private void uploadFileToS3 (String key_name, byte[] bytes){
-		AmazonS3Consumer s3Consumer = new AmazonS3Consumer(this.logger, this.config);
-		try {
-			s3Consumer.uploadFileToS3(key_name, bytes);
-		} catch (IOException e) {
-			logger.log(e.getMessage());
-		}
-	}
+        byte[] fileByteArray = null;
+        try {
+            fileByteArray = FileUtils.readFileToByteArray(destFile);
+        } catch (IOException e) {
+            logger.log(e.getMessage());
+        }
 
-	/**
-	 * Create each sheet from the associated CSV data file
-	 * @throws JRException 
-	 */
-	private void createSheetsFromCSVData (ArrayList<String> sheetNameList, String[] sheetNames, String jasperPath, String dataPath, ArrayList<String> fileNameList, JasperPrint jpMaster) throws JRException{
-		for (int i = 0; i < sheetNameList.size(); i++) {
-			String sheetName = sheetNameList.get(i);
+        return fileByteArray;
+    }
 
-			// copy to the array
-			sheetNames[i + 1] = sheetName;
+    /**
+     * Retrieve file from S3 bucket
+     */
+    private void retrieveFileFromS3(String key_name, String file_type) {
+        AmazonS3Consumer s3Consumer = new AmazonS3Consumer(this.logger, this.config);
+        try {
+            s3Consumer.retrieveFileFromS3(key_name, file_type);
+        } catch (IOException e) {
+            logger.log(e.getMessage());
+        }
+    }
 
-			// set the page number in the report
-			parameters.put(StringLiterals.PAGE_NUMBER, Integer.toString(i + 1));			
+    /**
+     * Upload file to S3 bucket
+     */
+    private void uploadFileToS3(String key_name, byte[] bytes) {
+        AmazonS3Consumer s3Consumer = new AmazonS3Consumer(this.logger, this.config);
+        try {
+            s3Consumer.uploadFileToS3(key_name, bytes);
+        } catch (IOException e) {
+            logger.log(e.getMessage());
+        }
+    }
 
-			retrieveFileFromS3(jasperPath + File.separator + sheetNameList.get(i) + ".jrxml", StringLiterals.TEMPLATE);
-			retrieveFileFromS3(dataPath + File.separator + fileNameList.get(i), StringLiterals.CSV);
-			logger.log("Retrieve from S3 template= " + sheetNameList.get(i) + ".jrxml" + " csv= " + fileNameList.get(i) + "\r\n");
+    /**
+     * Create each sheet from the associated CSV data file
+     * 
+     * @throws JRException
+     */
+    private void createSheetsFromCSVData(List<String> sheetNameList, 
+            String[] sheetNames, 
+            String jasperPath, 
+            List<String> fileNameList, 
+            JasperPrint jpMaster) throws JRException {
+        
+        for (int i = 0; i < sheetNameList.size(); i++) {
+            String sheetName = sheetNameList.get(i);
 
-			File sourceFile = new File(StringLiterals.TMP_TEMPLATE);
-			File dataFile = new File(StringLiterals.TMP_CSV);               
+            // copy to the array
+            sheetNames[i + 1] = sheetName;
 
-			if (sourceFile.canRead() && dataFile.canRead() ) {
-				logger.log("Fill...t=" + (System.currentTimeMillis() - startTime));
-				JRCsvDataSource source = new JRCsvDataSource(JRLoader.getInputStream(dataFile));
-				source.setRecordDelimiter("\r\n");
-				source.setUseFirstRowAsHeader(true);
-				logger.log("Datasource loaded...");
+            // set the page number in the report
+            parameters.put(StringLiterals.PAGE_NUMBER, Integer.toString(i + 1));
 
-				JasperReport jasperDesign = JasperCompileManager.compileReport(sourceFile.getPath());
-				JasperPrint jasperPrint = JasperFillManager.fillReport(jasperDesign, parameters, source);
+            retrieveFileFromS3(jasperPath + File.separator + sheetNameList.get(i) + ".jrxml", StringLiterals.TEMPLATE);
+            retrieveFileFromS3(fileNameList.get(i), StringLiterals.CSV);
+            logger.log("Retrieve from S3 template= " + sheetNameList.get(i) + ".jrxml" + " csv= " + fileNameList.get(i)
+                    + "\r\n");
 
-				// add all the pages into the master doc
-				List<JRPrintPage> pp = jasperPrint.getPages();
-				jpMaster.setName(sheetName);
-				for (int j = 0; j < pp.size(); j++) {
-					logger.log("fill... : Add page : " + sheetName + "|" + j + 1);
-					jpMaster.addPage(pp.get(j));
-				}
-			} else {
-				logger.log("Fill...Error - cannot load files\r\n");
-			}
-		}
-	}
+            File sourceFile = new File(StringLiterals.TMP_TEMPLATE);
+            File dataFile = new File(StringLiterals.TMP_CSV);
+
+            if (sourceFile.canRead() && dataFile.canRead()) {
+                logger.log("Fill...t=" + (System.currentTimeMillis() - startTime));
+                JRCsvDataSource source = new JRCsvDataSource(JRLoader.getInputStream(dataFile));
+                source.setRecordDelimiter("\r\n");
+                source.setUseFirstRowAsHeader(true);
+                logger.log("Datasource loaded...");
+
+                JasperReport jasperDesign = JasperCompileManager.compileReport(sourceFile.getPath());
+                JasperPrint jasperPrint = JasperFillManager.fillReport(jasperDesign, parameters, source);
+
+                // add all the pages into the master doc
+                List<JRPrintPage> pp = jasperPrint.getPages();
+                jpMaster.setName(sheetName);
+                for (int j = 0; j < pp.size(); j++) {
+                    logger.log("fill... : Add page : " + sheetName + "|" + j + 1);
+                    jpMaster.addPage(pp.get(j));
+                }
+            } else {
+                logger.log("Fill...Error - cannot load files\r\n");
+            }
+        }
+    }
 }
