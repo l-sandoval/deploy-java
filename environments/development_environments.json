@@ -1,0 +1,17 @@
+{
+  "Reliq": "https://uspreapp.iugotest.com",
+  "ReliqAuDev1": "https://audevapp1.iugotest.com",
+  "ReliqAuQa": "https://auqaapp.iugotest.com",
+  "ReliqAUTraining": "https://autrainingapp.iugotest.com",
+  "ReliqCaDev1": "https://cadevapp1.iugotest.com",
+  "ReliqCaDev2": "https://cadevapp2.iugotest.com",
+  "ReliqCaTraining": "https://catrainingapp.iugotest.com",
+  "ReliqCaQa": "https://caqaapp.iugocare.com",
+  "ReliqDev": "https://cadevapp.iugocare.com",
+  "ReliqUsDev1": "https://usdevapp1.iugotest.com",
+  "ReliqUsDev2": "https://usdevapp2.iugotest.com",
+  "ReliqUsTraining": "https://ustrainingapp.iugotest.com",
+  "ReliqUsQa": "https://usqaapp.iugotest.com",
+  "USDev3": "https://usdev3.iugotest.com",
+  "Training": "https://ustrainingapp.iugocare.com"
+}

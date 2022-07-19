@@ -41,6 +41,8 @@ public class AmazonS3Consumer {
             tmp_file = StringLiterals.TMP_IMAGE; break;
         case StringLiterals.XML: 
             tmp_file = StringLiterals.TMP_XML; break;
+        case StringLiterals.JSON:
+            tmp_file = StringLiterals.TMP_JSON; break;
         default: break;
         }
 

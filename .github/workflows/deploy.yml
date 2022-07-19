@@ -29,12 +29,14 @@ jobs:
         run: |
           echo "AWS_LAMBDA_FUNCTION_NAME=Dev_ReportGenerator" >> $GITHUB_ENV
           echo "FILES_BUCKET=dev-billing-report-generator-files-bucket" >> $GITHUB_ENV
+          echo "ENVIRONMENTS_FILE=development_environments.json" >> $GITHUB_ENV
 
       - name: Set variables for production
         if: endsWith(github.ref, '/release')
         run: |
           echo "AWS_LAMBDA_FUNCTION_NAME=Prod_ReportGenerator" >> $GITHUB_ENV
           echo "FILES_BUCKET=prod-billing-report-generator-files-bucket" >> $GITHUB_ENV
+          echo "ENVIRONMENTS_FILE=production_environments.json" >> $GITHUB_ENV
 
       - name: Set up JDK
         uses: actions/setup-java@v1
@@ -60,3 +62,6 @@ jobs:
         run: |
           aws s3 cp lambda_code/target/$LAMBDA_PACKAGED_FILE s3://$FILES_BUCKET/lambda/
           aws lambda update-function-code --function-name $AWS_LAMBDA_FUNCTION_NAME --s3-bucket $FILES_BUCKET --s3-key lambda/$LAMBDA_PACKAGED_FILE
+      - name: Upload Environments file to s3
+        run: |
+          aws s3 cp environments/$ENVIRONMENTS_FILE s3://$FILES_BUCKET/environments/apiEndpoints.json

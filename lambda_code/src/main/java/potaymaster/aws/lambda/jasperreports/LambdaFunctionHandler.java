@@ -1,9 +1,6 @@
 package potaymaster.aws.lambda.jasperreports;
 
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.OutputStream;
-import java.io.OutputStreamWriter;
+import java.io.*;
 import java.util.HashMap;
 
 import com.fasterxml.jackson.core.type.TypeReference;
@@ -35,6 +32,10 @@ public class LambdaFunctionHandler implements RequestStreamHandler
 		try {
 			AmazonS3Consumer s3Consumer = new AmazonS3Consumer(this.logger, this.config);				
 			s3Consumer.retrieveFileFromS3(this.config.get("s3path.IUGOReport-Logo"), StringLiterals.IMAGE);
+			s3Consumer.retrieveFileFromS3(config.get("s3Path.Environments.ApiEndpoints"), StringLiterals.JSON);
+			File jsonDataSource = new File(StringLiterals.TMP_JSON);
+
+			JSONObject environmentsApiEndpoints = objectMapper.readValue(jsonDataSource, JSONObject.class);
 
 			String[] environments = objectMapper.readValue(rootNode.get("environments").toString(), String[].class);
 			String[] reportsToBeGenerated = objectMapper.readValue(
@@ -44,7 +45,8 @@ public class LambdaFunctionHandler implements RequestStreamHandler
 			ReportsGeneratorHandler handler = new ReportsGeneratorHandler(
 					this.logger, this.config,
 					reportsToBeGenerated, xmlFiles,
-					environments);
+					environments,
+					environmentsApiEndpoints);
 			handler.generateReports();
 		}
 		catch (Exception e) {

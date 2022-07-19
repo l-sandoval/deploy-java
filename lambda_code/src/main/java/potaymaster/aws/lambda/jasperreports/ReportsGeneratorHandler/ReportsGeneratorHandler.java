@@ -1,11 +1,13 @@
 package potaymaster.aws.lambda.jasperreports.ReportsGeneratorHandler;
 
 import com.amazonaws.services.lambda.runtime.LambdaLogger;
+import org.json.simple.JSONObject;
 import potaymaster.aws.lambda.jasperreports.ReportGenerator;
 import potaymaster.aws.lambda.jasperreports.ReportGeneratorConfig;
 import potaymaster.aws.lambda.jasperreports.ReportsLiterals;
 import potaymaster.aws.lambda.jasperreports.StringLiterals;
 
+import java.io.File;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
@@ -21,10 +23,11 @@ public class ReportsGeneratorHandler {
     public Date generationDate;
     public String reportPeriodDate;
     public String[] environments;
+    public JSONObject environmentsApiEndpoints;
 
     public ReportsGeneratorHandler(LambdaLogger logger, ReportGeneratorConfig reportGeneratorConfig,
                                    String[] reportsToBeGenerated, HashMap<String, HashMap<String, String[]>> xmlFiles,
-                                   String[] environments) {
+                                   String[] environments, JSONObject environmentsApiEndpoints) {
         this.logger = logger;
         this.config = reportGeneratorConfig;
         this.reportsToBeGenerated = reportsToBeGenerated;
@@ -34,6 +37,7 @@ public class ReportsGeneratorHandler {
         this.setReportTypes();
 
         this.setReportPeriodDate();
+        this.environmentsApiEndpoints = environmentsApiEndpoints;
 
         this.reportsList = new String[]{
                 ReportsLiterals.CUSTOMER_BILLING_REPORT,
@@ -54,14 +58,16 @@ public class ReportsGeneratorHandler {
 
             for(String environment : this.environments){
                 if(validateIfXmlFilesListIsProvided(report, environment)){
+                    this.logger.log("Generating report: " + report + " for environment: " + environment);
+                    String apiEndpoint = (String) this.environmentsApiEndpoints.get(environment);
                     String[] xmlFiles = this.xmlFiles.get(environment).get(report);
-                    generateReport(xmlFiles, report, generateOutputFolder(environment, report));
+                    generateReport(xmlFiles, report, generateOutputFolder(environment), apiEndpoint);
                 }
             }
         }
     }
 
-    public String generateOutputFolder(String environment, String report){
+    public String generateOutputFolder(String environment){
         SimpleDateFormat fullDateFormatter = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
         String fullDate = fullDateFormatter.format(this.generationDate);
         return this.config.get("s3path.Output") + "/" +  this.reportPeriodDate + "/" + fullDate + "/" + environment;
@@ -72,8 +78,7 @@ public class ReportsGeneratorHandler {
         Calendar calendar = Calendar.getInstance();
         calendar.setTime(this.generationDate);
         calendar.add(Calendar.MONTH, -1);
-        String reportPeriodDateFormatted = reportPeriodFormatter.format(calendar.getTime());
-        this.reportPeriodDate = reportPeriodDateFormatted;
+        this.reportPeriodDate = reportPeriodFormatter.format(calendar.getTime());
     }
 
     public void validateIfReportIsSupported(String report) {
@@ -91,7 +96,7 @@ public class ReportsGeneratorHandler {
         return true;
     }
 
-    public void generateReport(String[] xmlFiles, String reportName, String outputFolder) throws Exception {
+    public void generateReport(String[] xmlFiles, String reportName, String outputFolder, String apiEndpoint) throws Exception {
         ReportGenerator reportGenerator = new ReportGenerator(this.logger, this.config);
 
         String reportType = this.reportTypes.get(reportName);
@@ -114,7 +119,7 @@ public class ReportsGeneratorHandler {
                     xmlFile,
                     templatesPath,
                     outputFolder,
-                    this.generationDate);
+                    apiEndpoint);
         }
     }
 

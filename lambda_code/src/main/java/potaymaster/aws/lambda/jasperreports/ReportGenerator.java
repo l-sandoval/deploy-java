@@ -45,8 +45,8 @@ public class ReportGenerator {
      * @param reportName: name of the report e.g. "ComplianceBillingReport"
      * @param xmlFile   : XML file with the report parameters
      * @param jasperPath: path for the templates
-     * @param dataPath  : path for the raw data sources (CSV, XML)
      * @param buildPath : destination path for the output reports
+     * @param apiEndpoint  : current environment api endpoint
      */
     public void generateReport(
             String type,
@@ -54,7 +54,7 @@ public class ReportGenerator {
             String xmlFile,
             String jasperPath,
             String buildPath,
-            Date generationDate
+            String apiEndpoint
             ) throws JRException {
 
         HelperFunctions helper = new HelperFunctions(this.logger);          
@@ -128,6 +128,7 @@ public class ReportGenerator {
 
             logger.log("Export " + type + " :" + buildPath + ", creation time : " + (System.currentTimeMillis() - startTime));
 
+            stageRecord(fileName, apiEndpoint);
         }
     }
 
@@ -222,6 +223,15 @@ public class ReportGenerator {
         AmazonS3Consumer s3Consumer = new AmazonS3Consumer(this.logger, this.config);
         try {
             s3Consumer.uploadFileToS3(key_name, bytes);
+        } catch (IOException e) {
+            logger.log(e.getMessage());
+        }
+    }
+
+    public void stageRecord(String filePath, String apiEndpoint) {
+        AmazonDynamoDBConsumer dynamoDBConsumer = new AmazonDynamoDBConsumer(this.logger, this.config);
+        try {
+            dynamoDBConsumer.stageRecord(filePath, apiEndpoint);
         } catch (IOException e) {
             logger.log(e.getMessage());
         }
