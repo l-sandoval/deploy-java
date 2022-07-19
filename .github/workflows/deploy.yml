@@ -1,6 +1,6 @@
 # This is a basic workflow to help you get started with Actions
 
-name: Deploy to Lamnbda Function
+name: Deploy to Lambda Function
 
 # Controls when the workflow will run
 on:
@@ -28,15 +28,17 @@ jobs:
         if: endsWith(github.ref, '/main')
         run: |
           echo "AWS_LAMBDA_FUNCTION_NAME=Dev_ReportGenerator" >> $GITHUB_ENV
-          echo "FILES_BUCKET=dev-billing-report-generator-files-bucket" >> $GITHUB_ENV
+          echo "BUCKET_NAME=dev-billing-report-generator-bucket" >> $GITHUB_ENV
           echo "ENVIRONMENTS_FILE=development_environments.json" >> $GITHUB_ENV
+          echo "DYNAMODB_TABLE=Dev_BillingStagingRecords" >> $GITHUB_ENV
 
       - name: Set variables for production
         if: endsWith(github.ref, '/release')
         run: |
           echo "AWS_LAMBDA_FUNCTION_NAME=Prod_ReportGenerator" >> $GITHUB_ENV
-          echo "FILES_BUCKET=prod-billing-report-generator-files-bucket" >> $GITHUB_ENV
+          echo "BUCKET_NAME=prod-billing-report-generator-bucket" >> $GITHUB_ENV
           echo "ENVIRONMENTS_FILE=production_environments.json" >> $GITHUB_ENV
+          echo "DYNAMODB_TABLE=Prod_BillingStagingRecords" >> $GITHUB_ENV
 
       - name: Set up JDK
         uses: actions/setup-java@v1
@@ -56,12 +58,13 @@ jobs:
           role-to-assume: ${{ secrets.AWS_ROLE_TO_ASSUME }}
           role-external-id:  ${{ secrets.AWS_ROLE_EXTERNAL_ID }}
           role-duration-seconds: 1200
-          role-session-name: lambda_deployement
+          role-session-name: lambda_deployment
 
       - name: Deploy Code to AWS
         run: |
           aws s3 cp lambda_code/target/$LAMBDA_PACKAGED_FILE s3://$FILES_BUCKET/lambda/
           aws lambda update-function-code --function-name $AWS_LAMBDA_FUNCTION_NAME --s3-bucket $FILES_BUCKET --s3-key lambda/$LAMBDA_PACKAGED_FILE
+          aws lambda update-function-configuration --function-name $AWS_LAMBDA_FUNCTION_NAME --environment "Variables={DYNAMODB_TABLE=$DYNAMODB_TABLE, BUCKET_NAME=$BUCKET_NAME}"
       - name: Upload Environments file to s3
         run: |
           aws s3 cp environments/$ENVIRONMENTS_FILE s3://$FILES_BUCKET/environments/apiEndpoints.json
