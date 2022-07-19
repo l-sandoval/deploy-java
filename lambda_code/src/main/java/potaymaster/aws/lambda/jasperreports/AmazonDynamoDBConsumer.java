@@ -29,7 +29,7 @@ public class AmazonDynamoDBConsumer {
         this.client = DynamoDbClient.builder()
                 .region(region)
                 .build();
-        this.tableName = reportGeneratorConfig.get("aws.dynamodb.table");
+        this.tableName = System.getenv("DYNAMODB_TABLE");
         this.bucketName = System.getenv("BUCKET_NAME");
 
         this.createTableIfNotExists();
