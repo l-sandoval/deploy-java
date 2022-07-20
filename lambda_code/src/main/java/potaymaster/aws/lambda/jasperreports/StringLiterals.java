@@ -29,4 +29,7 @@ public class StringLiterals {
 	public static final String HOME_NAME = "Home";	
 	
 	public static final String FILENAME_FIELD_SEPARATOR = "-";
+
+	public static final String LAMBDA_BUCKET = "lambda-bucket";
+	public static final String FILES_BUCKET = "files-bucket";
 }

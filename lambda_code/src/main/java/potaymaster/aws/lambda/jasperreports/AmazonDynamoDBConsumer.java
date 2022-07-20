@@ -30,12 +30,13 @@ public class AmazonDynamoDBConsumer {
                 .region(region)
                 .build();
         this.tableName = System.getenv("DYNAMODB_TABLE");
-        this.bucketName = System.getenv("BUCKET_NAME");
+        this.bucketName = System.getenv("FILES_BUCKET");
 
         this.createTableIfNotExists();
     }
 
-    public void stageRecord(String filePath, String apiEndpoint) throws IOException {
+    public void stageRecord(String filePath, String apiEndpoint, ReportsLiterals.REPORT_CATEGORY reportCategory, String entityId)
+            throws IOException {
         try{
             if(isRecordStaged(filePath)){
                 logger.log("Record already staged");
@@ -47,9 +48,21 @@ public class AmazonDynamoDBConsumer {
             String date = dateFormat.format(new Date());
             UUID recordId = UUID.randomUUID();
 
+            String category = "";
+
+            switch (reportCategory) {
+                case PATIENT:
+                    category = "10"; break;
+                case ORGANIZATION:
+                    category = "12"; break;
+                default: break;
+            }
+
             itemValues.put("RecordId", AttributeValue.builder().s(recordId.toString()).build());
+            itemValues.put("EntityId", AttributeValue.builder().s(entityId).build());
             itemValues.put("FilePath", AttributeValue.builder().s(filePath).build());
             itemValues.put("Created", AttributeValue.builder().s(date).build());
+            itemValues.put("DocumentCategory", AttributeValue.builder().s(category).build());
             itemValues.put("BucketName", AttributeValue.builder().s(this.bucketName).build());
             itemValues.put("ApiEndpoint", AttributeValue.builder().s(apiEndpoint).build());
             itemValues.put("UploadAttemps", AttributeValue.builder().n("0").build());

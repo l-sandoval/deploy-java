@@ -57,7 +57,9 @@ public class ReportGenerator {
             String apiEndpoint
             ) throws JRException {
 
-        HelperFunctions helper = new HelperFunctions(this.logger);          
+        HelperFunctions helper = new HelperFunctions(this.logger);
+
+        boolean shouldStageReport = helper.shouldStageReport(reportName);
 
         String jasperSource = jasperPath + File.separator + reportName + ".jrxml";
 
@@ -67,7 +69,7 @@ public class ReportGenerator {
         ArrayList<String> sheetNameList = new ArrayList<String>();
         ArrayList<String> fileNameList = new ArrayList<String>();
         
-        retrieveFileFromS3(xmlFile, StringLiterals.XML);    
+        retrieveFileFromS3(xmlFile, StringLiterals.XML, StringLiterals.FILES_BUCKET);
 
         File dataSource = new File(StringLiterals.TMP_XML);
         if (dataSource.canRead()) {
@@ -101,7 +103,7 @@ public class ReportGenerator {
             parameters.put(StringLiterals.IUGOLOGO, StringLiterals.TMP_IMAGE);
             parameters.put(StringLiterals.PAGE_COUNT, Integer.toString(fileNameList.size()));        
 
-            retrieveFileFromS3(jasperSource, StringLiterals.TEMPLATE);
+            retrieveFileFromS3(jasperSource, StringLiterals.TEMPLATE, StringLiterals.LAMBDA_BUCKET);
 
             JasperReport jasperDesign = JasperCompileManager.compileReport(StringLiterals.TMP_TEMPLATE);
             JasperPrint jpMaster = JasperFillManager.fillReport(jasperDesign, parameters, (JRDataSource) null);
@@ -128,7 +130,11 @@ public class ReportGenerator {
 
             logger.log("Export " + type + " :" + buildPath + ", creation time : " + (System.currentTimeMillis() - startTime));
 
-            stageRecord(fileName, apiEndpoint);
+            if(shouldStageReport){
+                ReportsLiterals.REPORT_CATEGORY reportCategory = helper.getReportCategory(reportName);
+                String entityId = helper.extractEntityId(fileNameList.get(0));
+                stageRecord(fileName, apiEndpoint, reportCategory, entityId);
+            }
         }
     }
 
@@ -207,10 +213,10 @@ public class ReportGenerator {
     /**
      * Retrieve file from S3 bucket
      */
-    private void retrieveFileFromS3 (String key_name, String file_type){
+    private void retrieveFileFromS3 (String key_name, String file_type, String bucketType) {
         AmazonS3Consumer s3Consumer = new AmazonS3Consumer(this.logger, this.config);
         try {
-            s3Consumer.retrieveFileFromS3(key_name, file_type);
+            s3Consumer.retrieveFileFromS3(key_name, file_type, bucketType);
         } catch (IOException e) {
             logger.log(e.getMessage());
         }
@@ -228,10 +234,10 @@ public class ReportGenerator {
         }
     }
 
-    public void stageRecord(String filePath, String apiEndpoint) {
+    public void stageRecord(String filePath, String apiEndpoint, ReportsLiterals.REPORT_CATEGORY reportCategory, String entityId) {
         AmazonDynamoDBConsumer dynamoDBConsumer = new AmazonDynamoDBConsumer(this.logger, this.config);
         try {
-            dynamoDBConsumer.stageRecord(filePath, apiEndpoint);
+            dynamoDBConsumer.stageRecord(filePath, apiEndpoint, reportCategory, entityId);
         } catch (IOException e) {
             logger.log(e.getMessage());
         }
@@ -251,8 +257,16 @@ public class ReportGenerator {
             // set the page number in the report
             parameters.put(StringLiterals.PAGE_NUMBER, Integer.toString(i + 1));            
 
-            retrieveFileFromS3(jasperPath + File.separator + sheetNameList.get(i) + ".jrxml", StringLiterals.TEMPLATE);
-            retrieveFileFromS3(fileNameList.get(i), StringLiterals.CSV);
+            retrieveFileFromS3(
+                    jasperPath + File.separator + sheetNameList.get(i) + ".jrxml",
+                    StringLiterals.TEMPLATE,
+                    StringLiterals.LAMBDA_BUCKET);
+
+            retrieveFileFromS3(
+                    fileNameList.get(i),
+                    StringLiterals.CSV,
+                    StringLiterals.FILES_BUCKET);
+
             logger.log("Retrieve from S3 template= " + sheetNameList.get(i) + ".jrxml" + " csv= " + fileNameList.get(i) + "\r\n");
 
             File sourceFile = new File(StringLiterals.TMP_TEMPLATE);
