@@ -7,7 +7,6 @@ import potaymaster.aws.lambda.jasperreports.ReportsLiterals;
 import potaymaster.aws.lambda.jasperreports.StringLiterals;
 
 import java.text.SimpleDateFormat;
-import java.util.Arrays;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.HashMap;
