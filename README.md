@@ -42,14 +42,14 @@ The following parameters are expected in the function invocation:
 
 ```json
 {
-  "reportsToBeGenerated": ["report1"],
-  "environments": ["dev", "prod"],
+  "reportsToBeGenerated": ["report1", "report2"],
+  "environments": ["ReliqUsDev1", "Training"],
   "xmlFiles": [
     {
-    "dev": {
+    "ReliqUsDev1": {
         "report1": ["pathToReport1File1.xml", "pathToReport1File2.xml"]
       },
-    "prod": {
+    "Training": {
         "report1": ["pathToReport2File1.xml", "pathToReport2File2.xml"]
       }
     }

@@ -44,5 +44,5 @@ jobs:
 
       - name: Deploy Templates to AWS
         run: |
-          aws s3 sync templates/pdf s3://$TEMPLATES_S3_BUCKET/pdf-templates
-          aws s3 sync templates/excel s3://$TEMPLATES_S3_BUCKET/excel-templates
+          aws s3 sync templates/pdf s3://$BUCKET_NAME/pdf-templates
+          aws s3 sync templates/excel s3://$BUCKET_NAME/excel-templates
