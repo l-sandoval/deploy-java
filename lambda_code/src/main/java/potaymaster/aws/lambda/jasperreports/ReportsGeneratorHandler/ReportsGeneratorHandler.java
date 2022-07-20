@@ -38,12 +38,12 @@ public class ReportsGeneratorHandler {
         this.reportsList = new String[]{
                 ReportsLiterals.CUSTOMER_BILLING_REPORT,
                 ReportsLiterals.EMERGENCY_RECOVERY_REPORT,
-                ReportsLiterals.COMPLIANCE_BILLING_REPORT
+                ReportsLiterals.COMPLIANCE_BILLING_REPORT,
+                ReportsLiterals.INDIVIDUAL_RPM_READINGS_REPORT
         };
     }
 
     public void generateReports() throws Exception {
-
         String[] reports = this.reportsToBeGenerated;
 
         if(this.reportsToBeGenerated.length == 0)
@@ -54,7 +54,7 @@ public class ReportsGeneratorHandler {
 
             for(String environment : this.environments){
                 if(validateIfXmlFilesListIsProvided(report, environment)){
-                    String[] xmlFiles = this.xmlFiles.get(environment).get(report);
+		    String[] xmlFiles = this.xmlFiles.get(environment).get(report);
                     generateReport(xmlFiles, report, generateOutputFolder(environment, report));
                 }
             }
@@ -106,8 +106,6 @@ public class ReportsGeneratorHandler {
 
         for (String xmlFile : xmlFiles) {
             logger.log("Found XML to retrieve parameters for " + reportName + ": " + xmlFile);
-            
-
             reportGenerator.generateReport(
                     reportType,
                     reportName,
@@ -122,6 +120,7 @@ public class ReportsGeneratorHandler {
         this.reportTypes = new HashMap<String, String>();
         this.reportTypes.put(ReportsLiterals.CUSTOMER_BILLING_REPORT, StringLiterals.TYPE_XLS);
         this.reportTypes.put(ReportsLiterals.EMERGENCY_RECOVERY_REPORT, StringLiterals.TYPE_XLS);
-        this.reportTypes.put(ReportsLiterals.COMPLIANCE_BILLING_REPORT, StringLiterals.TYPE_XLS);
+        this.reportTypes.put(ReportsLiterals.COMPLIANCE_BILLING_REPORT, StringLiterals.TYPE_XLS); 
+        this.reportTypes.put(ReportsLiterals.INDIVIDUAL_RPM_READINGS_REPORT, StringLiterals.TYPE_XLS);
     }
 }

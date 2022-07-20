@@ -45,7 +45,6 @@ public class ReportGenerator {
      * @param reportName: name of the report e.g. "ComplianceBillingReport"
      * @param xmlFile   : XML file with the report parameters
      * @param jasperPath: path for the templates
-     * @param dataPath  : path for the raw data sources (CSV, XML)
      * @param buildPath : destination path for the output reports
      */
     public void generateReport(

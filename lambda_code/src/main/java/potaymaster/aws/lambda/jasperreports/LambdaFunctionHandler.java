@@ -41,6 +41,7 @@ public class LambdaFunctionHandler implements RequestStreamHandler
 					rootNode.get("reportsToBeGenerated").toString(), String[].class);
 			HashMap<String, HashMap<String, String[]>> xmlFiles = objectMapper.convertValue(
 					rootNode.get("xmlFiles"), new TypeReference<HashMap<String, HashMap<String, String[]>>>() {});
+			
 			ReportsGeneratorHandler handler = new ReportsGeneratorHandler(
 					this.logger, this.config,
 					reportsToBeGenerated, xmlFiles,
