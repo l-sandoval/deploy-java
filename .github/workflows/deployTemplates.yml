@@ -4,7 +4,7 @@ name: Upload Templates Folder
 
 # Controls when the workflow will run
 on:
-  # Triggers the workflow on push or pull request events but only for the "master" branch
+  # Triggers the workflow on push or pull request events but only for the "main" and "release" branches
   push:
     branches: [ main , release]
 
@@ -14,6 +14,8 @@ jobs:
   build:
     # The type of runner that the job will run on
     runs-on: ubuntu-latest
+    env:
+      TEMPLATES_LOGO: "iUGOCareW@3x.png"
 
     # Steps represent a sequence of tasks that will be executed as part of the job
     steps:
@@ -24,11 +26,17 @@ jobs:
 
       - name: Set variables for development
         if: endsWith(github.ref, '/main')
-        run: echo "BUCKET_NAME=dev-billing-report-generator-bucket" >> $GITHUB_ENV
+        run: |
+          echo "TEMPLATES_S3_BUCKET=dev-billing-report-generator-templates-bucket" >> $GITHUB_ENV
+          echo "ENVIRONMENTS_FILE=development_environments.json" >> $GITHUB_ENV
+          
 
       - name: Set variables for production
         if: endsWith(github.ref, '/release')
-        run: echo "BUCKET_NAME=prod-billing-report-generator-bucket" >> $GITHUB_ENV
+        run: |
+          echo "TEMPLATES_S3_BUCKET=prod-billing-report-generator-templates-bucket" >> $GITHUB_ENV
+          echo "ENVIRONMENTS_FILE=production_environments.json" >> $GITHUB_ENV
+          
 
       - name: Configure Secrets
         uses: aws-actions/configure-aws-credentials@v1
@@ -40,9 +48,15 @@ jobs:
           role-to-assume: ${{ secrets.AWS_ROLE_TO_ASSUME }}
           role-external-id:  ${{ secrets.AWS_ROLE_EXTERNAL_ID }}
           role-duration-seconds: 1200
-          role-session-name: lambda_deployement
+          role-session-name: lambda_deployment
 
       - name: Deploy Templates to AWS
         run: |
-          aws s3 sync templates/pdf s3://$BUCKET_NAME/pdf-templates
-          aws s3 sync templates/excel s3://$BUCKET_NAME/excel-templates
+          aws s3 sync templates/pdf s3://$TEMPLATES_S3_BUCKET/pdf-templates
+          aws s3 sync templates/excel s3://$TEMPLATES_S3_BUCKET/excel-templates
+      - name: Upload Environments file to s3
+        run: |
+          aws s3 cp environments/$ENVIRONMENTS_FILE s3://$TEMPLATES_S3_BUCKET/environments/apiEndpoints.json
+      - name: Upload templates logo image
+        run: |
+          aws s3 cp templates/assets/$TEMPLATES_LOGO s3://$TEMPLATES_S3_BUCKET/images/$TEMPLATES_LOGO
