@@ -32,10 +32,27 @@ The use of [SDK1](https://github.com/aws/aws-sdk-java) has also been changed to 
 8. Wait until stack creation is complete and go to API Gateway to copy URL.
 9. Paste API URL into Postman call & launch test example.
 
-![snapshot](lambda_test/snapshot.png)
-
 
 ## Update lambda publishing
 
 1. Rebuild `lambda_code` using *Maven* throught *Eclipse* to generate de new .jar file.
 2. Execute *04.aws_update_template_and_function.sh*
+## Lambda function parameters expectations
+The following parameters are expected in the function invocation:
+
+```json
+{
+  "reportsToBeGenerated": ["report1", "report2"],
+  "environments": ["ReliqUsDev1", "Training"],
+  "xmlFiles": [
+    {
+    "ReliqUsDev1": {
+        "report1": ["pathToReport1File1.xml", "pathToReport1File2.xml"]
+      },
+    "Training": {
+        "report1": ["pathToReport2File1.xml", "pathToReport2File2.xml"]
+      }
+    }
+  ]
+}
+```

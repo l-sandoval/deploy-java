@@ -30,7 +30,7 @@ public class AmazonS3Consumer {
         this.region = Region.of(config.get("aws.region"));
     }   
 
-    public void retrieveFileFromS3(String key_name, String file_type) throws IOException {
+    public void retrieveFileFromS3(String key_name, String file_type, String bucketType) throws IOException {
         String tmp_file = "";
         switch (file_type) {
         case StringLiterals.TEMPLATE: 
@@ -41,10 +41,15 @@ public class AmazonS3Consumer {
             tmp_file = StringLiterals.TMP_IMAGE; break;
         case StringLiterals.XML: 
             tmp_file = StringLiterals.TMP_XML; break;
+        case StringLiterals.JSON:
+            tmp_file = StringLiterals.TMP_JSON; break;
         default: break;
         }
 
-        String bucket_name = System.getenv("BUCKET_NAME");
+        String bucket_name = bucketType.equals(StringLiterals.LAMBDA_BUCKET) ?
+                System.getenv("LAMBDA_BUCKET") :
+                System.getenv("FILES_BUCKET");
+
         logger.log("Downloading file " + key_name + " from bucket " + bucket_name);
 
         S3Client s3 = S3Client.builder()
@@ -102,7 +107,7 @@ public class AmazonS3Consumer {
 
     public void uploadFileToS3(String key_name, byte[] bytes) throws IOException {
 
-        String bucket_name = System.getenv("BUCKET_NAME");
+        String bucket_name = System.getenv("FILES_BUCKET");
         logger.log("Uploading file " + key_name + " to bucket " + bucket_name);
 
         S3Client s3 = S3Client.builder()

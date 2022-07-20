@@ -10,12 +10,14 @@ public class StringLiterals {
 	public static final String TMP_CSV = "/tmp/rawdata.csv";
 	public static final String TMP_IMAGE = "/tmp/image.png";	
 	public static final String TMP_XML = "/tmp/dataxml.xml";
-	
+	public static final String TMP_JSON = "/tmp/datajson.json";
+
 	public static final String TEMPLATE = "template";
 	public static final String CSV = "csv";
 	public static final String IMAGE = "image";
 	public static final String XML = "xml";
-	
+	public static final String JSON = "json";
+
 	public static final String IUGOLOGO = "IUGOReport-Logo";
 	public static final String PAGE_NUMBER = "IUGOReport-PageNumber";
 	public static final String PAGE_COUNT = "IUGOReport-PageCount";
@@ -27,4 +29,7 @@ public class StringLiterals {
 	public static final String HOME_NAME = "Home";	
 	
 	public static final String FILENAME_FIELD_SEPARATOR = "-";
+
+	public static final String LAMBDA_BUCKET = "lambda-bucket";
+	public static final String FILES_BUCKET = "files-bucket";
 }

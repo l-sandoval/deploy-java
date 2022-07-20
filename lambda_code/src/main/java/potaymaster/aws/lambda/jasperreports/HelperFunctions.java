@@ -1,6 +1,9 @@
 package potaymaster.aws.lambda.jasperreports;
 
+import java.util.Arrays;
 import java.util.Map;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
@@ -10,6 +13,7 @@ import com.amazonaws.services.lambda.runtime.LambdaLogger;
 public class HelperFunctions {
 
 	private LambdaLogger logger;
+	private String guidRegEx = "\\p{XDigit}{8}-\\p{XDigit}{4}-\\p{XDigit}{4}-\\p{XDigit}{4}-\\p{XDigit}{12}";
 
 	public HelperFunctions(LambdaLogger logger) {
 		this.logger = logger;
@@ -44,5 +48,38 @@ public class HelperFunctions {
 			}
 		}
 		return true;
+	}
+
+	public String extractEntityId(String filePath){
+		Pattern pairRegex = Pattern.compile(this.guidRegEx);
+		Matcher matcher = pairRegex.matcher(filePath);
+		String result = "";
+
+		logger.log("extractEntityId : filePath: " + filePath);
+		while (matcher.find()) {
+			result = matcher.group(0);
+		}
+		return result;
+	}
+
+	public ReportsLiterals.REPORT_CATEGORY getReportCategory(String report) {
+		String[] individualPatientReports = {
+				ReportsLiterals.INDIVIDUAL_PATIENT_REPORT
+		};
+		ReportsLiterals.REPORT_CATEGORY category = ReportsLiterals.REPORT_CATEGORY.ORGANIZATION;
+		if (Arrays.asList(individualPatientReports).contains(report))
+			category = ReportsLiterals.REPORT_CATEGORY.PATIENT;
+
+		return category;
+	}
+
+	public boolean shouldStageReport(String report) {
+		String[] reportsToStage = {
+				ReportsLiterals.COMPLIANCE_BILLING_REPORT,
+				ReportsLiterals.CUSTOMER_BILLING_REPORT,
+				ReportsLiterals.INDIVIDUAL_PATIENT_REPORT
+		};
+
+		return Arrays.asList(reportsToStage).contains(report);
 	}
 }
