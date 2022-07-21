@@ -74,12 +74,10 @@ public class HelperFunctions {
 	}
 
 	public boolean shouldStageReport(String report) {
-		String[] reportsToStage = {
-				ReportsLiterals.COMPLIANCE_BILLING_REPORT,
-				ReportsLiterals.CUSTOMER_BILLING_REPORT,
-				ReportsLiterals.INDIVIDUAL_PATIENT_REPORT
+		String[] reportsToAvoidStaging = {
+				ReportsLiterals.EMERGENCY_RECOVERY_REPORT
 		};
 
-		return Arrays.asList(reportsToStage).contains(report);
+		return !Arrays.asList(reportsToAvoidStaging).contains(report);
 	}
 }
