@@ -107,7 +107,7 @@ public class AmazonS3Consumer {
 
     public void uploadFileToS3(String key_name, byte[] bytes) throws IOException {
 
-        String bucket_name = System.getenv("FILES_BUCKET");
+        String bucket_name = System.getenv("REPORTS_BUCKET");
         logger.log("Uploading file " + key_name + " to bucket " + bucket_name);
 
         S3Client s3 = S3Client.builder()
