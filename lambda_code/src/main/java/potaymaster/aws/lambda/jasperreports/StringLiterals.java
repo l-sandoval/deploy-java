@@ -27,6 +27,8 @@ public class StringLiterals {
 	public static final String TYPE_XLSX = "xlsx";
 	public static final String TYPE_XLS = "xls";
 	public static final String HOME_NAME = "Home";	
+	public static final String CSV_FIELD_SEPARATOR = ",";
+	public static final String PARAMETER_FILES = "IUGOReport-Parameters";
 	
 	public static final String FILENAME_FIELD_SEPARATOR = "-";
 
