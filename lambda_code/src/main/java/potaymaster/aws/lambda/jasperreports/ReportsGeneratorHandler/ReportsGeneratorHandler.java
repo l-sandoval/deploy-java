@@ -20,23 +20,24 @@ public class ReportsGeneratorHandler {
     public HashMap<String, HashMap<String, String[]>> xmlFiles;
     public HashMap<String, String> reportTypes;
     public String[] reportsList;
-    public Date generationDate;
+    public String generationDate;
     public String reportPeriodDate;
     public String[] environments;
     public JSONObject environmentsApiEndpoints;
 
     public ReportsGeneratorHandler(LambdaLogger logger, ReportGeneratorConfig reportGeneratorConfig,
                                    String[] reportsToBeGenerated, HashMap<String, HashMap<String, String[]>> xmlFiles,
-                                   String[] environments, JSONObject environmentsApiEndpoints) {
+                                   String[] environments, JSONObject environmentsApiEndpoints,
+                                   String generationDate, String reportPeriodDate) {
         this.logger = logger;
         this.config = reportGeneratorConfig;
         this.reportsToBeGenerated = reportsToBeGenerated;
         this.xmlFiles = xmlFiles;
         this.environments = environments;
-        this.generationDate = new Date();
+        this.generationDate = generationDate;
+        this.reportPeriodDate = reportPeriodDate;
         this.setReportTypes();
 
-        this.setReportPeriodDate();
         this.environmentsApiEndpoints = environmentsApiEndpoints;
 
         this.reportsList = new String[]{
@@ -68,17 +69,7 @@ public class ReportsGeneratorHandler {
     }
 
     public String generateOutputFolder(String environment){
-        SimpleDateFormat fullDateFormatter = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
-        String fullDate = fullDateFormatter.format(this.generationDate);
-        return this.config.get("s3path.Output") + "/" +  this.reportPeriodDate + "/" + fullDate + "/" + environment;
-    }
-
-    public void setReportPeriodDate(){
-        SimpleDateFormat reportPeriodFormatter = new SimpleDateFormat("yyyy-MM");
-        Calendar calendar = Calendar.getInstance();
-        calendar.setTime(this.generationDate);
-        calendar.add(Calendar.MONTH, -1);
-        this.reportPeriodDate = reportPeriodFormatter.format(calendar.getTime());
+        return this.config.get("s3path.Output") + "/" +  this.reportPeriodDate + "/" + this.generationDate + "/" + environment;
     }
 
     public void validateIfReportIsSupported(String report) {
