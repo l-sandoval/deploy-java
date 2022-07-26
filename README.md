@@ -56,3 +56,18 @@ The following parameters are expected in the function invocation:
   ]
 }
 ```
+
+## Local Execution
+
+To execute the report generator function locally:
+
+1. Modify the json file `lambda_code/src/resources/local_execution_parameters.json` to include the parameters you want to use.
+2. Add the environment variables, to do so select the `Run` tab in your IDE and then `edit configuration` for the Local.java file, this might vary depending on the IDE you are using. The following is and example of the environment variables needed:
+
+```
+```dotenv
+DYNAMODB_TABLE=table_name
+FILES_BUCKET=file_bucket_name
+LAMBDA_BUCKET=lambda_bucket_name
+REPORTS_BUCKET=reports_bucket_name
+```
