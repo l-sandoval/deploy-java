@@ -1,4 +1,4 @@
-package potaymaster.aws.lambda.jasperreports;
+package reliqreports;
 
 import java.io.IOException;
 import java.io.InputStream;

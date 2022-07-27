@@ -1,4 +1,4 @@
-package potaymaster.aws.lambda.jasperreports;
+package reliqreports;
 
 public class ReportsLiterals {
     public static final String COMPLIANCE_BILLING_REPORT = "ComplianceBillingReport";

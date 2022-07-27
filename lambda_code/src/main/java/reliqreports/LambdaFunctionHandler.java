@@ -1,4 +1,4 @@
-package potaymaster.aws.lambda.jasperreports;
+package reliqreports;
 
 import java.io.*;
 import java.util.HashMap;
@@ -12,7 +12,7 @@ import com.amazonaws.services.lambda.runtime.Context;
 import com.amazonaws.services.lambda.runtime.LambdaLogger;
 import com.amazonaws.services.lambda.runtime.RequestStreamHandler;
 
-import potaymaster.aws.lambda.jasperreports.ReportsGeneratorHandler.ReportsGeneratorHandler;
+import reliqreports.ReportsGeneratorHandler.ReportsGeneratorHandler;
 
 public class LambdaFunctionHandler implements RequestStreamHandler
 {
