@@ -1,7 +1,7 @@
-package potaymaster.aws.lambda.jasperreports.Local;
+package reliqreports.Local;
 
 import com.amazonaws.services.lambda.runtime.Context;
-import potaymaster.aws.lambda.jasperreports.LambdaFunctionHandler;
+import reliqreports.LambdaFunctionHandler;
 
 import java.io.*;
 

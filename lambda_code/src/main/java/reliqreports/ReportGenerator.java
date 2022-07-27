@@ -1,4 +1,4 @@
-package potaymaster.aws.lambda.jasperreports;
+package reliqreports;
 
 import net.sf.jasperreports.engine.*;
 import net.sf.jasperreports.engine.data.JRCsvDataSource;

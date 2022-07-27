@@ -1,4 +1,4 @@
-package potaymaster.aws.lambda.jasperreports;
+package reliqreports;
 
 import com.amazonaws.services.lambda.runtime.LambdaLogger;
 import software.amazon.awssdk.core.waiters.WaiterResponse;
