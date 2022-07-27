@@ -108,7 +108,7 @@ public class ReportGenerator {
                     logger.log("Report... : key=" + key);
                     String parameterFileName = parameters.get(key).toString();
                     retrieveFileFromS3(parameterFileName, StringLiterals.CSV, StringLiterals.FILES_BUCKET);
-                    Map<String, Object> p = getParametersFromCsvFile(StringLiterals.TMP_CSV);
+                    Map<String, String> p = getParametersFromCsvFile(StringLiterals.TMP_CSV);
                     otherParams.putAll(p);
                 }
             }
@@ -310,8 +310,8 @@ public class ReportGenerator {
         }
     }
     
-    private Map<String, Object> getParametersFromCsvFile(String filePath) throws JRException {
-        Map<String, Object> csvParameters = new HashMap<String, Object>();
+    private Map<String, String> getParametersFromCsvFile(String filePath) throws JRException {
+        Map<String, String> csvParameters = new HashMap<String, String>();
         File dataFile = new File(filePath);
         logger.log("Extract csv parameters : file=" + filePath);
         
