@@ -5,7 +5,7 @@ import java.io.File;
 public class StringLiterals {
 
 	public static final String tmpdir = System.getProperty("java.io.tmpdir");
-
+	public static final String FILE_SEPARATOR_FOR_S3_QUERIES = "/";
 	public static final String REPORT_NAME_SUFFIX = "iugoreport_";
 	public static final String TMP_OUT_FILE_PDF = tmpdir + File.separator + "Reports.pdf";
 	public static final String TMP_OUT_FILE_XLS =  tmpdir + File.separator + "Reports.xls";
