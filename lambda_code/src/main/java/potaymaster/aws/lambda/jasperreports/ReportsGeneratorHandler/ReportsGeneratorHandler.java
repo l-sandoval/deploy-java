@@ -90,12 +90,11 @@ public class ReportsGeneratorHandler {
     public void generateReport(String[] xmlFiles, String reportName, String outputFolder, String apiEndpoint) throws Exception {
         try {
             ReportGenerator reportGenerator = new ReportGenerator(this.logger, this.config);
-            logger.log("GENERANDO REPORTE : " + reportName);
             String reportType = this.reportTypes.get(reportName);
     
             String templatesPath = reportType.equals(StringLiterals.TYPE_XLS) ?
                     this.config.get("s3path.Templates.Excel") :
-                    this.config.get("s3path.Templates.PDF");
+                    this.config.get("s3path.Templates.PDF");     
     
             if(xmlFiles.length == 0)
                 logger.log("No XML files provided for report " + reportName);

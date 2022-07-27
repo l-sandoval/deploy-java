@@ -93,10 +93,9 @@ public class ReportGenerator {
             Set<String> keys = parameters.keySet();
             Map<String, Object> otherParams = new HashMap<String, Object>();
             
-            logger.log("KEY SET... : " + keys);
             for (String key : keys) {
-                logger.log("Report... : key=" + key);
                 if (key.toLowerCase().contains(StringLiterals.SUBREPORT)) {
+                    logger.log("Report... : key=" + key);
                     // get the key and filename
                     String tab = key.split(StringLiterals.FILENAME_FIELD_SEPARATOR)[2];
                     logger.log("Report... : key=" + tab);
@@ -106,17 +105,16 @@ public class ReportGenerator {
                 }
                 
                 if (key.contains(StringLiterals.PARAMETER_FILES)) {
-                    // get the key and filename
+                    logger.log("Report... : key=" + key);
                     String parameterFileName = parameters.get(key).toString();
                     retrieveFileFromS3(parameterFileName, StringLiterals.CSV, StringLiterals.FILES_BUCKET);
                     Map<String, Object> p = getParametersFromCsvFile(StringLiterals.TMP_CSV);
-
                     otherParams.putAll(p);
                 }
             }
             
             logger.log("Other Params: " + otherParams);
-            
+            parameters.putAll(otherParams);            
             parameters.put(StringLiterals.IUGOLOGO, StringLiterals.TMP_IMAGE);
             parameters.put(StringLiterals.PAGE_COUNT, Integer.toString(fileNameList.size()));        
 
@@ -315,32 +313,32 @@ public class ReportGenerator {
     private Map<String, Object> getParametersFromCsvFile(String filePath) throws JRException {
         Map<String, Object> csvParameters = new HashMap<String, Object>();
         File dataFile = new File(filePath);
-        logger.log("extractCsvValues : file=" + filePath);
+        logger.log("Extract csv parameters : file=" + filePath);
         
         if (dataFile.canRead()) {
-            logger.log("File can read");
 
             BufferedReader reader = new BufferedReader(new InputStreamReader(JRLoader.getInputStream(dataFile)));
 
-            logger.log("File buffered");
             try {
                 // Read parameters from csv files
                 while (reader.ready()) {
                     String line = reader.readLine();
-                    logger.log("Read line: " + line);
                     
                     if (!line.isEmpty()) {
                         String[] fields = line.split(StringLiterals.CSV_FIELD_SEPARATOR);
-                        String key = fields[0].trim();
-                        String value = fields[1].trim();
-                        csvParameters.put(key, value);
+
+                        if(fields.length > 0) {
+                            String key = fields[0].trim();
+                            String value = fields.length > 1 ? fields[1].trim() : "";
+                            csvParameters.put(key, value);
+                        }
                     }
                 }
             } catch (Exception ex) {
                 logger.log(ex.getMessage());
             }
         }
-        logger.log("Params: " + csvParameters);
+        logger.log("CSV PARAMETERS: " + csvParameters);
         return csvParameters;
     }
 }

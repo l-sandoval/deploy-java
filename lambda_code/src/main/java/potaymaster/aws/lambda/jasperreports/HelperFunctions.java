@@ -1,5 +1,6 @@
 package potaymaster.aws.lambda.jasperreports;
 
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Map;
 import java.util.regex.Matcher;
@@ -9,11 +10,13 @@ import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
 
 import com.amazonaws.services.lambda.runtime.LambdaLogger;
+import java.util.List;
 
 public class HelperFunctions {
 
 	private LambdaLogger logger;
 	private String guidRegEx = "\\p{XDigit}{8}-\\p{XDigit}{4}-\\p{XDigit}{4}-\\p{XDigit}{4}-\\p{XDigit}{12}";
+    private List<String> individualPatientReports = new ArrayList<String>(Arrays.asList(ReportsLiterals.INDIVIDUAL_PATIENT_REPORT));
 
 	public HelperFunctions(LambdaLogger logger) {
 		this.logger = logger;
@@ -63,11 +66,8 @@ public class HelperFunctions {
 	}
 
 	public ReportsLiterals.REPORT_CATEGORY getReportCategory(String report) {
-		String[] individualPatientReports = {
-				ReportsLiterals.INDIVIDUAL_PATIENT_REPORT
-		};
 		ReportsLiterals.REPORT_CATEGORY category = ReportsLiterals.REPORT_CATEGORY.ORGANIZATION;
-		if (Arrays.asList(individualPatientReports).contains(report))
+		if (this.individualPatientReports.contains(report))
 			category = ReportsLiterals.REPORT_CATEGORY.PATIENT;
 
 		return category;
