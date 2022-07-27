@@ -61,7 +61,7 @@ public class ReportGenerator {
 
         boolean shouldStageReport = helper.shouldStageReport(reportName);
 
-        String jasperSource = jasperPath + File.separator + reportName + ".jrxml";
+        String jasperSource = jasperPath + StringLiterals.FILE_SEPARATOR_FOR_S3_QUERIES + reportName + ".jrxml";
 
         logger.log("GenerateReport: " + reportName + "t=" + (System.currentTimeMillis() - startTime));
 
@@ -123,7 +123,7 @@ public class ReportGenerator {
 
             byte[] fileByteArray = generateReportFile(type, jpMaster, sheetNames);
             
-            String fileName = buildPath + File.separator
+            String fileName = buildPath + StringLiterals.FILE_SEPARATOR_FOR_S3_QUERIES
                     + xmlFile.substring(xmlFile.lastIndexOf("/") + 1, xmlFile.lastIndexOf(".")) + "." + type;
 
             uploadFileToS3( fileName, fileByteArray);
@@ -258,7 +258,7 @@ public class ReportGenerator {
             parameters.put(StringLiterals.PAGE_NUMBER, Integer.toString(i + 1));            
 
             retrieveFileFromS3(
-                    jasperPath + File.separator + sheetNameList.get(i) + ".jrxml",
+                    jasperPath + StringLiterals.FILE_SEPARATOR_FOR_S3_QUERIES + sheetNameList.get(i) + ".jrxml",
                     StringLiterals.TEMPLATE,
                     StringLiterals.LAMBDA_BUCKET);
 
