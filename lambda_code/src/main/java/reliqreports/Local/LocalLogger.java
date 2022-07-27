@@ -1,17 +1,15 @@
-package potaymaster.aws.lambda.jasperreports.Local;
+package reliqreports.Local;
 
 import com.amazonaws.services.lambda.runtime.LambdaLogger;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 public class LocalLogger implements LambdaLogger {
-    private static final Logger logger = LoggerFactory.getLogger(LocalLogger.class);
-
     public void log(String message) {
-        logger.info(message);
+        System.out.println(message);
     }
 
     public void log(byte[] message) {
-        logger.info(new String(message));
+        System.out.println(new String(message));
     }
 }

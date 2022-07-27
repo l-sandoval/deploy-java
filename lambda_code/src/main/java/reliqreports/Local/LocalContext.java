@@ -1,4 +1,4 @@
-package potaymaster.aws.lambda.jasperreports.Local;
+package reliqreports.Local;
 
 import com.amazonaws.services.lambda.runtime.ClientContext;
 import com.amazonaws.services.lambda.runtime.CognitoIdentity;

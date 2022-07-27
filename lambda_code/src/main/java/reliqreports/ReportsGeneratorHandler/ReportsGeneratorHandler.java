@@ -1,16 +1,12 @@
-package potaymaster.aws.lambda.jasperreports.ReportsGeneratorHandler;
+package reliqreports.ReportsGeneratorHandler;
 
 import com.amazonaws.services.lambda.runtime.LambdaLogger;
 import org.json.simple.JSONObject;
-import potaymaster.aws.lambda.jasperreports.ReportGenerator;
-import potaymaster.aws.lambda.jasperreports.ReportGeneratorConfig;
-import potaymaster.aws.lambda.jasperreports.ReportsLiterals;
-import potaymaster.aws.lambda.jasperreports.StringLiterals;
+import reliqreports.ReportGenerator;
+import reliqreports.ReportGeneratorConfig;
+import reliqreports.ReportsLiterals;
+import reliqreports.StringLiterals;
 
-import java.io.File;
-import java.text.SimpleDateFormat;
-import java.util.Calendar;
-import java.util.Date;
 import java.util.HashMap;
 
 public class ReportsGeneratorHandler {

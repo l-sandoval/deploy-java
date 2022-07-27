@@ -1,4 +1,4 @@
-package potaymaster.aws.lambda.jasperreports;
+package reliqreports;
 
 import java.util.Arrays;
 import java.util.Map;
