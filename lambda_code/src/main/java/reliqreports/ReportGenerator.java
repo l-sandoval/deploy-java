@@ -320,6 +320,10 @@ public class ReportGenerator {
             BufferedReader reader = new BufferedReader(new InputStreamReader(JRLoader.getInputStream(dataFile)));
 
             try {
+                //Read header line
+                if (reader.ready()) 
+                    reader.readLine();
+                
                 // Read parameters from csv files
                 while (reader.ready()) {
                     String line = reader.readLine();
