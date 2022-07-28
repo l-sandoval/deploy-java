@@ -3,7 +3,7 @@
 JasperReports service using AWS Lambda function.
 
 ## Publishing the lambda function in AWS
-1. Create a new AWS Lambda function using the runtime `Java 8 on Amazon Linux 1`
+1. Create a new AWS Lambda function using the runtime `Java 11 (Corretto)`
 2. Update the lambda function handler to `reliqreports.LambdaFunctionHandler::handleRequest`
 3. Update the lambda function timeout to the maximum of minutes
 4. Update the lambda function environment variables to the following example
