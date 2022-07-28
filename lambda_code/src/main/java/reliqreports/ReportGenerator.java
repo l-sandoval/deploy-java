@@ -16,8 +16,10 @@ import org.w3c.dom.Node;
 
 import com.amazonaws.services.lambda.runtime.LambdaLogger;
 
+import java.io.BufferedReader;
 import java.io.File;
 import java.io.IOException;
+import java.io.InputStreamReader;
 import java.util.*;
 
 import net.sf.jasperreports.engine.JRException;
@@ -89,8 +91,11 @@ public class ReportGenerator {
 
             // get the sheet names & source files from the parameters
             Set<String> keys = parameters.keySet();
+            Map<String, Object> otherParams = new HashMap<String, Object>();
+            
             for (String key : keys) {
                 if (key.toLowerCase().contains(StringLiterals.SUBREPORT)) {
+                    logger.log("Report... : key=" + key);
                     // get the key and filename
                     String tab = key.split(StringLiterals.FILENAME_FIELD_SEPARATOR)[2];
                     logger.log("Report... : key=" + tab);
@@ -98,8 +103,18 @@ public class ReportGenerator {
                     String subFileName = parameters.get(key).toString();
                     fileNameList.add(subFileName);
                 }
+                
+                if (key.contains(StringLiterals.PARAMETER_FILES)) {
+                    logger.log("Report... : key=" + key);
+                    String parameterFileName = parameters.get(key).toString();
+                    retrieveFileFromS3(parameterFileName, StringLiterals.CSV, StringLiterals.FILES_BUCKET);
+                    Map<String, String> p = getParametersFromCsvFile(StringLiterals.TMP_CSV);
+                    otherParams.putAll(p);
+                }
             }
             
+            logger.log("Other Params: " + otherParams);
+            parameters.putAll(otherParams);            
             parameters.put(StringLiterals.IUGOLOGO, StringLiterals.TMP_IMAGE);
             parameters.put(StringLiterals.PAGE_COUNT, Integer.toString(fileNameList.size()));        
 
@@ -293,5 +308,41 @@ public class ReportGenerator {
                 logger.log("Fill...Error - cannot load files\r\n");
             }
         }
+    }
+    
+    private Map<String, String> getParametersFromCsvFile(String filePath) throws JRException {
+        Map<String, String> csvParameters = new HashMap<String, String>();
+        File dataFile = new File(filePath);
+        logger.log("Extract csv parameters : file=" + filePath);
+        
+        if (dataFile.canRead()) {
+
+            BufferedReader reader = new BufferedReader(new InputStreamReader(JRLoader.getInputStream(dataFile)));
+
+            try {
+                //Read header line
+                if (reader.ready()) 
+                    reader.readLine();
+                
+                // Read parameters from csv files
+                while (reader.ready()) {
+                    String line = reader.readLine();
+                    
+                    if (!line.isEmpty()) {
+                        String[] fields = line.split(StringLiterals.CSV_FIELD_SEPARATOR);
+
+                        if(fields.length > 0) {
+                            String key = fields[0].trim();
+                            String value = fields.length > 1 ? fields[1].trim() : "";
+                            csvParameters.put(key, value);
+                        }
+                    }
+                }
+            } catch (Exception ex) {
+                logger.log(ex.getMessage());
+            }
+        }
+        logger.log("CSV PARAMETERS: " + csvParameters);
+        return csvParameters;
     }
 }

@@ -19,7 +19,7 @@ public class LambdaFunctionHandler implements RequestStreamHandler
 	LambdaLogger logger;	
 
 	ReportGeneratorConfig config;
-
+	
 	public void handleRequest(InputStream inputStream, OutputStream outputStream, Context context) throws IOException {
 		this.logger = context.getLogger();
 

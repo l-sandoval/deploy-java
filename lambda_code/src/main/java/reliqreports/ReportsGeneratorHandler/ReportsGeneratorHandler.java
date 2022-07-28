@@ -7,6 +7,11 @@ import reliqreports.ReportGeneratorConfig;
 import reliqreports.ReportsLiterals;
 import reliqreports.StringLiterals;
 
+import java.io.IOException;
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
+import java.util.Date;
+
 import java.util.HashMap;
 
 public class ReportsGeneratorHandler {
@@ -84,27 +89,31 @@ public class ReportsGeneratorHandler {
     }
 
     public void generateReport(String[] xmlFiles, String reportName, String outputFolder, String apiEndpoint) throws Exception {
-        ReportGenerator reportGenerator = new ReportGenerator(this.logger, this.config);
-
-        String reportType = this.reportTypes.get(reportName);
-
-        String templatesPath = reportType.equals(StringLiterals.TYPE_XLS) ?
-                this.config.get("s3path.Templates.Excel") :
-                this.config.get("s3path.Templates.PDF");
-
-
-        if(xmlFiles.length == 0)
-            logger.log("No XML files provided for report " + reportName);
-
-        for (String xmlFile : xmlFiles) {
-            logger.log("Found XML to retrieve parameters for " + reportName + ": " + xmlFile);
-            reportGenerator.generateReport(
-                    reportType,
-                    reportName,
-                    xmlFile,
-                    templatesPath,
-                    outputFolder,
-                    apiEndpoint);
+        try {
+            ReportGenerator reportGenerator = new ReportGenerator(this.logger, this.config);
+            String reportType = this.reportTypes.get(reportName);
+    
+            String templatesPath = reportType.equals(StringLiterals.TYPE_XLS) ?
+                    this.config.get("s3path.Templates.Excel") :
+                    this.config.get("s3path.Templates.PDF");     
+    
+            if(xmlFiles.length == 0)
+                logger.log("No XML files provided for report " + reportName);
+    
+            for (String xmlFile : xmlFiles) {
+                logger.log("Found XML to retrieve parameters for " + reportName + ": " + xmlFile);
+                reportGenerator.generateReport(
+                        reportType,
+                        reportName,
+                        xmlFile,
+                        templatesPath,
+                        outputFolder,
+                        apiEndpoint);
+            }
+        } catch (Exception e) {
+            logger.log("Exception thrown runing report generation");
+            logger.log(e.getLocalizedMessage());
+            logger.log(e.getMessage());
         }
     }
 
@@ -114,5 +123,6 @@ public class ReportsGeneratorHandler {
         this.reportTypes.put(ReportsLiterals.EMERGENCY_RECOVERY_REPORT, StringLiterals.TYPE_XLS);
         this.reportTypes.put(ReportsLiterals.COMPLIANCE_BILLING_REPORT, StringLiterals.TYPE_XLS); 
         this.reportTypes.put(ReportsLiterals.INDIVIDUAL_RPM_READINGS_REPORT, StringLiterals.TYPE_XLS);
+        this.reportTypes.put(ReportsLiterals.INDIVIDUAL_PATIENT_REPORT, StringLiterals.TYPE_PDF);
     }
 }
