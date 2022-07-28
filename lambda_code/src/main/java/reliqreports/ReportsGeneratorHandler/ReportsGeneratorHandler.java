@@ -18,13 +18,14 @@ public class ReportsGeneratorHandler {
     public String[] reportsList;
     public String generationDate;
     public String reportPeriodDate;
+    public String entityId;
     public String[] environments;
     public JSONObject environmentsApiEndpoints;
 
     public ReportsGeneratorHandler(LambdaLogger logger, ReportGeneratorConfig reportGeneratorConfig,
                                    String[] reportsToBeGenerated, HashMap<String, HashMap<String, String[]>> xmlFiles,
                                    String[] environments, JSONObject environmentsApiEndpoints,
-                                   String generationDate, String reportPeriodDate) {
+                                   String generationDate, String reportPeriodDate, String entityId) {
         this.logger = logger;
         this.config = reportGeneratorConfig;
         this.reportsToBeGenerated = reportsToBeGenerated;
@@ -32,6 +33,7 @@ public class ReportsGeneratorHandler {
         this.environments = environments;
         this.generationDate = generationDate;
         this.reportPeriodDate = reportPeriodDate;
+        this.entityId = entityId;
         this.setReportTypes();
 
         this.environmentsApiEndpoints = environmentsApiEndpoints;
@@ -65,7 +67,8 @@ public class ReportsGeneratorHandler {
     }
 
     public String generateOutputFolder(String environment){
-        return this.config.get("s3path.Output") + "/" +  this.reportPeriodDate + "/" + this.generationDate + "/" + environment;
+    	String pathSufixEntityId = (this.entityId != "") ? "/" + this.entityId : ""; 
+        return this.config.get("s3path.Output") + "/" +  this.reportPeriodDate + "/" + this.generationDate + "/" + environment + pathSufixEntityId;
     }
 
     public void validateIfReportIsSupported(String report) {
