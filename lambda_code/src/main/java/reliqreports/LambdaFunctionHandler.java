@@ -44,12 +44,13 @@ public class LambdaFunctionHandler implements RequestStreamHandler
 					rootNode.get("xmlFiles"), new TypeReference<HashMap<String, HashMap<String, String[]>>>() {});
 			String generationDate = objectMapper.readValue(rootNode.get("generationDate").toString(), String.class);
 			String reportPeriodDate = objectMapper.readValue(rootNode.get("reportPeriodDate").toString(), String.class);
+			String entityId = objectMapper.readValue(rootNode.get("entityId").toString(), String.class);
 
 			ReportsGeneratorHandler handler = new ReportsGeneratorHandler(
 					this.logger, this.config,
 					reportsToBeGenerated, xmlFiles,
 					environments, environmentsApiEndpoints,
-					generationDate, reportPeriodDate);
+					generationDate, reportPeriodDate, entityId);
 			handler.generateReports();
 		}
 		catch (Exception e) {
