@@ -6,7 +6,6 @@ import net.sf.jasperreports.engine.export.JRPdfExporter;
 import net.sf.jasperreports.engine.export.JRXlsExporter;
 import net.sf.jasperreports.engine.export.ooxml.JRXlsxExporter;
 import net.sf.jasperreports.engine.query.JRXPathQueryExecuterFactory;
-import net.sf.jasperreports.engine.util.JRLoader;
 import net.sf.jasperreports.engine.util.JRXmlUtils;
 import net.sf.jasperreports.export.*;
 
@@ -15,12 +14,22 @@ import org.w3c.dom.Document;
 import org.w3c.dom.Node;
 
 import com.amazonaws.services.lambda.runtime.LambdaLogger;
+import com.amazonaws.util.StringUtils;
 
+import java.io.BufferedInputStream;
 import java.io.BufferedReader;
+import java.io.ByteArrayInputStream;
+import java.io.ByteArrayOutputStream;
 import java.io.File;
+import java.io.FileOutputStream;
 import java.io.IOException;
+import java.io.InputStream;
 import java.io.InputStreamReader;
+import java.io.OutputStream;
 import java.util.*;
+import java.util.zip.ZipEntry;
+import java.util.zip.ZipInputStream;
+import java.util.zip.ZipOutputStream;
 
 import net.sf.jasperreports.engine.JRException;
 import net.sf.jasperreports.engine.JasperCompileManager;
@@ -32,6 +41,7 @@ import net.sf.jasperreports.engine.JRDataSource;
 public class ReportGenerator {
     private LambdaLogger logger;
     private ReportGeneratorConfig config;
+    private AmazonS3Consumer s3Consumer;
 
     public ReportGenerator(LambdaLogger logger, ReportGeneratorConfig reportGeneratorConfig) {
         this.logger = logger;
@@ -56,12 +66,13 @@ public class ReportGenerator {
             String xmlFile,
             String jasperPath,
             String buildPath,
+            String entityId,
+            String generationDate,
             String apiEndpoint
             ) throws JRException {
 
-        HelperFunctions helper = new HelperFunctions(this.logger);
 
-        boolean shouldStageReport = helper.shouldStageReport(reportName);
+        boolean shouldStageReport = HelperFunctions.shouldStageReport(reportName);
 
         String jasperSource = jasperPath + StringLiterals.FILE_SEPARATOR_FOR_S3_QUERIES + reportName + ".jrxml";
 
@@ -71,12 +82,11 @@ public class ReportGenerator {
         ArrayList<String> sheetNameList = new ArrayList<String>();
         ArrayList<String> fileNameList = new ArrayList<String>();
         
-        retrieveFileFromS3(xmlFile, StringLiterals.XML, StringLiterals.FILES_BUCKET);
+        InputStream dataSource = getInputStreamFileFromS3(xmlFile, StringLiterals.FILES_BUCKET);
 
-        File dataSource = new File(StringLiterals.TMP_XML);
-        if (dataSource.canRead()) {
+        if (dataSource != null) {
             logger.log("Report... : Fill from : " + xmlFile);
-            Document document = JRXmlUtils.parse(JRLoader.getLocationInputStream(dataSource.getPath()));
+            Document document = JRXmlUtils.parse(dataSource);
 
             parameters.put(JRXPathQueryExecuterFactory.PARAMETER_XML_DATA_DOCUMENT, document);
             parameters.put(JRXPathQueryExecuterFactory.XML_DATE_PATTERN, "yyyy-MM-dd");
@@ -85,7 +95,7 @@ public class ReportGenerator {
             parameters.put(JRParameter.REPORT_LOCALE, Locale.US);
 
             Node topNode = document.getChildNodes().item(0);
-            if (helper.extractXml(topNode, null, parameters)) {
+            if (HelperFunctions.extractXml(topNode, null, parameters)) {
                 logger.log("Report... : Map size=" + parameters.size());
             }
 
@@ -107,8 +117,8 @@ public class ReportGenerator {
                 if (key.contains(StringLiterals.PARAMETER_FILES)) {
                     logger.log("Report... : key=" + key);
                     String parameterFileName = parameters.get(key).toString();
-                    retrieveFileFromS3(parameterFileName, StringLiterals.CSV, StringLiterals.FILES_BUCKET);
-                    Map<String, String> p = getParametersFromCsvFile(StringLiterals.TMP_CSV);
+                    InputStream parametersSource = getInputStreamFileFromS3(parameterFileName, StringLiterals.FILES_BUCKET);
+                    Map<String, String> p = getParametersFromCsvFile(parametersSource);
                     otherParams.putAll(p);
                 }
             }
@@ -118,9 +128,9 @@ public class ReportGenerator {
             parameters.put(StringLiterals.IUGOLOGO, StringLiterals.TMP_IMAGE);
             parameters.put(StringLiterals.PAGE_COUNT, Integer.toString(fileNameList.size()));        
 
-            retrieveFileFromS3(jasperSource, StringLiterals.TEMPLATE, StringLiterals.LAMBDA_BUCKET);
+            InputStream templateStream = getInputStreamFileFromS3(jasperSource, StringLiterals.LAMBDA_BUCKET);
 
-            JasperReport jasperDesign = JasperCompileManager.compileReport(StringLiterals.TMP_TEMPLATE);
+            JasperReport jasperDesign = JasperCompileManager.compileReport(templateStream);
             JasperPrint jpMaster = JasperFillManager.fillReport(jasperDesign, parameters, (JRDataSource) null);
             logger.log("Report... : Fill from : " + jasperSource);
             logger.log("Filling time : " + (System.currentTimeMillis() - startTime));
@@ -137,17 +147,26 @@ public class ReportGenerator {
             }
 
             byte[] fileByteArray = generateReportFile(type, jpMaster, sheetNames);
-            
-            String fileName = buildPath + StringLiterals.FILE_SEPARATOR_FOR_S3_QUERIES
-                    + xmlFile.substring(xmlFile.lastIndexOf("/") + 1, xmlFile.lastIndexOf(".")) + "." + type;
+            String reportFileName = xmlFile.substring(xmlFile.lastIndexOf("/") + 1, xmlFile.lastIndexOf(".")) + "." + type; 
+            String fileName = (buildPath + (!StringUtils.isNullOrEmpty(entityId) ? "/" + entityId : "")) + StringLiterals.FILE_SEPARATOR_FOR_S3_QUERIES
+                    + reportFileName;
 
-            uploadFileToS3( fileName, fileByteArray);
+            uploadFileToS3(fileName, fileByteArray);
+            
+            if(HelperFunctions.shouldAddToZipFile(reportName)) {
+                Thread thread = new Thread(){
+                    public void run(){
+                        String zipFileName = StringLiterals.IUGO_REPORT + "_" + reportName + "_" + generationDate;
+                        saveToZipFile(buildPath, zipFileName, reportFileName ,fileByteArray);
+                    }
+                };
+                thread.start();
+            }
 
             logger.log("Export " + type + " :" + buildPath + ", creation time : " + (System.currentTimeMillis() - startTime));
 
             if(shouldStageReport){
-                ReportsLiterals.REPORT_CATEGORY reportCategory = helper.getReportCategory(reportName);
-                String entityId = helper.extractEntityId(fileNameList.get(0));
+                ReportsLiterals.REPORT_CATEGORY reportCategory = HelperFunctions.getReportCategory(reportName);
                 stageRecord(fileName, apiEndpoint, reportCategory, entityId);
             }
         }
@@ -223,18 +242,16 @@ public class ReportGenerator {
         }       
 
         return fileByteArray;
-    }
+    }    
 
-    /**
-     * Retrieve file from S3 bucket
-     */
-    private void retrieveFileFromS3 (String key_name, String file_type, String bucketType) {
-        AmazonS3Consumer s3Consumer = new AmazonS3Consumer(this.logger, this.config);
+    private InputStream getInputStreamFileFromS3(String key_name, String bucketType) {
+        InputStream s3File = null;
         try {
-            s3Consumer.retrieveFileFromS3(key_name, file_type, bucketType);
+            s3File = getS3Consumer().getInputStreamFileFromS3(key_name, bucketType);
         } catch (IOException e) {
             logger.log(e.getMessage());
         }
+        return s3File;
     }
     
     /**
@@ -272,29 +289,24 @@ public class ReportGenerator {
             // set the page number in the report
             parameters.put(StringLiterals.PAGE_NUMBER, Integer.toString(i + 1));            
 
-            retrieveFileFromS3(
+            InputStream sourceStream = getInputStreamFileFromS3(
                     jasperPath + StringLiterals.FILE_SEPARATOR_FOR_S3_QUERIES + sheetNameList.get(i) + ".jrxml",
-                    StringLiterals.TEMPLATE,
                     StringLiterals.LAMBDA_BUCKET);
 
-            retrieveFileFromS3(
+            InputStream dataStream = getInputStreamFileFromS3(
                     fileNameList.get(i),
-                    StringLiterals.CSV,
                     StringLiterals.FILES_BUCKET);
 
-            logger.log("Retrieve from S3 template= " + sheetNameList.get(i) + ".jrxml" + " csv= " + fileNameList.get(i) + "\r\n");
+            logger.log("Retrieve from S3 template= " + sheetNameList.get(i) + ".jrxml" + " csv= " + fileNameList.get(i) + "\r\n");         
 
-            File sourceFile = new File(StringLiterals.TMP_TEMPLATE);
-            File dataFile = new File(StringLiterals.TMP_CSV);               
-
-            if (sourceFile.canRead() && dataFile.canRead() ) {
+            if (sourceStream != null && dataStream != null ) {
                 logger.log("Fill...t=" + (System.currentTimeMillis() - startTime));
-                JRCsvDataSource source = new JRCsvDataSource(JRLoader.getInputStream(dataFile));
+                JRCsvDataSource source = new JRCsvDataSource(dataStream);
                 source.setRecordDelimiter("\r\n");
                 source.setUseFirstRowAsHeader(true);
                 logger.log("Datasource loaded...");
 
-                JasperReport jasperDesign = JasperCompileManager.compileReport(sourceFile.getPath());
+                JasperReport jasperDesign = JasperCompileManager.compileReport(sourceStream);
                 JasperPrint jasperPrint = JasperFillManager.fillReport(jasperDesign, parameters, source);
 
                 // add all the pages into the master doc
@@ -310,24 +322,21 @@ public class ReportGenerator {
         }
     }
     
-    private Map<String, String> getParametersFromCsvFile(String filePath) throws JRException {
+    private Map<String, String> getParametersFromCsvFile(InputStream parametersSource) throws JRException {
         Map<String, String> csvParameters = new HashMap<String, String>();
-        File dataFile = new File(filePath);
-        logger.log("Extract csv parameters : file=" + filePath);
+        BufferedReader reader = null;
+        logger.log("Extract csv parameters");
         
-        if (dataFile.canRead()) {
-
-            BufferedReader reader = new BufferedReader(new InputStreamReader(JRLoader.getInputStream(dataFile)));
+        if (parametersSource != null) {
 
             try {
+                reader = new BufferedReader(new InputStreamReader(parametersSource, "UTF-8"));
                 //Read header line
-                if (reader.ready()) 
-                    reader.readLine();
+                reader.readLine();
+                String line = null;
                 
                 // Read parameters from csv files
-                while (reader.ready()) {
-                    String line = reader.readLine();
-                    
+                while ((line = reader.readLine()) != null) {                    
                     if (!line.isEmpty()) {
                         String[] fields = line.split(StringLiterals.CSV_FIELD_SEPARATOR);
 
@@ -340,9 +349,78 @@ public class ReportGenerator {
                 }
             } catch (Exception ex) {
                 logger.log(ex.getMessage());
+            } finally {
+                if (reader != null)
+                    try {
+                        reader.close();
+                    } catch (IOException e) {
+                        //Do nothing
+                    }
             }
         }
         logger.log("CSV PARAMETERS: " + csvParameters);
         return csvParameters;
+    }
+    
+    public synchronized void saveToZipFile(String buildPath, String zipFileName, String reportName, byte[] reportByteArray) {
+        try {
+            String zipFullPath = buildPath + StringLiterals.FILE_SEPARATOR_FOR_S3_QUERIES + zipFileName + ".zip";
+            ByteArrayOutputStream bos = new ByteArrayOutputStream();
+            InputStream in = getS3Consumer().getInputStreamFileFromS3(zipFullPath , StringLiterals.FILES_BUCKET);
+            ZipOutputStream zos = new ZipOutputStream(bos);
+                        
+            if(in != null) {
+                Map<String, byte[]> zipEntryMap = getMapFiles(in);                
+                
+                zipEntryMap.forEach((zipEntryName, bytes) -> {
+                    try {
+                        zos.putNextEntry(new ZipEntry(zipEntryName));
+                        zos.write(bytes);
+                        zos.closeEntry();
+                    } catch (IOException e) {
+                        logger.log(e.getMessage());
+                    }
+                });
+            }  
+            
+            zos.putNextEntry(new ZipEntry(reportName));                                  
+            zos.write(reportByteArray);
+            
+            zos.closeEntry();
+            bos.close();
+            zos.close();
+            byte[] outBA = bos.toByteArray();
+            uploadFileToS3(zipFullPath, outBA);
+            
+        } catch (IOException e) {
+            logger.log(e.getMessage());
+        }        
+    }
+    
+    private static Map<String, byte[]> getMapFiles(InputStream in) throws IOException {
+        Map<String, byte[]> zipEntryMap = new HashMap<>();
+        ZipInputStream zipInputStream = new ZipInputStream(in);
+        ZipEntry zipEntry;
+        
+        while((zipEntry = zipInputStream.getNextEntry())!= null){
+            byte[] buffer = new byte[1024];
+            ByteArrayOutputStream builder = new ByteArrayOutputStream();
+            int end;
+            while((end = zipInputStream.read(buffer)) > 0){
+                builder.write(buffer, 0, end);
+            }
+            zipEntryMap.put(zipEntry.getName(), builder.toByteArray());
+        }
+        return zipEntryMap;
+    }
+
+    public AmazonS3Consumer getS3Consumer() {
+        if(s3Consumer == null) 
+            s3Consumer = new AmazonS3Consumer(this.logger, this.config);
+        return s3Consumer;
+    }
+
+    public void setS3Consumer(AmazonS3Consumer s3Consumer) {
+        this.s3Consumer = s3Consumer;
     }
 }

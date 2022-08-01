@@ -32,8 +32,7 @@ public class LambdaFunctionHandler implements RequestStreamHandler
 		try {
 			AmazonS3Consumer s3Consumer = new AmazonS3Consumer(this.logger, this.config);				
 			s3Consumer.retrieveFileFromS3(this.config.get("s3path.IUGOReport-Logo"), StringLiterals.IMAGE, StringLiterals.LAMBDA_BUCKET);
-			s3Consumer.retrieveFileFromS3(config.get("s3Path.Environments.ApiEndpoints"), StringLiterals.JSON, StringLiterals.LAMBDA_BUCKET);
-			File jsonDataSource = new File(StringLiterals.TMP_JSON);
+			InputStream jsonDataSource = s3Consumer.getInputStreamFileFromS3(config.get("s3Path.Environments.ApiEndpoints"), StringLiterals.LAMBDA_BUCKET);
 
 			JSONObject environmentsApiEndpoints = objectMapper.readValue(jsonDataSource, JSONObject.class);
 

@@ -9,23 +9,17 @@ import java.util.regex.Pattern;
 import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
 
-import com.amazonaws.services.lambda.runtime.LambdaLogger;
 import java.util.List;
 
 public class HelperFunctions {
 
-	private LambdaLogger logger;
-	private String guidRegEx = "\\p{XDigit}{8}-\\p{XDigit}{4}-\\p{XDigit}{4}-\\p{XDigit}{4}-\\p{XDigit}{12}";
-    private List<String> individualPatientReports = new ArrayList<String>(Arrays.asList(ReportsLiterals.INDIVIDUAL_PATIENT_REPORT));
-
-	public HelperFunctions(LambdaLogger logger) {
-		this.logger = logger;
-	}
+	private static String GUID_REG_EX = "\\p{XDigit}{8}-\\p{XDigit}{4}-\\p{XDigit}{4}-\\p{XDigit}{4}-\\p{XDigit}{12}";
+    private static List<String> INDIVIDUAL_PATIENT_REPORTS = new ArrayList<String>(Arrays.asList(ReportsLiterals.INDIVIDUAL_PATIENT_REPORT));
 
 	/*
 	 * Decode xml
 	 */
-	public boolean extractXml(Node node, String name, Map<String, Object> parameters) {
+	public static boolean extractXml(Node node, String name, Map<String, Object> parameters) {
 
 		if (node == null) return false;
 
@@ -43,7 +37,6 @@ public class HelperFunctions {
 				String value = nodeList.item(i).getNodeValue().trim();
 				if (!value.isEmpty()) {
 					parameters.put(nodeName, value);
-					logger.log("extractXml : Add to map: " + nodeName + " | " + value);
 				}
 				break;
 			default:
@@ -53,31 +46,34 @@ public class HelperFunctions {
 		return true;
 	}
 
-	public String extractEntityId(String filePath){
-		Pattern pairRegex = Pattern.compile(this.guidRegEx);
+	public static String extractEntityId(String filePath){
+		Pattern pairRegex = Pattern.compile(GUID_REG_EX);
 		Matcher matcher = pairRegex.matcher(filePath);
 		String result = "";
 
-		logger.log("extractEntityId : filePath: " + filePath);
 		while (matcher.find()) {
 			result = matcher.group(0);
 		}
 		return result;
 	}
 
-	public ReportsLiterals.REPORT_CATEGORY getReportCategory(String report) {
+	public static ReportsLiterals.REPORT_CATEGORY getReportCategory(String report) {
 		ReportsLiterals.REPORT_CATEGORY category = ReportsLiterals.REPORT_CATEGORY.ORGANIZATION;
-		if (this.individualPatientReports.contains(report))
+		if (INDIVIDUAL_PATIENT_REPORTS.contains(report))
 			category = ReportsLiterals.REPORT_CATEGORY.PATIENT;
 
 		return category;
 	}
 
-	public boolean shouldStageReport(String report) {
+	public static boolean shouldStageReport(String report) {
 		String[] reportsToAvoidStaging = {
 				ReportsLiterals.EMERGENCY_RECOVERY_REPORT
 		};
 
 		return !Arrays.asList(reportsToAvoidStaging).contains(report);
+	}
+	
+	public static boolean shouldAddToZipFile(String reportType) {
+	    return INDIVIDUAL_PATIENT_REPORTS.contains(reportType);
 	}
 }

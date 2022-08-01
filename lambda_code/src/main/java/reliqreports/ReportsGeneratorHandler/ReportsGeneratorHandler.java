@@ -6,12 +6,6 @@ import reliqreports.ReportGenerator;
 import reliqreports.ReportGeneratorConfig;
 import reliqreports.ReportsLiterals;
 import reliqreports.StringLiterals;
-
-import java.io.IOException;
-import java.text.SimpleDateFormat;
-import java.util.Calendar;
-import java.util.Date;
-
 import java.util.HashMap;
 
 public class ReportsGeneratorHandler {
@@ -39,7 +33,7 @@ public class ReportsGeneratorHandler {
         this.generationDate = generationDate;
         this.reportPeriodDate = reportPeriodDate;
         this.entityId = entityId;
-        this.setReportTypes();
+        setReportTypes();
 
         this.environmentsApiEndpoints = environmentsApiEndpoints;
 
@@ -71,9 +65,8 @@ public class ReportsGeneratorHandler {
         }
     }
 
-    public String generateOutputFolder(String environment){
-    	String pathSufixEntityId = (this.entityId != "") ? "/" + this.entityId : ""; 
-        return this.config.get("s3path.Output") + "/" +  this.reportPeriodDate + "/" + this.generationDate + "/" + environment + pathSufixEntityId;
+    public String generateOutputFolder(String environment){    	
+        return this.config.get("s3path.Output") + "/" +  this.reportPeriodDate + "/" + this.generationDate + "/" + environment;
     }
 
     public void validateIfReportIsSupported(String report) {
@@ -110,7 +103,9 @@ public class ReportsGeneratorHandler {
                         reportName,
                         xmlFile,
                         templatesPath,
-                        outputFolder,
+                        outputFolder, 
+                        this.entityId,
+                        this.generationDate,
                         apiEndpoint);
             }
         } catch (Exception e) {
