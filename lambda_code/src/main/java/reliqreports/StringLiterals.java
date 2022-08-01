@@ -34,6 +34,7 @@ public class StringLiterals {
 	public static final String HOME_NAME = "Home";	
 	public static final String CSV_FIELD_SEPARATOR = ",";
 	public static final String PARAMETER_FILES = "IUGOReport-Parameters";
+	public static final String IUGO_REPORT = "IUGOReport";
 	
 	public static final String FILENAME_FIELD_SEPARATOR = "-";
 
