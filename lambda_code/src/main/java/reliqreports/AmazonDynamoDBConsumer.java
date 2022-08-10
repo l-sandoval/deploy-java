@@ -31,8 +31,6 @@ public class AmazonDynamoDBConsumer {
                 .build();
         this.tableName = System.getenv("DYNAMODB_TABLE");
         this.bucketName = System.getenv("FILES_BUCKET");
-
-        this.createTableIfNotExists();
     }
 
     public void stageRecord(String filePath, String apiEndpoint, ReportsLiterals.REPORT_CATEGORY reportCategory, String entityId)
@@ -79,60 +77,19 @@ public class AmazonDynamoDBConsumer {
     }
 
     public boolean isRecordStaged(String filePath) {
-        AtomicBoolean isStaged = new AtomicBoolean(false);
+        HashMap<String, AttributeValue> itemValues = new HashMap<>();
 
-        ScanResponse response = this.client.scan(ScanRequest.builder().tableName(this.tableName).build());
+        itemValues.put(":filePath", AttributeValue.builder().s(filePath).build());
 
-        response.items().forEach(item -> {
-            if(item.get("FilePath").s().equals(filePath)){
-                isStaged.set(true);
-            }
-        });
+        ScanRequest request = ScanRequest.builder()
+                .tableName(this.tableName)
+                .filterExpression("FilePath = :filePath")
+                .expressionAttributeValues(itemValues)
+                .build();
 
-        return isStaged.get();
-    }
+        ScanResponse response = this.client.scan(request);
 
-    public void createTableIfNotExists(){
-        ListTablesResponse tables =  this.client.listTables();
-        boolean tableExists = tables.tableNames().contains(this.tableName);
-
-        if(!tableExists){
-            CreateTableRequest request = CreateTableRequest.builder()
-                    .attributeDefinitions(
-                        AttributeDefinition.builder()
-                            .attributeName("RecordId")
-                            .attributeType(ScalarAttributeType.S)
-                            .build(),
-                        AttributeDefinition.builder()
-                                .attributeName("Created")
-                                .attributeType(ScalarAttributeType.S)
-                                .build())
-                    .keySchema(
-                        KeySchemaElement.builder()
-                            .attributeName("RecordId")
-                            .keyType(KeyType.HASH)
-                            .build(),
-                        KeySchemaElement.builder()
-                                .attributeName("Created")
-                                .keyType(KeyType.RANGE)
-                                .build())
-                    .provisionedThroughput(ProvisionedThroughput.builder()
-                            .readCapacityUnits(10L)
-                            .writeCapacityUnits(10L)
-                            .build())
-                    .tableName(tableName)
-                    .build();
-
-            this.client.createTable(request);
-            DescribeTableRequest tableRequest = DescribeTableRequest.builder()
-                    .tableName(tableName)
-                    .build();
-            DynamoDbWaiter dbWaiter = this.client.waiter();
-
-            // Wait until the Amazon DynamoDB table is created
-            WaiterResponse<DescribeTableResponse> waiterResponse =  dbWaiter.waitUntilTableExists(tableRequest);
-            waiterResponse.matched().response().ifPresent(System.out::println);
-        }
+        return response.items().size() > 0;
     }
 
 }
