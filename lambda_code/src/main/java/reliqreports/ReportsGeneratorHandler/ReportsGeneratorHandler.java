@@ -9,30 +9,30 @@ import reliqreports.StringLiterals;
 import java.util.HashMap;
 
 public class ReportsGeneratorHandler {
-    LambdaLogger logger;
-    ReportGeneratorConfig config;
-    public String[] reportsToBeGenerated;
-    public HashMap<String, HashMap<String, String[]>> xmlFiles;
-    public HashMap<String, String> reportTypes;
-    public String[] reportsList;
-    public String generationDate;
-    public String reportPeriodDate;
-    public String entityId;
-    public String[] environments;
-    public JSONObject environmentsApiEndpoints;
+    private LambdaLogger logger;
+    private String[] reportsToBeGenerated;
+    private HashMap<String, HashMap<String, String[]>> xmlFiles;
+    private HashMap<String, String> reportTypes;
+    private String[] reportsList;
+    private String generationDate;
+    private String reportPeriodDate;
+    private String entityId;
+    private String organizationId;
+    private String[] environments;
+    private JSONObject environmentsApiEndpoints;
 
-    public ReportsGeneratorHandler(LambdaLogger logger, ReportGeneratorConfig reportGeneratorConfig,
+    public ReportsGeneratorHandler(LambdaLogger logger, 
                                    String[] reportsToBeGenerated, HashMap<String, HashMap<String, String[]>> xmlFiles,
                                    String[] environments, JSONObject environmentsApiEndpoints,
-                                   String generationDate, String reportPeriodDate, String entityId) {
+                                   String generationDate, String reportPeriodDate, String entityId, String organizationId) {
         this.logger = logger;
-        this.config = reportGeneratorConfig;
         this.reportsToBeGenerated = reportsToBeGenerated;
         this.xmlFiles = xmlFiles;
         this.environments = environments;
         this.generationDate = generationDate;
         this.reportPeriodDate = reportPeriodDate;
         this.entityId = entityId;
+        this.organizationId = organizationId;
         setReportTypes();
 
         this.environmentsApiEndpoints = environmentsApiEndpoints;
@@ -66,7 +66,7 @@ public class ReportsGeneratorHandler {
     }
 
     public String generateOutputFolder(String environment){    	
-        return this.config.get("s3path.Output") + "/" +  this.reportPeriodDate + "/" + this.generationDate + "/" + environment;
+        return ReportGeneratorConfig.getValue("s3path.Output") + "/" +  this.reportPeriodDate + "/" + this.generationDate + "/" + environment;
     }
 
     public void validateIfReportIsSupported(String report) {
@@ -86,12 +86,12 @@ public class ReportsGeneratorHandler {
 
     public void generateReport(String[] xmlFiles, String reportName, String outputFolder, String apiEndpoint) throws Exception {
         try {
-            ReportGenerator reportGenerator = new ReportGenerator(this.logger, this.config);
+            ReportGenerator reportGenerator = new ReportGenerator(this.logger);
             String reportType = this.reportTypes.get(reportName);
     
             String templatesPath = reportType.equals(StringLiterals.TYPE_XLS) ?
-                    this.config.get("s3path.Templates.Excel") :
-                    this.config.get("s3path.Templates.PDF");     
+                    ReportGeneratorConfig.getValue("s3path.Templates.Excel") :
+                        ReportGeneratorConfig.getValue("s3path.Templates.PDF");     
     
             if(xmlFiles.length == 0)
                 logger.log("No XML files provided for report " + reportName);
@@ -105,6 +105,7 @@ public class ReportsGeneratorHandler {
                         templatesPath,
                         outputFolder, 
                         this.entityId,
+                        this.organizationId,
                         this.generationDate,
                         apiEndpoint);
             }

@@ -22,9 +22,9 @@ public class AmazonDynamoDBConsumer {
     private final String tableName;
     private final String bucketName;
 
-    public AmazonDynamoDBConsumer(LambdaLogger logger, ReportGeneratorConfig reportGeneratorConfig) {
+    public AmazonDynamoDBConsumer(LambdaLogger logger) {
         this.logger = logger;
-        this.region = Region.of(reportGeneratorConfig.get("aws.region"));
+        this.region = Region.of(ReportGeneratorConfig.getValue("aws.region"));
 
         this.client = DynamoDbClient.builder()
                 .region(region)
