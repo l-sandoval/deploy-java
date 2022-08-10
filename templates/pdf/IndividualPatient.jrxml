@@ -57,8 +57,10 @@
 	<parameter name="SystolicBloodPressureAverageTotalReadings" class="java.lang.String"/>
 	<parameter name="IUGOReport-PatientDemographics-TimeSpent" class="java.lang.String"/>
 	<parameter name="IUGOReport-BloodGlucose" class="net.sf.jasperreports.engine.data.JRCsvDataSource"/>
-	<parameter name="IUGOReport-PatientDemographics-InsuranceName" class="java.lang.String"/>
-	<parameter name="IUGOReport-PatientDemographics-InsuranceNumber" class="java.lang.String"/>
+	<parameter name="IUGOReport-PatientDemographics-PrimaryInsuranceName" class="java.lang.String"/>
+	<parameter name="IUGOReport-PatientDemographics-PrimaryInsuranceNumber" class="java.lang.String"/>
+	<parameter name="IUGOReport-PatientDemographics-SecondaryInsuranceName" class="java.lang.String"/>
+	<parameter name="IUGOReport-PatientDemographics-SecondaryInsuranceNumber" class="java.lang.String"/>
 	<parameter name="IUGOReport-Logo" class="java.lang.String"/>
 	<parameter name="DateFormatOut" class="java.lang.String" isForPrompting="false">
 		<defaultValueExpression><![CDATA["MM/dd/YYYY"]]></defaultValueExpression>
@@ -105,7 +107,7 @@
 				<textElement verticalAlignment="Middle">
 					<font fontName="Tahoma" size="14"/>
 				</textElement>
-				<textFieldExpression><![CDATA[$P{IUGOReport-PatientDemographics-LastName}+", "+$P{IUGOReport-PatientDemographics-FirstName}+" "+$P{IUGOReport-PatientDemographics-Age}+$P{IUGOReport-PatientDemographics-Gender}+", "+ $P{IUGOReport-PatientDemographics-InsuranceName}+" # "+$P{IUGOReport-PatientDemographics-InsuranceNumber}]]></textFieldExpression>
+				<textFieldExpression><![CDATA[$P{IUGOReport-PatientDemographics-LastName}+", "+$P{IUGOReport-PatientDemographics-FirstName}+" "+$P{IUGOReport-PatientDemographics-Age}+$P{IUGOReport-PatientDemographics-Gender}+", "+ $P{IUGOReport-PatientDemographics-PrimaryInsuranceName}+" # "+$P{IUGOReport-PatientDemographics-PrimaryInsuranceNumber}]]></textFieldExpression>
 			</textField>
 			<image scaleImage="RetainShape" hAlign="Center" vAlign="Middle">
 				<reportElement x="403" y="0" width="189" height="54" uuid="1addc1d8-be95-49b9-b559-4ed191c0d087">
@@ -119,10 +121,10 @@
 	<columnHeader>
 		<band height="654" splitType="Prevent">
 			<frame>
-				<reportElement x="3" y="20" width="255" height="300" uuid="e23bf941-3831-4ebe-8da1-31be5b02f4f0">
+				<reportElement x="3" y="0" width="290" height="424" uuid="e23bf941-3831-4ebe-8da1-31be5b02f4f0">
 					<property name="com.jaspersoft.studio.unit.y" value="px"/>
-					<property name="com.jaspersoft.studio.unit.height" value="px"/>
 					<property name="com.jaspersoft.studio.unit.width" value="px"/>
+					<property name="com.jaspersoft.studio.unit.height" value="px"/>
 				</reportElement>
 				<box padding="0">
 					<pen lineWidth="1.0" lineStyle="Solid" lineColor="#127EC2"/>
@@ -132,7 +134,7 @@
 					<rightPen lineWidth="1.0" lineStyle="Solid" lineColor="#127EC2"/>
 				</box>
 				<staticText>
-					<reportElement mode="Opaque" x="0" y="0" width="255" height="30" forecolor="#FFFFFF" backcolor="#127EC2" uuid="abec6966-3c72-42e0-96c7-13e9650b2ba7">
+					<reportElement mode="Opaque" x="0" y="0" width="290" height="30" forecolor="#FFFFFF" backcolor="#127EC2" uuid="abec6966-3c72-42e0-96c7-13e9650b2ba7">
 						<property name="com.jaspersoft.studio.unit.width" value="px"/>
 					</reportElement>
 					<box topPadding="1" leftPadding="5" bottomPadding="1" rightPadding="1"/>
@@ -142,10 +144,11 @@
 					<text><![CDATA[Patient Demographics]]></text>
 				</staticText>
 				<textField>
-					<reportElement x="90" y="30" width="165" height="28" uuid="a1522720-dc5d-4dbf-8d96-220d4f699f99">
+					<reportElement x="165" y="30" width="120" height="32" uuid="a1522720-dc5d-4dbf-8d96-220d4f699f99">
+						<property name="com.jaspersoft.studio.unit.width" value="px"/>
+						<property name="com.jaspersoft.studio.unit.x" value="px"/>
 						<property name="com.jaspersoft.studio.unit.height" value="px"/>
 						<property name="com.jaspersoft.studio.unit.y" value="px"/>
-						<property name="com.jaspersoft.studio.unit.width" value="px"/>
 					</reportElement>
 					<box padding="1"/>
 					<textElement verticalAlignment="Middle">
@@ -154,10 +157,9 @@
 					<textFieldExpression><![CDATA[$P{IUGOReport-PatientDemographics-LastName}]]></textFieldExpression>
 				</textField>
 				<textField>
-					<reportElement x="90" y="60" width="165" height="28" uuid="a92cbe6e-25cf-4f01-aa57-1ec1e42ae030">
-						<property name="com.jaspersoft.studio.unit.x" value="px"/>
+					<reportElement x="165" y="63" width="120" height="32" uuid="a92cbe6e-25cf-4f01-aa57-1ec1e42ae030">
 						<property name="com.jaspersoft.studio.unit.y" value="px"/>
-						<property name="com.jaspersoft.studio.unit.width" value="px"/>
+						<property name="com.jaspersoft.studio.unit.height" value="px"/>
 					</reportElement>
 					<box padding="1"/>
 					<textElement verticalAlignment="Middle">
@@ -166,8 +168,9 @@
 					<textFieldExpression><![CDATA[$P{IUGOReport-PatientDemographics-FirstName}]]></textFieldExpression>
 				</textField>
 				<textField>
-					<reportElement x="90" y="90" width="165" height="28" uuid="2d7fbf20-f3a0-4871-a2c9-17b59ac0c8b3">
-						<property name="com.jaspersoft.studio.unit.x" value="px"/>
+					<reportElement x="165" y="96" width="120" height="32" uuid="2d7fbf20-f3a0-4871-a2c9-17b59ac0c8b3">
+						<property name="com.jaspersoft.studio.unit.width" value="px"/>
+						<property name="com.jaspersoft.studio.unit.height" value="px"/>
 						<property name="com.jaspersoft.studio.unit.y" value="px"/>
 					</reportElement>
 					<box padding="1"/>
@@ -177,8 +180,9 @@
 					<textFieldExpression><![CDATA[$P{IUGOReport-PatientDemographics-Age}+$P{IUGOReport-PatientDemographics-Gender}]]></textFieldExpression>
 				</textField>
 				<textField>
-					<reportElement x="90" y="120" width="165" height="28" uuid="426f5bca-830c-4f82-94fa-cc7bd0f6198d">
-						<property name="com.jaspersoft.studio.unit.x" value="px"/>
+					<reportElement x="165" y="129" width="120" height="32" uuid="426f5bca-830c-4f82-94fa-cc7bd0f6198d">
+						<property name="com.jaspersoft.studio.unit.width" value="px"/>
+						<property name="com.jaspersoft.studio.unit.height" value="px"/>
 						<property name="com.jaspersoft.studio.unit.y" value="px"/>
 					</reportElement>
 					<box padding="1"/>
@@ -188,19 +192,21 @@
 					<textFieldExpression><![CDATA[new java.text.SimpleDateFormat($P{DateFormatOut}).format(new java.text.SimpleDateFormat("yyyy-MM-dd").parse($P{IUGOReport-PatientDemographics-DoB}))]]></textFieldExpression>
 				</textField>
 				<textField>
-					<reportElement x="90" y="150" width="165" height="28" uuid="b83353cc-db6f-415c-8642-e6dce945bc28">
-						<property name="com.jaspersoft.studio.unit.x" value="px"/>
+					<reportElement x="165" y="195" width="120" height="32" uuid="b83353cc-db6f-415c-8642-e6dce945bc28">
+						<property name="com.jaspersoft.studio.unit.width" value="px"/>
+						<property name="com.jaspersoft.studio.unit.height" value="px"/>
 						<property name="com.jaspersoft.studio.unit.y" value="px"/>
 					</reportElement>
 					<box padding="1"/>
 					<textElement verticalAlignment="Middle">
 						<font fontName="Arial" size="12"/>
 					</textElement>
-					<textFieldExpression><![CDATA[$P{IUGOReport-PatientDemographics-InsuranceNumber}]]></textFieldExpression>
+					<textFieldExpression><![CDATA[$P{IUGOReport-PatientDemographics-PrimaryInsuranceNumber}]]></textFieldExpression>
 				</textField>
 				<textField>
-					<reportElement x="90" y="180" width="165" height="28" uuid="6afaad77-afb0-4b3b-b507-d8605b5a7f93">
-						<property name="com.jaspersoft.studio.unit.x" value="px"/>
+					<reportElement x="165" y="294" width="120" height="32" uuid="6afaad77-afb0-4b3b-b507-d8605b5a7f93">
+						<property name="com.jaspersoft.studio.unit.width" value="px"/>
+						<property name="com.jaspersoft.studio.unit.height" value="px"/>
 						<property name="com.jaspersoft.studio.unit.y" value="px"/>
 					</reportElement>
 					<box padding="1"/>
@@ -210,8 +216,9 @@
 					<textFieldExpression><![CDATA[$P{IUGOReport-Provider-Name}]]></textFieldExpression>
 				</textField>
 				<textField>
-					<reportElement x="90" y="210" width="165" height="28" uuid="d54c4c3b-7799-4b4f-8e63-b90808c2ebe3">
-						<property name="com.jaspersoft.studio.unit.x" value="px"/>
+					<reportElement x="165" y="326" width="120" height="32" uuid="d54c4c3b-7799-4b4f-8e63-b90808c2ebe3">
+						<property name="com.jaspersoft.studio.unit.width" value="px"/>
+						<property name="com.jaspersoft.studio.unit.height" value="px"/>
 						<property name="com.jaspersoft.studio.unit.y" value="px"/>
 					</reportElement>
 					<box padding="1"/>
@@ -221,8 +228,9 @@
 					<textFieldExpression><![CDATA[$P{IUGOReport-Provider-NPI}]]></textFieldExpression>
 				</textField>
 				<textField>
-					<reportElement x="90" y="240" width="165" height="28" uuid="2f456346-441a-440d-b8e1-a0cca8509e66">
-						<property name="com.jaspersoft.studio.unit.x" value="px"/>
+					<reportElement x="165" y="359" width="120" height="32" uuid="2f456346-441a-440d-b8e1-a0cca8509e66">
+						<property name="com.jaspersoft.studio.unit.width" value="px"/>
+						<property name="com.jaspersoft.studio.unit.height" value="px"/>
 						<property name="com.jaspersoft.studio.unit.y" value="px"/>
 					</reportElement>
 					<box padding="1"/>
@@ -232,8 +240,9 @@
 					<textFieldExpression><![CDATA[$P{IUGOReport-PatientDemographics-Status}]]></textFieldExpression>
 				</textField>
 				<staticText>
-					<reportElement x="5" y="30" width="67" height="28" uuid="7ba9bd0b-1c4c-499d-895d-8865c7eb1c8f">
+					<reportElement x="5" y="30" width="155" height="32" uuid="7ba9bd0b-1c4c-499d-895d-8865c7eb1c8f">
 						<property name="com.jaspersoft.studio.unit.x" value="px"/>
+						<property name="com.jaspersoft.studio.unit.y" value="px"/>
 						<property name="com.jaspersoft.studio.unit.width" value="px"/>
 					</reportElement>
 					<box padding="1"/>
@@ -243,8 +252,9 @@
 					<text><![CDATA[Last Name]]></text>
 				</staticText>
 				<staticText>
-					<reportElement x="5" y="60" width="67" height="28" uuid="59e54597-1f2c-4e64-b6f3-52c49de3826b">
+					<reportElement x="5" y="63" width="155" height="32" uuid="59e54597-1f2c-4e64-b6f3-52c49de3826b">
 						<property name="com.jaspersoft.studio.unit.x" value="px"/>
+						<property name="com.jaspersoft.studio.unit.y" value="px"/>
 						<property name="com.jaspersoft.studio.unit.width" value="px"/>
 					</reportElement>
 					<box padding="1"/>
@@ -254,7 +264,7 @@
 					<text><![CDATA[First Name]]></text>
 				</staticText>
 				<staticText>
-					<reportElement x="5" y="90" width="67" height="28" uuid="cd098435-af3a-49b9-be8d-a8a42ff1c627">
+					<reportElement x="5" y="96" width="155" height="32" uuid="cd098435-af3a-49b9-be8d-a8a42ff1c627">
 						<property name="com.jaspersoft.studio.unit.x" value="px"/>
 					</reportElement>
 					<box padding="1"/>
@@ -264,7 +274,7 @@
 					<text><![CDATA[Age/Gender]]></text>
 				</staticText>
 				<staticText>
-					<reportElement x="5" y="120" width="67" height="28" uuid="95bb062f-8e4c-4403-9100-91ac3c629acf">
+					<reportElement x="5" y="129" width="155" height="32" uuid="95bb062f-8e4c-4403-9100-91ac3c629acf">
 						<property name="com.jaspersoft.studio.unit.x" value="px"/>
 					</reportElement>
 					<box padding="1"/>
@@ -274,7 +284,7 @@
 					<text><![CDATA[D.O.B.]]></text>
 				</staticText>
 				<staticText>
-					<reportElement x="5" y="180" width="67" height="28" uuid="041fc9dc-495d-4c03-badd-aa3e7311bcbf">
+					<reportElement x="6" y="294" width="155" height="32" uuid="041fc9dc-495d-4c03-badd-aa3e7311bcbf">
 						<property name="com.jaspersoft.studio.unit.x" value="px"/>
 					</reportElement>
 					<box padding="1"/>
@@ -284,7 +294,7 @@
 					<text><![CDATA[Provider]]></text>
 				</staticText>
 				<staticText>
-					<reportElement x="5" y="210" width="67" height="28" uuid="a24398b4-bfd0-4482-af66-385f7c71333c">
+					<reportElement x="6" y="326" width="155" height="32" uuid="a24398b4-bfd0-4482-af66-385f7c71333c">
 						<property name="com.jaspersoft.studio.unit.x" value="px"/>
 					</reportElement>
 					<box padding="1"/>
@@ -294,7 +304,7 @@
 					<text><![CDATA[NPI]]></text>
 				</staticText>
 				<staticText>
-					<reportElement x="5" y="240" width="67" height="28" uuid="b2c00f79-9264-4720-9b81-b7a05f375c0b">
+					<reportElement x="6" y="359" width="155" height="32" uuid="b2c00f79-9264-4720-9b81-b7a05f375c0b">
 						<property name="com.jaspersoft.studio.unit.x" value="px"/>
 					</reportElement>
 					<box padding="1"/>
@@ -304,9 +314,9 @@
 					<text><![CDATA[Status]]></text>
 				</staticText>
 				<staticText>
-					<reportElement x="5" y="270" width="67" height="28" uuid="179cda7e-29eb-48c7-8d27-63a8469a6bfa">
-						<property name="com.jaspersoft.studio.unit.height" value="px"/>
+					<reportElement x="6" y="392" width="155" height="32" uuid="179cda7e-29eb-48c7-8d27-63a8469a6bfa">
 						<property name="com.jaspersoft.studio.unit.x" value="px"/>
+						<property name="com.jaspersoft.studio.unit.height" value="px"/>
 					</reportElement>
 					<box padding="1"/>
 					<textElement textAlignment="Left" verticalAlignment="Middle">
@@ -315,9 +325,8 @@
 					<text><![CDATA[Time Spent]]></text>
 				</staticText>
 				<textField>
-					<reportElement x="90" y="270" width="165" height="28" uuid="767fd062-d527-466c-9410-82ae9d46a773">
-						<property name="com.jaspersoft.studio.unit.x" value="px"/>
-						<property name="com.jaspersoft.studio.unit.height" value="px"/>
+					<reportElement x="165" y="392" width="120" height="32" uuid="767fd062-d527-466c-9410-82ae9d46a773">
+						<property name="com.jaspersoft.studio.unit.width" value="px"/>
 						<property name="com.jaspersoft.studio.unit.y" value="px"/>
 					</reportElement>
 					<box padding="1"/>
@@ -326,23 +335,89 @@
 					</textElement>
 					<textFieldExpression><![CDATA[$P{IUGOReport-PatientDemographics-TimeSpent}]]></textFieldExpression>
 				</textField>
-				<textField>
-					<reportElement x="5" y="150" width="67" height="28" uuid="7d5050a1-f125-4d62-8068-d8fce9d55e98">
-						<property name="com.jaspersoft.studio.unit.x" value="px"/>
+				<textField isBlankWhenNull="true">
+					<reportElement x="165" y="261" width="120" height="32" uuid="ffd3b173-ece0-404b-8170-ac2a6ff5027c">
 						<property name="com.jaspersoft.studio.unit.width" value="px"/>
+						<property name="com.jaspersoft.studio.unit.height" value="px"/>
 						<property name="com.jaspersoft.studio.unit.y" value="px"/>
+					</reportElement>
+					<box padding="1"/>
+					<textElement verticalAlignment="Middle">
+						<font fontName="Arial" size="12"/>
+					</textElement>
+					<textFieldExpression><![CDATA[$P{IUGOReport-PatientDemographics-SecondaryInsuranceNumber}]]></textFieldExpression>
+				</textField>
+				<staticText>
+					<reportElement x="5" y="162" width="155" height="32" uuid="7c22e23e-6bdb-4447-bf90-e47591360922">
+						<property name="com.jaspersoft.studio.unit.x" value="px"/>
 					</reportElement>
 					<box padding="1"/>
 					<textElement textAlignment="Left" verticalAlignment="Middle">
 						<font fontName="Arial" size="12"/>
 					</textElement>
-					<textFieldExpression><![CDATA[$P{IUGOReport-PatientDemographics-InsuranceName}]]></textFieldExpression>
+					<text><![CDATA[Primary Insurance Name]]></text>
+				</staticText>
+				<staticText>
+					<reportElement x="5" y="195" width="155" height="32" uuid="2885ec72-24e9-4bac-81e9-886a12fbbd6b">
+						<property name="com.jaspersoft.studio.unit.x" value="px"/>
+					</reportElement>
+					<box padding="1"/>
+					<textElement textAlignment="Left" verticalAlignment="Middle">
+						<font fontName="Arial" size="12"/>
+					</textElement>
+					<text><![CDATA[Primary Insurance Number]]></text>
+				</staticText>
+				<staticText>
+					<reportElement x="5" y="228" width="155" height="32" uuid="ffb0d5f3-5652-44c3-af0b-9109d00ed5df">
+						<property name="com.jaspersoft.studio.unit.x" value="px"/>
+					</reportElement>
+					<box padding="1"/>
+					<textElement textAlignment="Left" verticalAlignment="Middle">
+						<font fontName="Arial" size="12"/>
+					</textElement>
+					<text><![CDATA[Secondary Insurance Name]]></text>
+				</staticText>
+				<staticText>
+					<reportElement x="5" y="261" width="155" height="32" uuid="4221a992-df14-45ac-8bd9-ca1d42dfe568">
+						<property name="com.jaspersoft.studio.unit.x" value="px"/>
+					</reportElement>
+					<box padding="1"/>
+					<textElement textAlignment="Left" verticalAlignment="Middle">
+						<font fontName="Arial" size="12"/>
+					</textElement>
+					<text><![CDATA[Secondary Insurance Number]]></text>
+				</staticText>
+				<textField>
+					<reportElement x="165" y="162" width="120" height="32" uuid="492db6ea-80fc-4f38-8088-9df62e8dfd26">
+						<property name="com.jaspersoft.studio.unit.width" value="px"/>
+						<property name="com.jaspersoft.studio.unit.x" value="px"/>
+						<property name="com.jaspersoft.studio.unit.height" value="px"/>
+						<property name="com.jaspersoft.studio.unit.y" value="px"/>
+					</reportElement>
+					<box padding="1"/>
+					<textElement verticalAlignment="Middle">
+						<font fontName="Arial" size="12"/>
+					</textElement>
+					<textFieldExpression><![CDATA[$P{IUGOReport-PatientDemographics-PrimaryInsuranceName}]]></textFieldExpression>
+				</textField>
+				<textField isBlankWhenNull="true">
+					<reportElement x="165" y="228" width="120" height="32" uuid="700338b5-3f8c-4bbc-9cd4-eb1f3a6e53bd">
+						<property name="com.jaspersoft.studio.unit.width" value="px"/>
+						<property name="com.jaspersoft.studio.unit.x" value="px"/>
+						<property name="com.jaspersoft.studio.unit.height" value="px"/>
+						<property name="com.jaspersoft.studio.unit.y" value="px"/>
+					</reportElement>
+					<box padding="1"/>
+					<textElement verticalAlignment="Middle">
+						<font fontName="Arial" size="12"/>
+					</textElement>
+					<textFieldExpression><![CDATA[$P{IUGOReport-PatientDemographics-SecondaryInsuranceName}]]></textFieldExpression>
 				</textField>
 			</frame>
 			<frame>
-				<reportElement x="302" y="20" width="290" height="300" uuid="77a20642-f953-484a-9b37-e67073117508">
-					<property name="com.jaspersoft.studio.unit.height" value="px"/>
+				<reportElement x="302" y="0" width="290" height="424" uuid="77a20642-f953-484a-9b37-e67073117508">
 					<property name="com.jaspersoft.studio.unit.width" value="px"/>
+					<property name="com.jaspersoft.studio.unit.height" value="px"/>
 				</reportElement>
 				<box>
 					<pen lineColor="#127EC2"/>
@@ -362,10 +437,10 @@
 					<text><![CDATA[Blood Pressure]]></text>
 				</staticText>
 				<staticText>
-					<reportElement x="5" y="30" width="146" height="28" uuid="85683a3e-0898-4fbc-97f0-997a2122aae9">
-						<property name="com.jaspersoft.studio.unit.width" value="px"/>
-						<property name="com.jaspersoft.studio.unit.height" value="px"/>
+					<reportElement x="5" y="30" width="160" height="34" uuid="85683a3e-0898-4fbc-97f0-997a2122aae9">
 						<property name="com.jaspersoft.studio.unit.x" value="px"/>
+						<property name="com.jaspersoft.studio.unit.height" value="px"/>
+						<property name="com.jaspersoft.studio.unit.width" value="px"/>
 					</reportElement>
 					<box padding="1"/>
 					<textElement textAlignment="Left" verticalAlignment="Middle">
@@ -374,9 +449,10 @@
 					<text><![CDATA[Average Blood Pressure]]></text>
 				</staticText>
 				<staticText>
-					<reportElement x="5" y="60" width="146" height="28" uuid="429c5d39-e7cc-46ad-baec-e546d9364422">
-						<property name="com.jaspersoft.studio.unit.width" value="px"/>
+					<reportElement x="5" y="65" width="160" height="34" uuid="429c5d39-e7cc-46ad-baec-e546d9364422">
 						<property name="com.jaspersoft.studio.unit.x" value="px"/>
+						<property name="com.jaspersoft.studio.unit.height" value="px"/>
+						<property name="com.jaspersoft.studio.unit.width" value="px"/>
 					</reportElement>
 					<box padding="1"/>
 					<textElement textAlignment="Left" verticalAlignment="Middle">
@@ -385,9 +461,10 @@
 					<text><![CDATA[Average Pulse]]></text>
 				</staticText>
 				<staticText>
-					<reportElement x="5" y="90" width="146" height="28" uuid="1c9a0d20-bf21-4466-89c3-9d4437159915">
-						<property name="com.jaspersoft.studio.unit.width" value="px"/>
+					<reportElement x="5" y="100" width="160" height="34" uuid="1c9a0d20-bf21-4466-89c3-9d4437159915">
 						<property name="com.jaspersoft.studio.unit.x" value="px"/>
+						<property name="com.jaspersoft.studio.unit.height" value="px"/>
+						<property name="com.jaspersoft.studio.unit.width" value="px"/>
 					</reportElement>
 					<box padding="1"/>
 					<textElement textAlignment="Left" verticalAlignment="Middle">
@@ -396,9 +473,10 @@
 					<text><![CDATA[# Critical Readings]]></text>
 				</staticText>
 				<staticText>
-					<reportElement x="5" y="120" width="146" height="28" uuid="0a402869-df8e-41f8-8a4a-33e75d851c98">
-						<property name="com.jaspersoft.studio.unit.width" value="px"/>
+					<reportElement x="5" y="135" width="160" height="34" uuid="0a402869-df8e-41f8-8a4a-33e75d851c98">
 						<property name="com.jaspersoft.studio.unit.x" value="px"/>
+						<property name="com.jaspersoft.studio.unit.height" value="px"/>
+						<property name="com.jaspersoft.studio.unit.width" value="px"/>
 					</reportElement>
 					<box padding="1"/>
 					<textElement textAlignment="Left" verticalAlignment="Middle">
@@ -407,9 +485,10 @@
 					<text><![CDATA[# At Risk Readings]]></text>
 				</staticText>
 				<staticText>
-					<reportElement x="5" y="150" width="146" height="28" uuid="e39e3074-37f5-4e64-9429-00d920bcb046">
-						<property name="com.jaspersoft.studio.unit.width" value="px"/>
+					<reportElement x="5" y="170" width="160" height="34" uuid="e39e3074-37f5-4e64-9429-00d920bcb046">
 						<property name="com.jaspersoft.studio.unit.x" value="px"/>
+						<property name="com.jaspersoft.studio.unit.height" value="px"/>
+						<property name="com.jaspersoft.studio.unit.width" value="px"/>
 					</reportElement>
 					<box padding="1"/>
 					<textElement textAlignment="Left" verticalAlignment="Middle">
@@ -418,9 +497,10 @@
 					<text><![CDATA[Systolic +/- from Last Report]]></text>
 				</staticText>
 				<staticText>
-					<reportElement x="5" y="180" width="146" height="28" uuid="5d2048e9-66c1-4a8f-8600-00ab84df42a7">
-						<property name="com.jaspersoft.studio.unit.width" value="px"/>
+					<reportElement x="5" y="205" width="160" height="34" uuid="5d2048e9-66c1-4a8f-8600-00ab84df42a7">
 						<property name="com.jaspersoft.studio.unit.x" value="px"/>
+						<property name="com.jaspersoft.studio.unit.height" value="px"/>
+						<property name="com.jaspersoft.studio.unit.width" value="px"/>
 					</reportElement>
 					<box padding="1"/>
 					<textElement textAlignment="Left" verticalAlignment="Middle">
@@ -429,9 +509,10 @@
 					<text><![CDATA[Diastolic +/- from Last Report]]></text>
 				</staticText>
 				<staticText>
-					<reportElement x="5" y="210" width="146" height="28" uuid="ad6b4cd9-bbe0-4bf6-8e2b-302a45f9c5a3">
-						<property name="com.jaspersoft.studio.unit.width" value="px"/>
+					<reportElement x="5" y="240" width="160" height="34" uuid="ad6b4cd9-bbe0-4bf6-8e2b-302a45f9c5a3">
 						<property name="com.jaspersoft.studio.unit.x" value="px"/>
+						<property name="com.jaspersoft.studio.unit.height" value="px"/>
+						<property name="com.jaspersoft.studio.unit.width" value="px"/>
 					</reportElement>
 					<box padding="1"/>
 					<textElement textAlignment="Left" verticalAlignment="Middle">
@@ -440,9 +521,10 @@
 					<text><![CDATA[Pulse +/- from Last Report]]></text>
 				</staticText>
 				<staticText>
-					<reportElement x="5" y="240" width="146" height="28" uuid="df076d25-24b1-4f7d-aaa6-14fd4b4889e4">
-						<property name="com.jaspersoft.studio.unit.width" value="px"/>
+					<reportElement x="5" y="275" width="160" height="34" uuid="df076d25-24b1-4f7d-aaa6-14fd4b4889e4">
 						<property name="com.jaspersoft.studio.unit.x" value="px"/>
+						<property name="com.jaspersoft.studio.unit.height" value="px"/>
+						<property name="com.jaspersoft.studio.unit.width" value="px"/>
 					</reportElement>
 					<box padding="1"/>
 					<textElement textAlignment="Left" verticalAlignment="Middle">
@@ -451,10 +533,11 @@
 					<text><![CDATA[Billable Reading Days]]></text>
 				</staticText>
 				<staticText>
-					<reportElement x="5" y="270" width="146" height="28" uuid="10c80bce-cac4-4fa5-a57d-2815f026a73f">
-						<property name="com.jaspersoft.studio.unit.width" value="px"/>
+					<reportElement x="5" y="310" width="160" height="34" uuid="10c80bce-cac4-4fa5-a57d-2815f026a73f">
 						<property name="com.jaspersoft.studio.unit.x" value="px"/>
 						<property name="com.jaspersoft.studio.unit.y" value="px"/>
+						<property name="com.jaspersoft.studio.unit.height" value="px"/>
+						<property name="com.jaspersoft.studio.unit.width" value="px"/>
 					</reportElement>
 					<box padding="1"/>
 					<textElement textAlignment="Left" verticalAlignment="Middle">
@@ -463,8 +546,10 @@
 					<text><![CDATA[Total Readings]]></text>
 				</staticText>
 				<textField evaluationTime="Report">
-					<reportElement x="165" y="30" width="120" height="28" uuid="a8afd988-0ec5-42c6-9dcb-6432cb340180">
+					<reportElement x="170" y="30" width="120" height="34" uuid="a8afd988-0ec5-42c6-9dcb-6432cb340180">
 						<property name="com.jaspersoft.studio.unit.width" value="px"/>
+						<property name="com.jaspersoft.studio.unit.y" value="px"/>
+						<property name="com.jaspersoft.studio.unit.height" value="px"/>
 					</reportElement>
 					<box padding="1"/>
 					<textElement verticalAlignment="Middle">
@@ -473,7 +558,10 @@
 					<textFieldExpression><![CDATA[$P{SystolicBloodPressureAverageValue}+"/"+$P{DiastolicBloodPressureAverageValue}+" "+$P{SystolicBloodPressureAverageUnit}]]></textFieldExpression>
 				</textField>
 				<textField evaluationTime="Report">
-					<reportElement x="165" y="60" width="120" height="28" uuid="e211afd9-17da-4073-8050-c9fd98b45a43"/>
+					<reportElement x="170" y="65" width="120" height="34" uuid="e211afd9-17da-4073-8050-c9fd98b45a43">
+						<property name="com.jaspersoft.studio.unit.height" value="px"/>
+						<property name="com.jaspersoft.studio.unit.y" value="px"/>
+					</reportElement>
 					<box padding="1"/>
 					<textElement verticalAlignment="Middle">
 						<font fontName="Arial" size="12"/>
@@ -481,8 +569,10 @@
 					<textFieldExpression><![CDATA[$P{AveragePulseValue}+" "+$P{AveragePulseUnit}]]></textFieldExpression>
 				</textField>
 				<textField evaluationTime="Report" pattern="###0;###0-">
-					<reportElement x="165" y="120" width="120" height="28" uuid="77172930-5ebd-4eb2-a9bd-a20743ae4d79">
+					<reportElement x="170" y="135" width="120" height="34" uuid="77172930-5ebd-4eb2-a9bd-a20743ae4d79">
 						<property name="com.jaspersoft.studio.unit.width" value="px"/>
+						<property name="com.jaspersoft.studio.unit.height" value="px"/>
+						<property name="com.jaspersoft.studio.unit.y" value="px"/>
 					</reportElement>
 					<box padding="1"/>
 					<textElement verticalAlignment="Middle">
@@ -491,7 +581,10 @@
 					<textFieldExpression><![CDATA[$P{SystolicBloodPressureAverageAtRiskReadings}]]></textFieldExpression>
 				</textField>
 				<textField evaluationTime="Report">
-					<reportElement x="165" y="150" width="120" height="28" uuid="1f047a9d-2f58-4649-b44d-0f37f1db80cf"/>
+					<reportElement x="170" y="170" width="120" height="34" uuid="1f047a9d-2f58-4649-b44d-0f37f1db80cf">
+						<property name="com.jaspersoft.studio.unit.height" value="px"/>
+						<property name="com.jaspersoft.studio.unit.y" value="px"/>
+					</reportElement>
 					<box padding="1"/>
 					<textElement verticalAlignment="Middle">
 						<font fontName="Arial" size="12"/>
@@ -499,7 +592,10 @@
 					<textFieldExpression><![CDATA[$P{SystolicfromlastmonthValue}+" "+$P{SystolicfromlastmonthUnit}]]></textFieldExpression>
 				</textField>
 				<textField evaluationTime="Report">
-					<reportElement x="165" y="180" width="120" height="28" uuid="8fd7228f-93dc-4c12-ae72-0f420dd5cad9"/>
+					<reportElement x="170" y="205" width="120" height="34" uuid="8fd7228f-93dc-4c12-ae72-0f420dd5cad9">
+						<property name="com.jaspersoft.studio.unit.height" value="px"/>
+						<property name="com.jaspersoft.studio.unit.y" value="px"/>
+					</reportElement>
 					<box padding="1"/>
 					<textElement verticalAlignment="Middle">
 						<font fontName="Arial" size="12"/>
@@ -507,8 +603,7 @@
 					<textFieldExpression><![CDATA[$P{DiastolicfromlastmonthValue}+" "+$P{DiastolicfromlastmonthUnit}]]></textFieldExpression>
 				</textField>
 				<textField evaluationTime="Report">
-					<reportElement x="165" y="210" width="120" height="28" uuid="3aabdbd9-555b-4f18-869c-d3ba50598ecb">
-						<property name="com.jaspersoft.studio.unit.height" value="px"/>
+					<reportElement x="170" y="240" width="120" height="34" uuid="3aabdbd9-555b-4f18-869c-d3ba50598ecb">
 						<property name="com.jaspersoft.studio.unit.y" value="px"/>
 					</reportElement>
 					<box padding="1"/>
@@ -518,8 +613,10 @@
 					<textFieldExpression><![CDATA[$P{PulsefromlastreportValue}+" "+$P{PulsefromlastreportUnit}]]></textFieldExpression>
 				</textField>
 				<textField evaluationTime="Report">
-					<reportElement x="165" y="90" width="120" height="28" uuid="56caf5b9-1093-49d4-8239-2caf9bc42d6d">
+					<reportElement x="170" y="100" width="120" height="34" uuid="56caf5b9-1093-49d4-8239-2caf9bc42d6d">
 						<property name="com.jaspersoft.studio.unit.width" value="px"/>
+						<property name="com.jaspersoft.studio.unit.height" value="px"/>
+						<property name="com.jaspersoft.studio.unit.y" value="px"/>
 					</reportElement>
 					<box padding="1"/>
 					<textElement verticalAlignment="Middle">
@@ -528,10 +625,9 @@
 					<textFieldExpression><![CDATA[$P{SystolicBloodPressureAverageCriticalReadings}]]></textFieldExpression>
 				</textField>
 				<textField evaluationTime="Report">
-					<reportElement x="165" y="240" width="120" height="28" uuid="75a2f717-e337-4099-b50b-fce94456e00c">
-						<property name="com.jaspersoft.studio.unit.height" value="px"/>
-						<property name="com.jaspersoft.studio.unit.y" value="px"/>
+					<reportElement x="170" y="275" width="120" height="34" uuid="75a2f717-e337-4099-b50b-fce94456e00c">
 						<property name="com.jaspersoft.studio.unit.x" value="px"/>
+						<property name="com.jaspersoft.studio.unit.y" value="px"/>
 					</reportElement>
 					<box padding="1"/>
 					<textElement verticalAlignment="Middle">
@@ -540,10 +636,9 @@
 					<textFieldExpression><![CDATA[$P{SystolicBloodPressureAverageBillableReadingDays}]]></textFieldExpression>
 				</textField>
 				<textField evaluationTime="Report">
-					<reportElement x="165" y="270" width="120" height="28" uuid="fd273043-38ad-4eb7-bf12-8d3a98fd2582">
-						<property name="com.jaspersoft.studio.unit.height" value="px"/>
-						<property name="com.jaspersoft.studio.unit.y" value="px"/>
+					<reportElement x="170" y="310" width="120" height="34" uuid="fd273043-38ad-4eb7-bf12-8d3a98fd2582">
 						<property name="com.jaspersoft.studio.unit.x" value="px"/>
+						<property name="com.jaspersoft.studio.unit.y" value="px"/>
 					</reportElement>
 					<box padding="1"/>
 					<textElement verticalAlignment="Middle">
@@ -553,10 +648,11 @@
 				</textField>
 			</frame>
 			<frame>
-				<reportElement x="302" y="370" width="290" height="200" uuid="897d4c8d-44e2-41b9-850e-15e6dfa2bb5e">
-					<property name="com.jaspersoft.studio.unit.height" value="px"/>
+				<reportElement x="302" y="434" width="290" height="220" uuid="897d4c8d-44e2-41b9-850e-15e6dfa2bb5e">
 					<property name="com.jaspersoft.studio.unit.width" value="px"/>
 					<property name="com.jaspersoft.studio.unit.x" value="px"/>
+					<property name="com.jaspersoft.studio.unit.y" value="px"/>
+					<property name="com.jaspersoft.studio.unit.height" value="px"/>
 				</reportElement>
 				<box>
 					<pen lineColor="#127EC2"/>
@@ -576,9 +672,8 @@
 					<text><![CDATA[Blood Glucose]]></text>
 				</staticText>
 				<staticText>
-					<reportElement x="5" y="31" width="146" height="28" uuid="db77542b-1e3e-4cd4-b5e6-5b4985bad260">
+					<reportElement x="5" y="32" width="146" height="30" uuid="db77542b-1e3e-4cd4-b5e6-5b4985bad260">
 						<property name="com.jaspersoft.studio.unit.width" value="px"/>
-						<property name="com.jaspersoft.studio.unit.height" value="px"/>
 						<property name="com.jaspersoft.studio.unit.x" value="px"/>
 					</reportElement>
 					<box padding="1"/>
@@ -588,9 +683,10 @@
 					<text><![CDATA[Average Blood Glucose]]></text>
 				</staticText>
 				<staticText>
-					<reportElement x="5" y="59" width="146" height="28" uuid="c2dcceae-0bcc-431f-86cc-8192055be825">
+					<reportElement x="5" y="63" width="146" height="30" uuid="c2dcceae-0bcc-431f-86cc-8192055be825">
 						<property name="com.jaspersoft.studio.unit.width" value="px"/>
 						<property name="com.jaspersoft.studio.unit.x" value="px"/>
+						<property name="com.jaspersoft.studio.unit.height" value="px"/>
 					</reportElement>
 					<box padding="1"/>
 					<textElement textAlignment="Left" verticalAlignment="Middle">
@@ -599,9 +695,10 @@
 					<text><![CDATA[# Critical Readings]]></text>
 				</staticText>
 				<staticText>
-					<reportElement x="5" y="87" width="146" height="28" uuid="d202bcd0-0f02-4d52-b54d-35942b9bb3ed">
+					<reportElement x="5" y="94" width="146" height="30" uuid="d202bcd0-0f02-4d52-b54d-35942b9bb3ed">
 						<property name="com.jaspersoft.studio.unit.width" value="px"/>
 						<property name="com.jaspersoft.studio.unit.x" value="px"/>
+						<property name="com.jaspersoft.studio.unit.height" value="px"/>
 					</reportElement>
 					<box padding="1"/>
 					<textElement textAlignment="Left" verticalAlignment="Middle">
@@ -610,9 +707,10 @@
 					<text><![CDATA[# At Risk Readings]]></text>
 				</staticText>
 				<staticText>
-					<reportElement x="5" y="115" width="146" height="28" uuid="1c2730e0-4696-4f99-bd90-a785408f9e9d">
+					<reportElement x="5" y="125" width="146" height="30" uuid="1c2730e0-4696-4f99-bd90-a785408f9e9d">
 						<property name="com.jaspersoft.studio.unit.width" value="px"/>
 						<property name="com.jaspersoft.studio.unit.x" value="px"/>
+						<property name="com.jaspersoft.studio.unit.height" value="px"/>
 					</reportElement>
 					<box padding="1"/>
 					<textElement textAlignment="Left" verticalAlignment="Middle">
@@ -621,9 +719,10 @@
 					<text><![CDATA[+/- from Last Report]]></text>
 				</staticText>
 				<staticText>
-					<reportElement x="5" y="143" width="146" height="28" uuid="db7fd6f2-66b8-4d34-b16e-eeb0e25ca418">
+					<reportElement x="5" y="156" width="146" height="30" uuid="db7fd6f2-66b8-4d34-b16e-eeb0e25ca418">
 						<property name="com.jaspersoft.studio.unit.width" value="px"/>
 						<property name="com.jaspersoft.studio.unit.x" value="px"/>
+						<property name="com.jaspersoft.studio.unit.height" value="px"/>
 					</reportElement>
 					<box padding="1"/>
 					<textElement textAlignment="Left" verticalAlignment="Middle">
@@ -632,9 +731,10 @@
 					<text><![CDATA[Billable Reading Days]]></text>
 				</staticText>
 				<staticText>
-					<reportElement x="5" y="172" width="146" height="28" uuid="fd8ffa61-7507-42bf-ac98-bb22d127c46e">
+					<reportElement x="5" y="187" width="146" height="30" uuid="fd8ffa61-7507-42bf-ac98-bb22d127c46e">
 						<property name="com.jaspersoft.studio.unit.width" value="px"/>
 						<property name="com.jaspersoft.studio.unit.x" value="px"/>
+						<property name="com.jaspersoft.studio.unit.height" value="px"/>
 					</reportElement>
 					<box padding="1"/>
 					<textElement textAlignment="Left" verticalAlignment="Middle">
@@ -643,9 +743,11 @@
 					<text><![CDATA[Total Readings]]></text>
 				</staticText>
 				<textField evaluationTime="Report">
-					<reportElement x="165" y="30" width="120" height="28" uuid="0791469e-17b7-404d-a3c2-a7df3f544421">
+					<reportElement x="165" y="32" width="120" height="30" uuid="0791469e-17b7-404d-a3c2-a7df3f544421">
 						<property name="com.jaspersoft.studio.unit.width" value="px"/>
 						<property name="com.jaspersoft.studio.unit.x" value="px"/>
+						<property name="com.jaspersoft.studio.unit.y" value="px"/>
+						<property name="com.jaspersoft.studio.unit.height" value="px"/>
 					</reportElement>
 					<box padding="1"/>
 					<textElement verticalAlignment="Middle">
@@ -654,9 +756,11 @@
 					<textFieldExpression><![CDATA[$P{AverageBloodGlucoseValue}+" "+$P{AverageBloodGlucoseUnit}]]></textFieldExpression>
 				</textField>
 				<textField evaluationTime="Report">
-					<reportElement x="165" y="58" width="120" height="28" uuid="7bd64df5-7376-42e8-aa33-6b92a346ea47">
+					<reportElement x="165" y="63" width="120" height="30" uuid="7bd64df5-7376-42e8-aa33-6b92a346ea47">
 						<property name="com.jaspersoft.studio.unit.width" value="px"/>
 						<property name="com.jaspersoft.studio.unit.x" value="px"/>
+						<property name="com.jaspersoft.studio.unit.y" value="px"/>
+						<property name="com.jaspersoft.studio.unit.height" value="px"/>
 					</reportElement>
 					<box padding="1"/>
 					<textElement verticalAlignment="Middle">
@@ -665,9 +769,11 @@
 					<textFieldExpression><![CDATA[$P{AverageBloodGlucoseCriticalReadings}]]></textFieldExpression>
 				</textField>
 				<textField evaluationTime="Report">
-					<reportElement x="165" y="86" width="120" height="28" uuid="bfedbce7-9416-4f2e-a411-61c30d2607eb">
+					<reportElement x="165" y="94" width="120" height="30" uuid="bfedbce7-9416-4f2e-a411-61c30d2607eb">
 						<property name="com.jaspersoft.studio.unit.width" value="px"/>
 						<property name="com.jaspersoft.studio.unit.x" value="px"/>
+						<property name="com.jaspersoft.studio.unit.y" value="px"/>
+						<property name="com.jaspersoft.studio.unit.height" value="px"/>
 					</reportElement>
 					<box padding="1"/>
 					<textElement verticalAlignment="Middle">
@@ -676,11 +782,10 @@
 					<textFieldExpression><![CDATA[$P{AverageBloodGlucoseAtRiskReadings}]]></textFieldExpression>
 				</textField>
 				<textField evaluationTime="Report">
-					<reportElement x="165" y="115" width="120" height="28" uuid="86ffaaf6-0fee-462f-a82d-a0fcd63d9cd1">
-						<property name="com.jaspersoft.studio.unit.height" value="px"/>
-						<property name="com.jaspersoft.studio.unit.y" value="px"/>
+					<reportElement x="165" y="125" width="120" height="30" uuid="86ffaaf6-0fee-462f-a82d-a0fcd63d9cd1">
 						<property name="com.jaspersoft.studio.unit.width" value="px"/>
 						<property name="com.jaspersoft.studio.unit.x" value="px"/>
+						<property name="com.jaspersoft.studio.unit.y" value="px"/>
 					</reportElement>
 					<box padding="1"/>
 					<textElement verticalAlignment="Middle">
@@ -689,10 +794,9 @@
 					<textFieldExpression><![CDATA[$P{AverageBloodGlucosefromlastmonthValue}+" "+$P{AverageBloodGlucosefromlastmonthUnit}]]></textFieldExpression>
 				</textField>
 				<textField evaluationTime="Report">
-					<reportElement x="165" y="143" width="120" height="28" uuid="1c04cfe3-f4ae-483a-90d9-d2995228f236">
-						<property name="com.jaspersoft.studio.unit.height" value="px"/>
-						<property name="com.jaspersoft.studio.unit.y" value="px"/>
+					<reportElement x="165" y="156" width="120" height="30" uuid="1c04cfe3-f4ae-483a-90d9-d2995228f236">
 						<property name="com.jaspersoft.studio.unit.x" value="px"/>
+						<property name="com.jaspersoft.studio.unit.y" value="px"/>
 					</reportElement>
 					<box padding="1"/>
 					<textElement verticalAlignment="Middle">
@@ -701,8 +805,7 @@
 					<textFieldExpression><![CDATA[$P{AverageBloodGlucoseBillableReadingDays}]]></textFieldExpression>
 				</textField>
 				<textField evaluationTime="Report">
-					<reportElement x="165" y="172" width="120" height="28" uuid="4ac64a72-1a6d-4798-a027-76f53a9301e3">
-						<property name="com.jaspersoft.studio.unit.height" value="px"/>
+					<reportElement x="165" y="187" width="120" height="30" uuid="4ac64a72-1a6d-4798-a027-76f53a9301e3">
 						<property name="com.jaspersoft.studio.unit.y" value="px"/>
 					</reportElement>
 					<box padding="1"/>
@@ -713,9 +816,10 @@
 				</textField>
 			</frame>
 			<frame>
-				<reportElement x="3" y="480" width="255" height="90" uuid="7638ce9c-6f15-45b3-803d-8207e13e4382">
-					<property name="com.jaspersoft.studio.unit.height" value="px"/>
+				<reportElement x="3" y="546" width="290" height="108" uuid="7638ce9c-6f15-45b3-803d-8207e13e4382">
+					<property name="com.jaspersoft.studio.unit.y" value="px"/>
 					<property name="com.jaspersoft.studio.unit.width" value="px"/>
+					<property name="com.jaspersoft.studio.unit.height" value="px"/>
 				</reportElement>
 				<box padding="0">
 					<pen lineColor="#127EC2"/>
@@ -725,7 +829,7 @@
 					<rightPen lineWidth="1.0" lineStyle="Solid" lineColor="#127EC2"/>
 				</box>
 				<staticText>
-					<reportElement mode="Opaque" x="0" y="0" width="255" height="30" forecolor="#FFFFFF" backcolor="#127EC2" uuid="c4fbd6f4-c39f-4144-beea-eccde99186a7">
+					<reportElement mode="Opaque" x="0" y="0" width="290" height="30" forecolor="#FFFFFF" backcolor="#127EC2" uuid="c4fbd6f4-c39f-4144-beea-eccde99186a7">
 						<property name="com.jaspersoft.studio.unit.width" value="px"/>
 					</reportElement>
 					<box topPadding="1" leftPadding="5" bottomPadding="1" rightPadding="1"/>
@@ -735,7 +839,7 @@
 					<text><![CDATA[ICD 10 Codes]]></text>
 				</staticText>
 				<textField>
-					<reportElement x="4" y="35" width="244" height="50" uuid="21ce6d3b-7ef8-4ff7-893a-aade472b8f49">
+					<reportElement x="4" y="35" width="280" height="70" uuid="21ce6d3b-7ef8-4ff7-893a-aade472b8f49">
 						<property name="com.jaspersoft.studio.unit.width" value="px"/>
 						<property name="com.jaspersoft.studio.unit.height" value="px"/>
 					</reportElement>
@@ -747,9 +851,11 @@
 				</textField>
 			</frame>
 			<frame>
-				<reportElement x="2" y="369" width="255" height="90" uuid="1fea067c-2178-494e-bbed-b72907580a35">
-					<property name="com.jaspersoft.studio.unit.height" value="px"/>
+				<reportElement x="3" y="434" width="290" height="108" uuid="1fea067c-2178-494e-bbed-b72907580a35">
+					<property name="com.jaspersoft.studio.unit.x" value="px"/>
 					<property name="com.jaspersoft.studio.unit.width" value="px"/>
+					<property name="com.jaspersoft.studio.unit.y" value="px"/>
+					<property name="com.jaspersoft.studio.unit.height" value="px"/>
 				</reportElement>
 				<box padding="0">
 					<pen lineColor="#127EC2"/>
@@ -759,7 +865,7 @@
 					<rightPen lineWidth="1.0" lineStyle="Solid" lineColor="#127EC2"/>
 				</box>
 				<staticText>
-					<reportElement mode="Opaque" x="0" y="0" width="255" height="30" forecolor="#FFFFFF" backcolor="#127EC2" uuid="f364f66d-8a6c-4282-bd87-b9d458439637">
+					<reportElement mode="Opaque" x="0" y="0" width="290" height="30" forecolor="#FFFFFF" backcolor="#127EC2" uuid="f364f66d-8a6c-4282-bd87-b9d458439637">
 						<property name="com.jaspersoft.studio.unit.width" value="px"/>
 						<property name="com.jaspersoft.studio.unit.x" value="px"/>
 					</reportElement>
@@ -770,10 +876,10 @@
 					<text><![CDATA[Billing Codes]]></text>
 				</staticText>
 				<textField>
-					<reportElement x="4" y="34" width="246" height="50" uuid="ed79b710-5223-4bd9-a869-7fda649e13dc">
+					<reportElement x="4" y="34" width="280" height="70" uuid="ed79b710-5223-4bd9-a869-7fda649e13dc">
 						<property name="com.jaspersoft.studio.unit.width" value="px"/>
-						<property name="com.jaspersoft.studio.unit.height" value="px"/>
 						<property name="com.jaspersoft.studio.unit.x" value="px"/>
+						<property name="com.jaspersoft.studio.unit.height" value="px"/>
 					</reportElement>
 					<box padding="1"/>
 					<textElement>
