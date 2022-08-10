@@ -1,0 +1,9 @@
+{
+  "ReliqCaDev1": "https://cadevapp1.iugotest.com",
+  "ReliqCaDev2": "https://cadevapp2.iugotest.com",
+  "ReliqUsDev1": "https://usdevapp1.iugotest.com",
+  "ReliqUsDev2": "https://usdevapp2.iugotest.com",
+  "ReliqAuQa": "https://auqaapp.iugotest.com",
+  "ReliqAuDev1": "https://audevapp1.iugotest.com",
+  "ReliqUsQa": "https://usqaapp.iugotest.com"
+}

@@ -21,6 +21,9 @@
 	<parameter name="IUGOReport-PageNumber" class="java.lang.String"/>
 	<parameter name="IUGOReport-PageCount" class="java.lang.String"/>
 	<parameter name="IUGOReport-Logo" class="java.lang.String"/>
+	<parameter name="DateFormatOut" class="java.lang.String" isForPrompting="false">
+		<defaultValueExpression><![CDATA["MM/dd/YYYY"]]></defaultValueExpression>
+	</parameter>
 	<queryString language="csv">
 		<![CDATA[]]>
 	</queryString>
@@ -87,8 +90,9 @@
 					<text><![CDATA[Time]]></text>
 				</staticText>
 				<staticText>
-					<reportElement mode="Opaque" x="320" y="30" width="170" height="20" forecolor="#FFFFFF" backcolor="#127EC2" uuid="37c76f3c-613e-47f5-ad45-b74ac2bccbc6">
+					<reportElement mode="Opaque" x="320" y="30" width="273" height="20" forecolor="#FFFFFF" backcolor="#127EC2" uuid="37c76f3c-613e-47f5-ad45-b74ac2bccbc6">
 						<property name="com.jaspersoft.studio.spreadsheet.connectionID" value="b9f69bc4-e33b-4194-b3cf-de6eadcf907a"/>
+						<property name="com.jaspersoft.studio.unit.width" value="px"/>
 					</reportElement>
 					<box padding="1">
 						<pen lineColor="#FFFFFF"/>
@@ -102,27 +106,11 @@
 					</textElement>
 					<text><![CDATA[Blood Glucose]]></text>
 				</staticText>
-				<staticText>
-					<reportElement mode="Opaque" x="490" y="30" width="102" height="20" forecolor="#FFFFFF" backcolor="#127EC2" uuid="8930f5ab-e222-4b9a-9397-52e7e8993cdb">
-						<property name="com.jaspersoft.studio.spreadsheet.connectionID" value="2099ad81-839e-425e-9884-36ec501ba23d"/>
-					</reportElement>
-					<box padding="1">
-						<pen lineColor="#FFFFFF"/>
-						<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
-						<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
-						<bottomPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
-						<rightPen lineWidth="1.0" lineStyle="Solid" lineColor="#127EC2"/>
-					</box>
-					<textElement textAlignment="Center" verticalAlignment="Middle">
-						<font fontName="Tahoma"/>
-					</textElement>
-					<text><![CDATA[Unit]]></text>
-				</staticText>
 			</band>
 		</groupHeader>
 	</group>
 	<pageHeader>
-		<band height="78">
+		<band height="88">
 			<property name="com.jaspersoft.studio.unit.height" value="px"/>
 			<textField>
 				<reportElement mode="Transparent" x="0" y="0" width="403" height="54" forecolor="#000000" backcolor="#FFFFFF" uuid="096ff484-7359-4d5e-9e9f-6e854fb65442">
@@ -142,7 +130,18 @@
 				<imageExpression><![CDATA[$P{IUGOReport-Logo}]]></imageExpression>
 			</image>
 			<textField>
-				<reportElement mode="Transparent" x="0" y="54" width="403" height="24" forecolor="#000000" backcolor="#FFFFFF" uuid="d2feadeb-997b-496e-9959-020f444ae768">
+				<reportElement mode="Transparent" x="392" y="54" width="200" height="34" forecolor="#000000" backcolor="#FFFFFF" uuid="30723c74-bde7-4047-9bf9-424855066abf">
+					<property name="com.jaspersoft.studio.unit.height" value="px"/>
+					<property name="com.jaspersoft.studio.unit.width" value="px"/>
+				</reportElement>
+				<box padding="1"/>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font fontName="Tahoma" size="14"/>
+				</textElement>
+				<textFieldExpression><![CDATA[new java.text.SimpleDateFormat($P{DateFormatOut}).format(new java.text.SimpleDateFormat("yyyy-MM-dd").parse($P{IUGOReport-PeriodStart}))+" to "+new java.text.SimpleDateFormat($P{DateFormatOut}).format(new java.text.SimpleDateFormat("yyyy-MM-dd").parse($P{IUGOReport-PeriodEnd}))]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement mode="Transparent" x="0" y="54" width="360" height="34" forecolor="#000000" backcolor="#FFFFFF" uuid="19a62ca7-9c8e-427f-b6ca-34c468465d70">
 					<property name="com.jaspersoft.studio.unit.height" value="px"/>
 					<property name="com.jaspersoft.studio.unit.width" value="px"/>
 				</reportElement>
@@ -152,24 +151,15 @@
 				</textElement>
 				<textFieldExpression><![CDATA[$P{IUGOReport-PatientDemographics-LastName}+", "+$P{IUGOReport-PatientDemographics-FirstName}+" "+$P{IUGOReport-PatientDemographics-Age}+$P{IUGOReport-PatientDemographics-Gender}+", "+ $P{IUGOReport-PatientDemographics-InsuranceName}+" # "+$P{IUGOReport-PatientDemographics-InsuranceNumber}]]></textFieldExpression>
 			</textField>
-			<textField>
-				<reportElement mode="Transparent" x="403" y="54" width="189" height="24" forecolor="#000000" backcolor="#FFFFFF" uuid="c68ae89f-be42-4a5c-8f36-8c288c8673d9">
-					<property name="com.jaspersoft.studio.unit.height" value="px"/>
-				</reportElement>
-				<box padding="1"/>
-				<textElement textAlignment="Right" verticalAlignment="Middle">
-					<font fontName="Tahoma" size="14"/>
-				</textElement>
-				<textFieldExpression><![CDATA[$P{IUGOReport-PeriodStart}+" to "+$P{IUGOReport-PeriodEnd}]]></textFieldExpression>
-			</textField>
 		</band>
 	</pageHeader>
 	<columnHeader>
-		<band height="247">
+		<band height="257">
 			<property name="com.jaspersoft.studio.unit.height" value="px"/>
 			<lineChart>
 				<chart evaluationTime="Report">
-					<reportElement isPrintRepeatedValues="false" x="0" y="0" width="592" height="235" isRemoveLineWhenBlank="true" uuid="a6609067-dcca-4b15-8ece-69620a47a0e6">
+					<reportElement isPrintRepeatedValues="false" x="0" y="10" width="592" height="235" isRemoveLineWhenBlank="true" uuid="91f375fc-4444-448f-a953-c0ebc8159407">
+						<property name="com.jaspersoft.studio.unit.y" value="pixel"/>
 						<printWhenExpression><![CDATA[$V{PAGE_NUMBER}==1]]></printWhenExpression>
 					</reportElement>
 					<chartTitle>
@@ -183,7 +173,7 @@
 					<dataset resetType="Report"/>
 					<categorySeries>
 						<seriesExpression><![CDATA["Blood Glucose"]]></seriesExpression>
-						<categoryExpression><![CDATA[new java.text.SimpleDateFormat("MM/dd/YYYY").format(java.util.Date.from(java.time.OffsetDateTime.parse($F{DateTime}).toInstant()))]]></categoryExpression>
+						<categoryExpression><![CDATA[new java.text.SimpleDateFormat($P{DateFormatOut}).format(java.util.Date.from(java.time.OffsetDateTime.parse($F{DateTime}).toInstant()))]]></categoryExpression>
 						<valueExpression><![CDATA[$F{BloodGlucose}]]></valueExpression>
 						<labelExpression><![CDATA[$F{DateTime}]]></labelExpression>
 					</categorySeries>
@@ -234,12 +224,13 @@
 				<textElement textAlignment="Center" verticalAlignment="Middle">
 					<font fontName="Arial" size="8"/>
 				</textElement>
-				<textFieldExpression><![CDATA[new java.text.SimpleDateFormat("MM/dd/YYYY").format(java.util.Date.from(java.time.OffsetDateTime.parse($F{DateTime}).toInstant()))]]></textFieldExpression>
+				<textFieldExpression><![CDATA[new java.text.SimpleDateFormat($P{DateFormatOut}).format(java.util.Date.from(java.time.OffsetDateTime.parse($F{DateTime}).toInstant()))]]></textFieldExpression>
 			</textField>
 			<textField>
-				<reportElement x="320" y="0" width="170" height="15" uuid="965c6c9c-c30a-4b28-a1c9-c6028fa3a9e6">
+				<reportElement x="320" y="0" width="272" height="15" uuid="965c6c9c-c30a-4b28-a1c9-c6028fa3a9e6">
 					<property name="com.jaspersoft.studio.spreadsheet.connectionID" value="82e62fa8-d06a-42e4-8e1d-47c06c670590"/>
 					<property name="com.jaspersoft.studio.unit.height" value="px"/>
+					<property name="com.jaspersoft.studio.unit.width" value="px"/>
 				</reportElement>
 				<box padding="1">
 					<pen lineColor="#FFFFFF"/>
@@ -251,24 +242,7 @@
 				<textElement textAlignment="Center" verticalAlignment="Middle">
 					<font fontName="Arial" size="8"/>
 				</textElement>
-				<textFieldExpression><![CDATA[$F{BloodGlucose}]]></textFieldExpression>
-			</textField>
-			<textField>
-				<reportElement x="490" y="0" width="102" height="15" uuid="581b3562-1d2e-49f6-910a-1e2443eee84b">
-					<property name="com.jaspersoft.studio.spreadsheet.connectionID" value="a6f77e89-9897-48a3-9420-67b3c5485f51"/>
-					<property name="com.jaspersoft.studio.unit.height" value="px"/>
-				</reportElement>
-				<box padding="1">
-					<pen lineColor="#FFFFFF"/>
-					<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#FFFFFF"/>
-					<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
-					<bottomPen lineWidth="0.5" lineStyle="Solid" lineColor="#127EC2"/>
-					<rightPen lineWidth="1.0" lineStyle="Solid" lineColor="#127EC2"/>
-				</box>
-				<textElement textAlignment="Center" verticalAlignment="Middle">
-					<font fontName="Arial" size="8"/>
-				</textElement>
-				<textFieldExpression><![CDATA[$F{Unit}]]></textFieldExpression>
+				<textFieldExpression><![CDATA[$F{BloodGlucose}+" "+$F{Unit}]]></textFieldExpression>
 			</textField>
 			<textField>
 				<reportElement x="160" y="0" width="160" height="15" uuid="1208458b-bfab-4419-abf3-f395d0518e20">

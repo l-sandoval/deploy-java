@@ -1,41 +1,52 @@
 # Reliq.ReportGenerator
-Generic [JasperReports](https://community.jaspersoft.com/project/jasperreports-library) Service using [AWS Lambda](https://aws.amazon.com/es/lambda/)
 
-This repo contains code for a Java JasperReport Lambda function.
-It is based on AWS sample code: [Jasper Reports with Lambda, RDS and API Gateway](https://github.com/aws-samples/jasper-reports-with-lambda-rds)
+JasperReports service using AWS Lambda function.
 
-In this case we do not use an RDS connection. The parameters and data sources to include in the report are passed in the body of POST call.
+## Publishing the lambda function in AWS
+1. Create a new AWS Lambda function using the runtime `Java 11 (Corretto)`
+2. Update the lambda function handler to `reliqreports.LambdaFunctionHandler::handleRequest`
+3. Update the lambda function timeout to the maximum of minutes
+4. Update the lambda function environment variables to the following example
+```dotenv
+DYNAMODB_TABLE=table_name
+FILES_BUCKET=file_bucket_name
+LAMBDA_BUCKET=lambda_bucket_name
+REPORTS_BUCKET=reports_bucket_name
+```
+5. Create s3 buckets mentioned above, the dynamodb table will be created automatically by the report generator
+6. The GitHub workflow will compile the code and upload the .jar file, the templates, assets and environment endpoints files to the `LAMBDA_BUCKET` and update the
+   lambda function code with the .jar file.
 
-The use of [SDK1](https://github.com/aws/aws-sdk-java) has also been changed to [SDK2](https://github.com/aws/aws-sdk-java-v2) to increase speed and improve performance.
+## Local Execution
 
-## Content summary:
+### Requirements
+* [AWS-CLI installed](https://docs.aws.amazon.com/cli/latest/userguide/getting-started-install.html).
+* [Get AWS credentials](https://docs.aws.amazon.com/en_en/general/latest/gr/aws-sec-cred-types.html#access-keys-and-secret-access-keys).
+* [Configure AWS credentials for AWS-Cli](https://docs.aws.amazon.com/cli/latest/userguide/cli-configure-files.html).
+* Configure region for AWS-Cli ($aws configure set region <SELECTED_REGION>).
 
-* Java Maven code
-* AWS IaC Files: CloudFormation stack & API swagger
-* Test files: JasperReports test template & Postman collection
-* Basic scripts to automate process: create AWS buckets, syncronize resources & launch CloudFormation stack
+To execute the report generator function locally:
 
-## Requirements
-* AWS-CLI installed.
-* Build `lambda_code` using *Maven* throught *Eclipse*.
+1. Modify the json file `lambda_code/src/resources/local_execution_parameters.json` to include the parameters you want to use.
+2. Add the environment variables, to do so select the `Run` tab in your IDE and then `edit configuration`
+for the Local.java file, this might vary depending on the IDE you are using.
 
-## First time publishing the lambda function in AWS
+## Lambda function parameters
+The following parameters are expected in the function invocation:
 
-1. Get AWS credentials (https://docs.aws.amazon.com/en_en/general/latest/gr/aws-sec-cred-types.html#access-keys-and-secret-access-keys).
-2. Configure AWS credentials for AWS-Cli (https://docs.aws.amazon.com/cli/latest/userguide/cli-configure-files.html).
-3. Configure region for AWS-Cli ($aws configure set region <SELECTED_REGION>).
-4. Review *lambda_config.sh* file to ensure correct values for all properties, specially *region*, *files_s3_bucket* and *templates_s3_bucket*. The two last properties must be unique in AWS. Otherwise these cannot be created. See [Amazon S3 Bucket Naming Requirements](https://docs.aws.amazon.com/awscloudtrail/latest/userguide/cloudtrail-s3-bucket-naming-requirements.html).
-5. Also, review the `api_swagger.yml` and `jasperreports_stack.yml` located in the `aws_laC` folder to validate that the *region*, *files_s3_bucket* and *templates_s3_bucket* parameters are correct. 
-5. Set execute permissions to all *.sh* files.
-6. Execute *00.launch_all_steps.sh*.
-7. When all scripts ends, go to AWS Web Console to check CloudFormation creation stack status.
-8. Wait until stack creation is complete and go to API Gateway to copy URL.
-9. Paste API URL into Postman call & launch test example.
-
-![snapshot](lambda_test/snapshot.png)
-
-
-## Update lambda publishing
-
-1. Rebuild `lambda_code` using *Maven* throught *Eclipse* to generate de new .jar file.
-2. Execute *04.aws_update_template_and_function.sh*
+```json
+{
+  "reportsToBeGenerated": ["report1", "report2"],
+  "environments": ["ReliqUsDev1", "Training"],
+  "xmlFiles": [
+    {
+    "ReliqUsDev1": {
+        "report1": ["pathToReport1File1.xml", "pathToReport1File2.xml"]
+      },
+    "Training": {
+        "report2": ["pathToReport2File1.xml", "pathToReport2File2.xml"]
+      }
+    }
+  ]
+}
+```
