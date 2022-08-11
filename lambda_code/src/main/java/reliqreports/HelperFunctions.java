@@ -9,6 +9,8 @@ import java.util.regex.Pattern;
 import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
 
+import reliqreports.common.EReportCategory;
+
 import java.util.List;
 
 public class HelperFunctions {
@@ -57,10 +59,10 @@ public class HelperFunctions {
 		return result;
 	}
 
-	public static ReportsLiterals.REPORT_CATEGORY getReportCategory(String report) {
-		ReportsLiterals.REPORT_CATEGORY category = ReportsLiterals.REPORT_CATEGORY.ORGANIZATION;
+	public static EReportCategory getReportCategory(String report) {
+	    EReportCategory category = EReportCategory.ORGANIZATION;
 		if (INDIVIDUAL_PATIENT_REPORTS.contains(report))
-			category = ReportsLiterals.REPORT_CATEGORY.PATIENT;
+			category = EReportCategory.PATIENT;
 
 		return category;
 	}
@@ -73,7 +75,7 @@ public class HelperFunctions {
 		return !Arrays.asList(reportsToAvoidStaging).contains(report);
 	}
 	
-	public static boolean shouldAddToZipFile(String reportType) {
+	public static boolean shouldSaveZipRecord(String reportType) {
 	    return INDIVIDUAL_PATIENT_REPORTS.contains(reportType);
 	}
 }

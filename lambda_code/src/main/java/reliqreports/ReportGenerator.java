@@ -8,6 +8,7 @@ import net.sf.jasperreports.engine.export.ooxml.JRXlsxExporter;
 import net.sf.jasperreports.engine.query.JRXPathQueryExecuterFactory;
 import net.sf.jasperreports.engine.util.JRXmlUtils;
 import net.sf.jasperreports.export.*;
+import reliqreports.common.EReportCategory;
 
 import org.apache.commons.io.FileUtils;
 import org.w3c.dom.Document;
@@ -138,23 +139,32 @@ public class ReportGenerator {
             }
 
             byte[] fileByteArray = generateReportFile(type, jpMaster, sheetNames);
+            EReportCategory reportCategory = HelperFunctions.getReportCategory(reportName);
             String reportFileName = xmlFile.substring(xmlFile.lastIndexOf("/") + 1, xmlFile.lastIndexOf(".")) + "." + type; 
-            String fileName = (buildPath + (!StringUtils.isNullOrEmpty(entityId) ? "/" + entityId : "")) + StringLiterals.FILE_SEPARATOR_FOR_S3_QUERIES
-                    + reportFileName;
+            String folderPath = getReportFolderPath(reportCategory, buildPath, entityId, organizationId);
+            String fileName = folderPath + reportFileName;
 
             uploadFileToS3(fileName, fileByteArray);
             
-            if(HelperFunctions.shouldAddToZipFile(reportName) && !StringUtils.isNullOrEmpty(organizationId)) {
-                String zipFileName = StringLiterals.IUGO_REPORT + "_" + reportName + "_" + organizationId + "_" + generationDate;
-                AmazonS3Consumer.saveToZipFile(buildPath, zipFileName, reportFileName, fileByteArray, logger);
+            //
+            if(HelperFunctions.shouldSaveZipRecord(reportName) && !StringUtils.isNullOrEmpty(organizationId)) {
+                stageRecord(folderPath, apiEndpoint, EReportCategory.ORGANIZTION_ZIP, organizationId);
             }
 
             logger.log("Export " + type + " :" + buildPath + ", creation time : " + (System.currentTimeMillis() - startTime));
 
             if(shouldStageReport){
-                ReportsLiterals.REPORT_CATEGORY reportCategory = HelperFunctions.getReportCategory(reportName);
                 stageRecord(fileName, apiEndpoint, reportCategory, entityId);
             }
+        }
+    }
+    
+    private String getReportFolderPath(EReportCategory reportCategory, String buildPath, String entityId, String organizationId) {        
+        switch (reportCategory) {
+            case PATIENT:
+                return (buildPath + (!StringUtils.isNullOrEmpty(organizationId) ? StringLiterals.FILE_SEPARATOR_FOR_S3_QUERIES + organizationId : "")) + StringLiterals.FILE_SEPARATOR_FOR_S3_QUERIES;    
+            default:
+                return (buildPath + (!StringUtils.isNullOrEmpty(entityId) ? StringLiterals.FILE_SEPARATOR_FOR_S3_QUERIES + entityId : "")) + StringLiterals.FILE_SEPARATOR_FOR_S3_QUERIES;
         }
     }
 
@@ -252,7 +262,7 @@ public class ReportGenerator {
         }
     }
 
-    public void stageRecord(String filePath, String apiEndpoint, ReportsLiterals.REPORT_CATEGORY reportCategory, String entityId) {
+    public void stageRecord(String filePath, String apiEndpoint, EReportCategory reportCategory, String entityId) {
         AmazonDynamoDBConsumer dynamoDBConsumer = new AmazonDynamoDBConsumer(this.logger);
         try {
             dynamoDBConsumer.stageRecord(filePath, apiEndpoint, reportCategory, entityId);
