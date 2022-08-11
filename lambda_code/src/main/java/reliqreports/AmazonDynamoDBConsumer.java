@@ -57,6 +57,7 @@ public class AmazonDynamoDBConsumer {
             itemValues.put("BucketName", AttributeValue.builder().s(this.bucketName).build());
             itemValues.put("ApiEndpoint", AttributeValue.builder().s(apiEndpoint).build());
             itemValues.put("UploadAttemps", AttributeValue.builder().n("0").build());
+            itemValues.put("Status", AttributeValue.builder().n("0").build());
 
             PutItemRequest request = PutItemRequest.builder()
                     .tableName(this.tableName).item(itemValues).build();
