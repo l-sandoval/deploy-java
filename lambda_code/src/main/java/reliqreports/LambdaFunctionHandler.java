@@ -17,8 +17,6 @@ import reliqreports.ReportsGeneratorHandler.ReportsGeneratorHandler;
 public class LambdaFunctionHandler implements RequestStreamHandler
 {
 	LambdaLogger logger;	
-
-	ReportGeneratorConfig config;
 	
 	public void handleRequest(InputStream inputStream, OutputStream outputStream, Context context) throws IOException {
 		this.logger = context.getLogger();
@@ -28,11 +26,10 @@ public class LambdaFunctionHandler implements RequestStreamHandler
 
 		JSONObject responseJson = new JSONObject();
 
-		this.config = new ReportGeneratorConfig();
 		try {
-			AmazonS3Consumer s3Consumer = new AmazonS3Consumer(this.logger, this.config);				
-			s3Consumer.retrieveFileFromS3(this.config.get("s3path.IUGOReport-Logo"), StringLiterals.IMAGE, StringLiterals.LAMBDA_BUCKET);
-			InputStream jsonDataSource = s3Consumer.getInputStreamFileFromS3(config.get("s3Path.Environments.ApiEndpoints"), StringLiterals.LAMBDA_BUCKET);
+			AmazonS3Consumer s3Consumer = new AmazonS3Consumer(this.logger);				
+			s3Consumer.retrieveFileFromS3(ReportGeneratorConfig.getValue("s3path.IUGOReport-Logo"), StringLiterals.IMAGE, StringLiterals.LAMBDA_BUCKET);
+			InputStream jsonDataSource = s3Consumer.getInputStreamFileFromS3(ReportGeneratorConfig.getValue("s3Path.Environments.ApiEndpoints"), StringLiterals.LAMBDA_BUCKET);
 
 			JSONObject environmentsApiEndpoints = objectMapper.readValue(jsonDataSource, JSONObject.class);
 
@@ -44,12 +41,13 @@ public class LambdaFunctionHandler implements RequestStreamHandler
 			String generationDate = objectMapper.readValue(rootNode.get("generationDate").toString(), String.class);
 			String reportPeriodDate = objectMapper.readValue(rootNode.get("reportPeriodDate").toString(), String.class);
 			String entityId = objectMapper.readValue(rootNode.get("entityId").toString(), String.class);
+			String organizationId = rootNode.get("organizationId") != null ? objectMapper.readValue(rootNode.get("organizationId").toString(), String.class) : "";
 
 			ReportsGeneratorHandler handler = new ReportsGeneratorHandler(
-					this.logger, this.config,
+					this.logger,
 					reportsToBeGenerated, xmlFiles,
 					environments, environmentsApiEndpoints,
-					generationDate, reportPeriodDate, entityId);
+					generationDate, reportPeriodDate, entityId, organizationId);
 			handler.generateReports();
 		}
 		catch (Exception e) {
