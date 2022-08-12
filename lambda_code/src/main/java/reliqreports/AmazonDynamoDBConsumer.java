@@ -53,7 +53,7 @@ public class AmazonDynamoDBConsumer {
             itemValues.put("EntityId", AttributeValue.builder().s(entityId).build());
             itemValues.put("FilePath", AttributeValue.builder().s(filePath).build());
             itemValues.put("Created", AttributeValue.builder().s(date).build());
-            itemValues.put("DocumentCategory", AttributeValue.builder().s(reportCategory.category).build());
+            itemValues.put("DocumentCategory", AttributeValue.builder().n(reportCategory.category).build());
             itemValues.put("BucketName", AttributeValue.builder().s(this.bucketName).build());
             itemValues.put("ApiEndpoint", AttributeValue.builder().s(apiEndpoint).build());
             itemValues.put("UploadAttemps", AttributeValue.builder().n("0").build());
