@@ -151,7 +151,7 @@
 				<textElement verticalAlignment="Middle">
 					<font fontName="Tahoma" size="18" isBold="true"/>
 				</textElement>
-				<textFieldExpression><![CDATA[$P{IUGOReport-Organization}+" "+$P{IUGOReport-CarePlan}+" Patient Report"]]></textFieldExpression>
+				<textFieldExpression><![CDATA[$P{IUGOReport-Organization}+" Patient Report"]]></textFieldExpression>
 			</textField>
 			<image scaleImage="RetainShape" hAlign="Center" vAlign="Middle">
 				<reportElement x="403" y="0" width="189" height="54" uuid="1addc1d8-be95-49b9-b559-4ed191c0d087">
