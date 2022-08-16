@@ -142,7 +142,7 @@ public class ReportGenerator {
             EReportCategory reportCategory = HelperFunctions.getReportCategory(reportName);
             String reportFileName = xmlFile.substring(xmlFile.lastIndexOf("/") + 1, xmlFile.lastIndexOf(".")) + "." + type; 
             String folderPath = getReportFolderPath(reportCategory, buildPath, entityId, organizationId);
-            String fileName = folderPath + reportFileName;
+            String fileName = folderPath  + StringLiterals.FILE_SEPARATOR_FOR_S3_QUERIES + reportFileName;
 
             uploadFileToS3(fileName, fileByteArray);
             
@@ -162,9 +162,9 @@ public class ReportGenerator {
     private String getReportFolderPath(EReportCategory reportCategory, String buildPath, String entityId, String organizationId) {        
         switch (reportCategory) {
             case PATIENT:
-                return (buildPath + (!StringUtils.isNullOrEmpty(organizationId) ? StringLiterals.FILE_SEPARATOR_FOR_S3_QUERIES + organizationId : "")) + StringLiterals.FILE_SEPARATOR_FOR_S3_QUERIES;    
+                return (buildPath + (!StringUtils.isNullOrEmpty(organizationId) ? StringLiterals.FILE_SEPARATOR_FOR_S3_QUERIES + organizationId : ""));    
             default:
-                return (buildPath + (!StringUtils.isNullOrEmpty(entityId) ? StringLiterals.FILE_SEPARATOR_FOR_S3_QUERIES + entityId : "")) + StringLiterals.FILE_SEPARATOR_FOR_S3_QUERIES;
+                return (buildPath + (!StringUtils.isNullOrEmpty(entityId) ? StringLiterals.FILE_SEPARATOR_FOR_S3_QUERIES + entityId : ""));
         }
     }
 
