@@ -25,12 +25,10 @@ public class AmazonS3Consumer {
 
     Region region;
     private LambdaLogger logger;
-    private ReportGeneratorConfig config;
 
-    public AmazonS3Consumer(LambdaLogger logger, ReportGeneratorConfig reportGeneratorConfig) {
-        this.config = reportGeneratorConfig;
+    public AmazonS3Consumer(LambdaLogger logger) {
         this.logger = logger;
-        this.region = Region.of(config.get("aws.region"));
+        this.region = Region.of(ReportGeneratorConfig.getValue("aws.region"));
     }   
 
     public void retrieveFileFromS3(String key_name, String file_type, String bucketType) throws IOException {

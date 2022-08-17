@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!-- Created with Jaspersoft Studio version 6.19.1.final using JasperReports Library version 6.19.1-867c00bf88cd4d784d404379d6c05e1b419e8a4c  -->
-<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="90dayOxygenSaturationReadings" pageWidth="1350" pageHeight="842" orientation="Landscape" columnWidth="1350" leftMargin="0" rightMargin="0" topMargin="0" bottomMargin="0" isIgnorePagination="true" uuid="67cd7327-c594-4354-b338-5a45b0f6ac37">
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="90dayOxygenSaturationReadings" pageWidth="1585" pageHeight="842" orientation="Landscape" columnWidth="1585" leftMargin="0" rightMargin="0" topMargin="0" bottomMargin="0" isIgnorePagination="true" uuid="67cd7327-c594-4354-b338-5a45b0f6ac37">
 	<property name="com.jaspersoft.studio.data.defaultdataadapter" value="Datasources\90dayOSat.jrdax"/>
 	<property name="net.sf.jasperreports.export.xls.create.custom.palette" value="true"/>
 	<property name="net.sf.jasperreports.export.xls.detect.cell.type" value="true"/>
@@ -8,6 +8,15 @@
 	<property name="net.sf.jasperreports.print.keep.full.text" value="true"/>
 	<property name="net.sf.jasperreports.export.xls.freeze.row" value="3"/>
 	<property name="net.sf.jasperreports.export.xls.white.page.background" value="false"/>
+	<property name="com.jaspersoft.studio.unit." value="pixel"/>
+	<property name="com.jaspersoft.studio.unit.pageHeight" value="pixel"/>
+	<property name="com.jaspersoft.studio.unit.pageWidth" value="pixel"/>
+	<property name="com.jaspersoft.studio.unit.topMargin" value="pixel"/>
+	<property name="com.jaspersoft.studio.unit.bottomMargin" value="pixel"/>
+	<property name="com.jaspersoft.studio.unit.leftMargin" value="pixel"/>
+	<property name="com.jaspersoft.studio.unit.rightMargin" value="pixel"/>
+	<property name="com.jaspersoft.studio.unit.columnWidth" value="pixel"/>
+	<property name="com.jaspersoft.studio.unit.columnSpacing" value="pixel"/>
 	<parameter name="IUGOReport-PageNumber" class="java.lang.String"/>
 	<parameter name="IUGOReport-PageCount" class="java.lang.String"/>
 	<parameter name="IUGOReport-Logo" class="java.lang.String"/>
@@ -34,7 +43,7 @@
 		<band height="54" splitType="Stretch">
 			<property name="com.jaspersoft.studio.unit.height" value="px"/>
 			<staticText>
-				<reportElement mode="Opaque" x="0" y="0" width="1161" height="54" forecolor="#FFFFFF" backcolor="#007EC7" uuid="1215b023-404a-4535-9bfc-51aa4494b236">
+				<reportElement mode="Opaque" x="0" y="0" width="1396" height="54" forecolor="#FFFFFF" backcolor="#007EC7" uuid="1215b023-404a-4535-9bfc-51aa4494b236">
 					<property name="com.jaspersoft.studio.unit.height" value="px"/>
 					<property name="com.jaspersoft.studio.unit.width" value="px"/>
 				</reportElement>
@@ -51,7 +60,7 @@
 				<text><![CDATA[90 Day Oxygen Saturation Readings]]></text>
 			</staticText>
 			<image hAlign="Center" vAlign="Middle">
-				<reportElement mode="Opaque" x="1161" y="0" width="189" height="54" backcolor="#007EC7" uuid="1e7a1c3d-f694-4112-81c2-26e0b9d07d1c">
+				<reportElement mode="Opaque" x="1396" y="0" width="189" height="54" backcolor="#007EC7" uuid="1e7a1c3d-f694-4112-81c2-26e0b9d07d1c">
 					<property name="com.jaspersoft.studio.unit.width" value="px"/>
 					<property name="com.jaspersoft.studio.unit.height" value="px"/>
 				</reportElement>
@@ -265,9 +274,10 @@
 				<text><![CDATA[Reviewed]]></text>
 			</staticText>
 			<staticText>
-				<reportElement mode="Opaque" x="964" y="0" width="386" height="32" forecolor="#FFFFFF" backcolor="#007EC7" uuid="628cec52-223a-4433-94dc-0b33b2b43d49">
+				<reportElement mode="Opaque" x="964" y="0" width="621" height="32" forecolor="#FFFFFF" backcolor="#007EC7" uuid="628cec52-223a-4433-94dc-0b33b2b43d49">
 					<property name="com.jaspersoft.studio.spreadsheet.connectionID" value="de6edaab-d41c-4fe6-98b2-f2e8f008205e"/>
 					<property name="com.jaspersoft.studio.unit.height" value="px"/>
+					<property name="com.jaspersoft.studio.unit.width" value="px"/>
 				</reportElement>
 				<box padding="1">
 					<pen lineColor="#FFFFFF"/>
@@ -433,7 +443,7 @@
 				<textFieldExpression><![CDATA[$F{Reviewed}]]></textFieldExpression>
 			</textField>
 			<textField textAdjust="StretchHeight" isBlankWhenNull="true">
-				<reportElement positionType="Float" stretchType="RelativeToTallestObject" x="964" y="0" width="386" height="21" uuid="00999136-0211-44e5-9337-dec409c1b488">
+				<reportElement positionType="Float" stretchType="RelativeToTallestObject" x="964" y="0" width="621" height="21" uuid="00999136-0211-44e5-9337-dec409c1b488">
 					<property name="com.jaspersoft.studio.spreadsheet.connectionID" value="de6edaab-d41c-4fe6-98b2-f2e8f008205e"/>
 					<property name="com.jaspersoft.studio.unit.height" value="px"/>
 					<property name="com.jaspersoft.studio.unit.width" value="px"/>
@@ -513,7 +523,7 @@
 		<band height="20" splitType="Stretch">
 			<property name="com.jaspersoft.studio.unit.height" value="px"/>
 			<frame>
-				<reportElement mode="Opaque" x="0" y="0" width="1350" height="20" forecolor="#FFFFFF" backcolor="#007EC7" uuid="72edb728-75ce-4434-8ca0-c37217d1dbfd">
+				<reportElement mode="Opaque" x="0" y="0" width="1585" height="20" forecolor="#FFFFFF" backcolor="#007EC7" uuid="72edb728-75ce-4434-8ca0-c37217d1dbfd">
 					<property name="com.jaspersoft.studio.unit.height" value="px"/>
 				</reportElement>
 				<textField pattern="EEEEE dd MMMMM yyyy">
@@ -528,7 +538,7 @@
 					<textFieldExpression><![CDATA[new java.text.SimpleDateFormat($P{DateFormatOut}).format(new java.util.Date())]]></textFieldExpression>
 				</textField>
 				<textField evaluationTime="Auto">
-					<reportElement x="1129" y="0" width="221" height="20" forecolor="#FFFFFF" uuid="393debbe-88ca-4a7e-9357-677c731bfc23">
+					<reportElement x="1364" y="0" width="221" height="20" forecolor="#FFFFFF" uuid="393debbe-88ca-4a7e-9357-677c731bfc23">
 						<property name="com.jaspersoft.studio.unit.height" value="px"/>
 					</reportElement>
 					<box padding="1"/>

@@ -8,6 +8,7 @@ import net.sf.jasperreports.engine.export.ooxml.JRXlsxExporter;
 import net.sf.jasperreports.engine.query.JRXPathQueryExecuterFactory;
 import net.sf.jasperreports.engine.util.JRXmlUtils;
 import net.sf.jasperreports.export.*;
+import reliqreports.common.EReportCategory;
 
 import org.apache.commons.io.FileUtils;
 import org.w3c.dom.Document;
@@ -16,20 +17,12 @@ import org.w3c.dom.Node;
 import com.amazonaws.services.lambda.runtime.LambdaLogger;
 import com.amazonaws.util.StringUtils;
 
-import java.io.BufferedInputStream;
 import java.io.BufferedReader;
-import java.io.ByteArrayInputStream;
-import java.io.ByteArrayOutputStream;
 import java.io.File;
-import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
-import java.io.OutputStream;
 import java.util.*;
-import java.util.zip.ZipEntry;
-import java.util.zip.ZipInputStream;
-import java.util.zip.ZipOutputStream;
 
 import net.sf.jasperreports.engine.JRException;
 import net.sf.jasperreports.engine.JasperCompileManager;
@@ -40,12 +33,10 @@ import net.sf.jasperreports.engine.JRDataSource;
 
 public class ReportGenerator {
     private LambdaLogger logger;
-    private ReportGeneratorConfig config;
     private AmazonS3Consumer s3Consumer;
 
-    public ReportGenerator(LambdaLogger logger, ReportGeneratorConfig reportGeneratorConfig) {
+    public ReportGenerator(LambdaLogger logger) {
         this.logger = logger;
-        this.config = reportGeneratorConfig;
     }
 
     private long startTime = System.currentTimeMillis();    
@@ -67,6 +58,7 @@ public class ReportGenerator {
             String jasperPath,
             String buildPath,
             String entityId,
+            String organizationId,
             String generationDate,
             String apiEndpoint
             ) throws JRException {
@@ -147,28 +139,32 @@ public class ReportGenerator {
             }
 
             byte[] fileByteArray = generateReportFile(type, jpMaster, sheetNames);
+            EReportCategory reportCategory = HelperFunctions.getReportCategory(reportName);
             String reportFileName = xmlFile.substring(xmlFile.lastIndexOf("/") + 1, xmlFile.lastIndexOf(".")) + "." + type; 
-            String fileName = (buildPath + (!StringUtils.isNullOrEmpty(entityId) ? "/" + entityId : "")) + StringLiterals.FILE_SEPARATOR_FOR_S3_QUERIES
-                    + reportFileName;
+            String folderPath = getReportFolderPath(reportCategory, buildPath, entityId, organizationId);
+            String fileName = folderPath  + StringLiterals.FILE_SEPARATOR_FOR_S3_QUERIES + reportFileName;
 
             uploadFileToS3(fileName, fileByteArray);
             
-            if(HelperFunctions.shouldAddToZipFile(reportName)) {
-                Thread thread = new Thread(){
-                    public void run(){
-                        String zipFileName = StringLiterals.IUGO_REPORT + "_" + reportName + "_" + generationDate;
-                        saveToZipFile(buildPath, zipFileName, reportFileName ,fileByteArray);
-                    }
-                };
-                thread.start();
+            //
+            if(HelperFunctions.shouldSaveZipRecord(reportName) && !StringUtils.isNullOrEmpty(organizationId)) {
+                stageRecord(folderPath, apiEndpoint, EReportCategory.ORGANIZTION_ZIP, organizationId);
             }
 
             logger.log("Export " + type + " :" + buildPath + ", creation time : " + (System.currentTimeMillis() - startTime));
 
             if(shouldStageReport){
-                ReportsLiterals.REPORT_CATEGORY reportCategory = HelperFunctions.getReportCategory(reportName);
                 stageRecord(fileName, apiEndpoint, reportCategory, entityId);
             }
+        }
+    }
+    
+    private String getReportFolderPath(EReportCategory reportCategory, String buildPath, String entityId, String organizationId) {        
+        switch (reportCategory) {
+            case PATIENT:
+                return (buildPath + (!StringUtils.isNullOrEmpty(organizationId) ? StringLiterals.FILE_SEPARATOR_FOR_S3_QUERIES + organizationId : ""));    
+            default:
+                return (buildPath + (!StringUtils.isNullOrEmpty(entityId) ? StringLiterals.FILE_SEPARATOR_FOR_S3_QUERIES + entityId : ""));
         }
     }
 
@@ -257,8 +253,8 @@ public class ReportGenerator {
     /**
      * Upload file to S3 bucket
      */
-    private void uploadFileToS3 (String key_name, byte[] bytes){
-        AmazonS3Consumer s3Consumer = new AmazonS3Consumer(this.logger, this.config);
+    private synchronized void uploadFileToS3 (String key_name, byte[] bytes){
+        AmazonS3Consumer s3Consumer = new AmazonS3Consumer(this.logger);
         try {
             s3Consumer.uploadFileToS3(key_name, bytes);
         } catch (IOException e) {
@@ -266,8 +262,8 @@ public class ReportGenerator {
         }
     }
 
-    public void stageRecord(String filePath, String apiEndpoint, ReportsLiterals.REPORT_CATEGORY reportCategory, String entityId) {
-        AmazonDynamoDBConsumer dynamoDBConsumer = new AmazonDynamoDBConsumer(this.logger, this.config);
+    public void stageRecord(String filePath, String apiEndpoint, EReportCategory reportCategory, String entityId) {
+        AmazonDynamoDBConsumer dynamoDBConsumer = new AmazonDynamoDBConsumer(this.logger);
         try {
             dynamoDBConsumer.stageRecord(filePath, apiEndpoint, reportCategory, entityId);
         } catch (IOException e) {
@@ -361,62 +357,10 @@ public class ReportGenerator {
         logger.log("CSV PARAMETERS: " + csvParameters);
         return csvParameters;
     }
-    
-    public synchronized void saveToZipFile(String buildPath, String zipFileName, String reportName, byte[] reportByteArray) {
-        try {
-            String zipFullPath = buildPath + StringLiterals.FILE_SEPARATOR_FOR_S3_QUERIES + zipFileName + ".zip";
-            ByteArrayOutputStream bos = new ByteArrayOutputStream();
-            InputStream in = getS3Consumer().getInputStreamFileFromS3(zipFullPath , StringLiterals.FILES_BUCKET);
-            ZipOutputStream zos = new ZipOutputStream(bos);
-                        
-            if(in != null) {
-                Map<String, byte[]> zipEntryMap = getMapFiles(in);                
-                
-                zipEntryMap.forEach((zipEntryName, bytes) -> {
-                    try {
-                        zos.putNextEntry(new ZipEntry(zipEntryName));
-                        zos.write(bytes);
-                        zos.closeEntry();
-                    } catch (IOException e) {
-                        logger.log(e.getMessage());
-                    }
-                });
-            }  
-            
-            zos.putNextEntry(new ZipEntry(reportName));                                  
-            zos.write(reportByteArray);
-            
-            zos.closeEntry();
-            bos.close();
-            zos.close();
-            byte[] outBA = bos.toByteArray();
-            uploadFileToS3(zipFullPath, outBA);
-            
-        } catch (IOException e) {
-            logger.log(e.getMessage());
-        }        
-    }
-    
-    private static Map<String, byte[]> getMapFiles(InputStream in) throws IOException {
-        Map<String, byte[]> zipEntryMap = new HashMap<>();
-        ZipInputStream zipInputStream = new ZipInputStream(in);
-        ZipEntry zipEntry;
-        
-        while((zipEntry = zipInputStream.getNextEntry())!= null){
-            byte[] buffer = new byte[1024];
-            ByteArrayOutputStream builder = new ByteArrayOutputStream();
-            int end;
-            while((end = zipInputStream.read(buffer)) > 0){
-                builder.write(buffer, 0, end);
-            }
-            zipEntryMap.put(zipEntry.getName(), builder.toByteArray());
-        }
-        return zipEntryMap;
-    }
 
     public AmazonS3Consumer getS3Consumer() {
         if(s3Consumer == null) 
-            s3Consumer = new AmazonS3Consumer(this.logger, this.config);
+            s3Consumer = new AmazonS3Consumer(this.logger);
         return s3Consumer;
     }
 
