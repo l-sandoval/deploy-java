@@ -189,7 +189,7 @@
 			<property name="com.jaspersoft.studio.unit.height" value="px"/>
 			<lineChart>
 				<chart evaluationTime="Report">
-					<reportElement isPrintRepeatedValues="false" x="0" y="10" width="592" height="235" isRemoveLineWhenBlank="true" uuid="7f39d237-3d19-4459-90fa-b6bbca2bc9db">
+					<reportElement isPrintRepeatedValues="false" x="0" y="10" width="592" height="235" isRemoveLineWhenBlank="true" uuid="ac49e91c-12bd-47cb-8f2d-6cad03def5ab">
 						<property name="com.jaspersoft.studio.unit.height" value="px"/>
 						<printWhenExpression><![CDATA[$V{PAGE_NUMBER}==1]]></printWhenExpression>
 					</reportElement>
@@ -205,7 +205,7 @@
 					<dataset resetType="Report"/>
 					<categorySeries>
 						<seriesExpression><![CDATA["Systolic"]]></seriesExpression>
-						<categoryExpression><![CDATA[new java.text.SimpleDateFormat($P{DateFormatOut}).format(java.util.Date.from(java.time.OffsetDateTime.parse($F{DateTime}).toInstant()))]]></categoryExpression>
+						<categoryExpression><![CDATA[java.time.format.DateTimeFormatter.ofPattern($P{DateFormatOut}).withZone(java.time.ZonedDateTime.parse($F{DateTime}).getZone()).format(java.time.ZonedDateTime.parse($F{DateTime}))]]></categoryExpression>
 						<valueExpression><![CDATA[$F{SystolicBloodPressure}]]></valueExpression>
 					</categorySeries>
 					<categorySeries>
@@ -266,7 +266,7 @@
 				<textElement textAlignment="Center" verticalAlignment="Middle">
 					<font fontName="Arial" size="8"/>
 				</textElement>
-				<textFieldExpression><![CDATA[new java.text.SimpleDateFormat($P{DateFormatOut}).format(java.util.Date.from(java.time.OffsetDateTime.parse($F{DateTime}).toInstant()))]]></textFieldExpression>
+				<textFieldExpression><![CDATA[java.time.format.DateTimeFormatter.ofPattern($P{DateFormatOut}).withZone(java.time.ZonedDateTime.parse($F{DateTime}).getZone()).format(java.time.ZonedDateTime.parse($F{DateTime}))]]></textFieldExpression>
 			</textField>
 			<textField>
 				<reportElement x="325" y="0" width="135" height="15" uuid="776904f3-d5b7-41c6-b863-0b61c40a5fe8"/>
@@ -314,7 +314,7 @@
 				<textElement textAlignment="Center" verticalAlignment="Middle">
 					<font fontName="Arial" size="8"/>
 				</textElement>
-				<textFieldExpression><![CDATA[new java.text.SimpleDateFormat("HH:mm:ss").format(java.util.Date.from(java.time.OffsetDateTime.parse($F{DateTime}).toInstant()))]]></textFieldExpression>
+				<textFieldExpression><![CDATA[java.time.format.DateTimeFormatter.ofPattern("HH:mm:ss zzz").withZone(java.time.ZonedDateTime.parse($F{DateTime}).getZone()).format(java.time.ZonedDateTime.parse($F{DateTime}))]]></textFieldExpression>
 			</textField>
 		</band>
 	</detail>
