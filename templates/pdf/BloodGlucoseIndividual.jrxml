@@ -159,8 +159,8 @@
 		<band height="257">
 			<property name="com.jaspersoft.studio.unit.height" value="px"/>
 			<lineChart>
-				<chart evaluationTime="Report">
-					<reportElement isPrintRepeatedValues="false" x="0" y="10" width="592" height="235" isRemoveLineWhenBlank="true" uuid="91f375fc-4444-448f-a953-c0ebc8159407">
+				<chart isShowLegend="false" evaluationTime="Report">
+					<reportElement isPrintRepeatedValues="false" x="0" y="10" width="592" height="235" isRemoveLineWhenBlank="true" uuid="7043ccac-3a90-43a7-bc56-e4692fdddebd">
 						<property name="com.jaspersoft.studio.unit.y" value="pixel"/>
 						<printWhenExpression><![CDATA[$V{PAGE_NUMBER}==1]]></printWhenExpression>
 					</reportElement>
@@ -175,7 +175,7 @@
 					<dataset resetType="Report"/>
 					<categorySeries>
 						<seriesExpression><![CDATA["Blood Glucose"]]></seriesExpression>
-						<categoryExpression><![CDATA[new java.text.SimpleDateFormat($P{DateFormatOut}).format(java.util.Date.from(java.time.OffsetDateTime.parse($F{DateTime}).toInstant()))]]></categoryExpression>
+						<categoryExpression><![CDATA[java.time.format.DateTimeFormatter.ofPattern($P{DateFormatOut}).withZone(java.time.ZonedDateTime.parse($F{DateTime}).getZone()).format(java.time.ZonedDateTime.parse($F{DateTime}))]]></categoryExpression>
 						<valueExpression><![CDATA[$F{BloodGlucose}]]></valueExpression>
 						<labelExpression><![CDATA[$F{DateTime}]]></labelExpression>
 					</categorySeries>
@@ -226,7 +226,7 @@
 				<textElement textAlignment="Center" verticalAlignment="Middle">
 					<font fontName="Arial" size="8"/>
 				</textElement>
-				<textFieldExpression><![CDATA[new java.text.SimpleDateFormat($P{DateFormatOut}).format(java.util.Date.from(java.time.OffsetDateTime.parse($F{DateTime}).toInstant()))]]></textFieldExpression>
+				<textFieldExpression><![CDATA[java.time.format.DateTimeFormatter.ofPattern($P{DateFormatOut}).withZone(java.time.ZonedDateTime.parse($F{DateTime}).getZone()).format(java.time.ZonedDateTime.parse($F{DateTime}))]]></textFieldExpression>
 			</textField>
 			<textField>
 				<reportElement x="320" y="0" width="272" height="15" uuid="965c6c9c-c30a-4b28-a1c9-c6028fa3a9e6">
@@ -261,7 +261,7 @@
 				<textElement textAlignment="Center" verticalAlignment="Middle">
 					<font fontName="Arial" size="8"/>
 				</textElement>
-				<textFieldExpression><![CDATA[new java.text.SimpleDateFormat("HH:mm:ss").format(java.util.Date.from(java.time.OffsetDateTime.parse($F{DateTime}).toInstant()))]]></textFieldExpression>
+				<textFieldExpression><![CDATA[java.time.format.DateTimeFormatter.ofPattern("HH:mm:ss zzz").withZone(java.time.ZonedDateTime.parse($F{DateTime}).getZone()).format(java.time.ZonedDateTime.parse($F{DateTime}))]]></textFieldExpression>
 			</textField>
 		</band>
 	</detail>
