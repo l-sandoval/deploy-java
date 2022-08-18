@@ -40,7 +40,7 @@ public class LambdaFunctionHandler implements RequestStreamHandler
 					rootNode.get("xmlFiles"), new TypeReference<HashMap<String, HashMap<String, String[]>>>() {});
 			String generationDate = objectMapper.readValue(rootNode.get("generationDate").toString(), String.class);
 			String reportPeriodDate = objectMapper.readValue(rootNode.get("reportPeriodDate").toString(), String.class);
-			String entityId = objectMapper.readValue(rootNode.get("entityId").toString(), String.class);
+			String entityId = rootNode.get("entityId") != null ? objectMapper.readValue(rootNode.get("entityId").toString(), String.class) : "";
 			String organizationId = rootNode.get("organizationId") != null ? objectMapper.readValue(rootNode.get("organizationId").toString(), String.class) : "";
 
 			ReportsGeneratorHandler handler = new ReportsGeneratorHandler(
