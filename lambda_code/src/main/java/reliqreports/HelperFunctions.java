@@ -67,12 +67,14 @@ public class HelperFunctions {
 		return category;
 	}
 
-	public static boolean shouldStageReport(String report) {
+	public static boolean shouldStageReport(String report, Boolean shouldStageReport) {
 		String[] reportsToAvoidStaging = {
 				ReportsLiterals.EMERGENCY_RECOVERY_REPORT
 		};
 
-		return !Arrays.asList(reportsToAvoidStaging).contains(report);
+		boolean shouldStage = shouldStageReport && !report.equals(ReportsLiterals.EMERGENCY_RECOVERY_REPORT);
+
+		return !Arrays.asList(reportsToAvoidStaging).contains(report) || shouldStage;
 	}
 	
 	public static boolean shouldSaveZipRecord(String reportType) {
