@@ -98,7 +98,7 @@
 	<detail>
 		<band height="128" splitType="Stretch">
 			<property name="com.jaspersoft.studio.unit.height" value="px"/>
-			<textField>
+			<textField isBlankWhenNull="true">
 				<reportElement mode="Opaque" x="0" y="20" width="592" height="20" forecolor="#FFFFFF" backcolor="#127EC2" uuid="dd599cdb-6c6f-4aad-9b8e-9a6f148a6f98">
 					<property name="com.jaspersoft.studio.unit.height" value="px"/>
 				</reportElement>
@@ -108,7 +108,7 @@
 				</textElement>
 				<textFieldExpression><![CDATA["Time Spent: "+$F{Time spent}]]></textFieldExpression>
 			</textField>
-			<textField>
+			<textField isBlankWhenNull="true">
 				<reportElement mode="Opaque" x="0" y="0" width="270" height="20" forecolor="#FFFFFF" backcolor="#127EC2" uuid="435a7eb2-6afe-495a-a8a5-afb985600a38">
 					<property name="com.jaspersoft.studio.unit.height" value="px"/>
 					<property name="com.jaspersoft.studio.unit.width" value="px"/>
@@ -119,7 +119,7 @@
 				</textElement>
 				<textFieldExpression><![CDATA[$F{Care Plan}+" Note"]]></textFieldExpression>
 			</textField>
-			<textField>
+			<textField isBlankWhenNull="true">
 				<reportElement mode="Opaque" x="270" y="0" width="322" height="20" forecolor="#FFFFFF" backcolor="#127EC2" uuid="0be6482b-384d-4721-986f-e2861c40363e">
 					<property name="com.jaspersoft.studio.unit.height" value="px"/>
 				</reportElement>
@@ -129,7 +129,7 @@
 				</textElement>
 				<textFieldExpression><![CDATA["By "+$F{Author}+" on "+new java.text.SimpleDateFormat($P{DateFormatOut}).format($F{Date})]]></textFieldExpression>
 			</textField>
-			<textField textAdjust="StretchHeight">
+			<textField textAdjust="StretchHeight" isBlankWhenNull="true">
 				<reportElement positionType="Float" stretchType="RelativeToTallestObject" x="1" y="40" width="590" height="70" forecolor="#000000" uuid="4fb4d734-d8a4-4d3e-a102-e23c1971aa75">
 					<property name="com.jaspersoft.studio.unit.width" value="px"/>
 					<property name="net.sf.jasperreports.style.paragraph.lineSpacing" value="1_1_2"/>

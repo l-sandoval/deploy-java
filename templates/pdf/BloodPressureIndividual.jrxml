@@ -250,7 +250,7 @@
 	<detail>
 		<band height="15" splitType="Stretch">
 			<property name="com.jaspersoft.studio.unit.height" value="px"/>
-			<textField>
+			<textField isBlankWhenNull="true">
 				<reportElement x="0" y="0" width="170" height="15" uuid="fc36097f-54a3-49ea-a72f-376412a0b37a">
 					<property name="com.jaspersoft.studio.spreadsheet.connectionID" value="35f0b09d-5057-44df-b259-7aa9e74d41da"/>
 					<property name="com.jaspersoft.studio.unit.width" value="px"/>
@@ -268,7 +268,7 @@
 				</textElement>
 				<textFieldExpression><![CDATA[java.time.format.DateTimeFormatter.ofPattern($P{DateFormatOut}).withZone(java.time.ZonedDateTime.parse($F{DateTime}).getZone()).format(java.time.ZonedDateTime.parse($F{DateTime}))]]></textFieldExpression>
 			</textField>
-			<textField>
+			<textField isBlankWhenNull="true">
 				<reportElement x="325" y="0" width="135" height="15" uuid="776904f3-d5b7-41c6-b863-0b61c40a5fe8"/>
 				<box padding="1">
 					<pen lineColor="#FFFFFF"/>
@@ -282,7 +282,7 @@
 				</textElement>
 				<textFieldExpression><![CDATA[$F{SystolicBloodPressure}+"/"+$F{DiastolicBloodPressure}+" "+$F{Unit_Systolic}]]></textFieldExpression>
 			</textField>
-			<textField>
+			<textField isBlankWhenNull="true">
 				<reportElement x="460" y="0" width="131" height="15" uuid="0e0baf39-f2cc-44e8-947e-eb62f7eed0fb">
 					<property name="com.jaspersoft.studio.unit.height" value="px"/>
 				</reportElement>
@@ -298,7 +298,7 @@
 				</textElement>
 				<textFieldExpression><![CDATA[$F{Pulse}+" "+$F{Unit_Pulse}]]></textFieldExpression>
 			</textField>
-			<textField>
+			<textField isBlankWhenNull="true">
 				<reportElement x="170" y="0" width="154" height="15" uuid="7d995054-e16d-4d2f-8c69-3869c97efe9b">
 					<property name="com.jaspersoft.studio.spreadsheet.connectionID" value="35f0b09d-5057-44df-b259-7aa9e74d41da"/>
 					<property name="com.jaspersoft.studio.unit.width" value="px"/>
