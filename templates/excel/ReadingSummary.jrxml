@@ -39,7 +39,7 @@
 	<field name="Total Readings BP" class="java.lang.Integer"/>
 	<field name="# At Risk BP" class="java.lang.Integer"/>
 	<field name="# Critical BP" class="java.lang.Integer"/>
-	<field name="Adherence BP" class="java.lang.String"/>
+	<field name="Adherence BP" class="java.math.BigDecimal"/>
 	<field name="Blood Glucose Avg" class="java.lang.Integer"/>
 	<field name="Blood Glucose Change" class="java.math.BigDecimal"/>
 	<field name="Billable Reading Days BG" class="java.lang.Integer"/>
@@ -47,7 +47,7 @@
 	<field name="# At Risk BG" class="java.lang.Integer"/>
 	<field name="# Critical BG" class="java.lang.Integer"/>
 	<field name="#Hypoglycemic" class="java.lang.Integer"/>
-	<field name="Adherence BG" class="java.lang.String"/>
+	<field name="Adherence BG" class="java.math.BigDecimal"/>
 	<sortField name="Last Name"/>
 	<variable name="REPORT_PAGE" class="java.lang.Integer" resetType="Page" incrementType="Page">
 		<variableExpression><![CDATA[$V{PAGE_NUMBER}]]></variableExpression>
@@ -741,7 +741,7 @@
 				</textElement>
 				<textFieldExpression><![CDATA[$F{# Critical BP}]]></textFieldExpression>
 			</textField>
-			<textField textAdjust="StretchHeight" isBlankWhenNull="true">
+			<textField textAdjust="StretchHeight" pattern="##0%" isBlankWhenNull="true">
 				<reportElement positionType="Float" stretchType="RelativeToTallestObject" x="927" y="0" width="78" height="21" uuid="09a1a39a-4368-4e9b-b24f-a338da8cf488">
 					<property name="com.jaspersoft.studio.spreadsheet.connectionID" value="c79c9867-7af5-42ef-b23a-40754d2a363e"/>
 					<property name="com.jaspersoft.studio.unit.width" value="px"/>
@@ -877,7 +877,7 @@
 				</textElement>
 				<textFieldExpression><![CDATA[$F{#Hypoglycemic}]]></textFieldExpression>
 			</textField>
-			<textField textAdjust="StretchHeight" isBlankWhenNull="true">
+			<textField textAdjust="StretchHeight" pattern="##0%" isBlankWhenNull="true">
 				<reportElement positionType="Float" stretchType="RelativeToTallestObject" x="1507" y="0" width="78" height="21" uuid="f49655e1-bce7-4f30-b587-b636de47e1c4">
 					<property name="com.jaspersoft.studio.spreadsheet.connectionID" value="dd3a1bd7-3c18-4316-a2af-4a2663f89bde"/>
 					<property name="com.jaspersoft.studio.unit.width" value="px"/>
