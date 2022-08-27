@@ -60,11 +60,12 @@ public class ReportGenerator {
             String entityId,
             String organizationId,
             String generationDate,
-            String apiEndpoint
+            String apiEndpoint,
+            Boolean shouldStageReport
             ) throws JRException {
 
 
-        boolean shouldStageReport = HelperFunctions.shouldStageReport(reportName);
+        boolean shouldStage = HelperFunctions.shouldStageReport(reportName, shouldStageReport);
 
         String jasperSource = jasperPath + StringLiterals.FILE_SEPARATOR_FOR_S3_QUERIES + reportName + ".jrxml";
 
@@ -153,7 +154,7 @@ public class ReportGenerator {
 
             logger.log("Export " + type + " :" + buildPath + ", creation time : " + (System.currentTimeMillis() - startTime));
 
-            if(shouldStageReport){
+            if(shouldStage){
                 stageRecord(fileName, apiEndpoint, reportCategory, entityId);
             }
         }

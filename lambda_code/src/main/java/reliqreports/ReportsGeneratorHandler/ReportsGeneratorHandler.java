@@ -20,11 +20,13 @@ public class ReportsGeneratorHandler {
     private String organizationId;
     private String[] environments;
     private JSONObject environmentsApiEndpoints;
+    private Boolean shouldStageReport;
 
     public ReportsGeneratorHandler(LambdaLogger logger, 
                                    String[] reportsToBeGenerated, HashMap<String, HashMap<String, String[]>> xmlFiles,
-                                   String[] environments, JSONObject environmentsApiEndpoints,
-                                   String generationDate, String reportPeriodDate, String entityId, String organizationId) {
+                                   String[] environments, JSONObject environmentsApiEndpoints, String generationDate,
+                                   String reportPeriodDate, String entityId, String organizationId,
+                                   Boolean shouldStageReport) {
         this.logger = logger;
         this.reportsToBeGenerated = reportsToBeGenerated;
         this.xmlFiles = xmlFiles;
@@ -33,6 +35,7 @@ public class ReportsGeneratorHandler {
         this.reportPeriodDate = reportPeriodDate;
         this.entityId = entityId;
         this.organizationId = organizationId;
+        this.shouldStageReport = shouldStageReport;
         setReportTypes();
 
         this.environmentsApiEndpoints = environmentsApiEndpoints;
@@ -107,7 +110,8 @@ public class ReportsGeneratorHandler {
                         this.entityId,
                         this.organizationId,
                         this.generationDate,
-                        apiEndpoint);
+                        apiEndpoint,
+                        this.shouldStageReport);
             }
         } catch (Exception e) {
             logger.log("Exception thrown runing report generation");
