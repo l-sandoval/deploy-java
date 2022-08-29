@@ -203,7 +203,7 @@
 						</axisFormat>
 					</valueAxisFormat>
 					<rangeAxisMinValueExpression><![CDATA[80]]></rangeAxisMinValueExpression>
-					<rangeAxisMaxValueExpression><![CDATA[180]]></rangeAxisMaxValueExpression>
+					<rangeAxisMaxValueExpression><![CDATA[300]]></rangeAxisMaxValueExpression>
 				</linePlot>
 			</lineChart>
 		</band>
