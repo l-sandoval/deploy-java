@@ -42,12 +42,14 @@ public class LambdaFunctionHandler implements RequestStreamHandler
 			String reportPeriodDate = objectMapper.readValue(rootNode.get("reportPeriodDate").toString(), String.class);
 			String entityId = rootNode.get("entityId") != null ? objectMapper.readValue(rootNode.get("entityId").toString(), String.class) : "";
 			String organizationId = rootNode.get("organizationId") != null ? objectMapper.readValue(rootNode.get("organizationId").toString(), String.class) : "";
+			Boolean shouldStageReport = rootNode.get("shouldStage") != null ? objectMapper.readValue(rootNode.get("shouldStage").toString(), Boolean.class) : false;
 
 			ReportsGeneratorHandler handler = new ReportsGeneratorHandler(
 					this.logger,
 					reportsToBeGenerated, xmlFiles,
 					environments, environmentsApiEndpoints,
-					generationDate, reportPeriodDate, entityId, organizationId);
+					generationDate, reportPeriodDate, entityId, organizationId,
+					shouldStageReport);
 			handler.generateReports();
 		}
 		catch (Exception e) {
