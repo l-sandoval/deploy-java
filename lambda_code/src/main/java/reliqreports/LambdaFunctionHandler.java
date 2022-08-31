@@ -2,6 +2,7 @@ package reliqreports;
 
 import java.io.*;
 import java.util.HashMap;
+import java.util.Objects;
 
 import com.fasterxml.jackson.core.type.TypeReference;
 import org.json.simple.JSONObject;
@@ -27,8 +28,7 @@ public class LambdaFunctionHandler implements RequestStreamHandler
 		JSONObject responseJson = new JSONObject();
 
 		try {
-			AmazonS3Consumer s3Consumer = new AmazonS3Consumer(this.logger);				
-			s3Consumer.retrieveFileFromS3(ReportGeneratorConfig.getValue("s3path.IUGOReport-Logo"), StringLiterals.IMAGE, StringLiterals.LAMBDA_BUCKET);
+			AmazonS3Consumer s3Consumer = new AmazonS3Consumer(this.logger);
 			InputStream jsonDataSource = s3Consumer.getInputStreamFileFromS3(ReportGeneratorConfig.getValue("s3Path.Environments.ApiEndpoints"), StringLiterals.LAMBDA_BUCKET);
 
 			JSONObject environmentsApiEndpoints = objectMapper.readValue(jsonDataSource, JSONObject.class);
@@ -43,6 +43,9 @@ public class LambdaFunctionHandler implements RequestStreamHandler
 			String entityId = objectMapper.readValue(rootNode.get("entityId").toString(), String.class);
 			String organizationId = rootNode.get("organizationId") != null ? objectMapper.readValue(rootNode.get("organizationId").toString(), String.class) : "";
 			Boolean shouldStageReport = rootNode.get("shouldStage") != null ? objectMapper.readValue(rootNode.get("shouldStage").toString(), Boolean.class) : false;
+
+			String logoPath = reportsToBeGenerated.length > 0 && Objects.equals(reportsToBeGenerated[0], ReportsLiterals.INDIVIDUAL_PATIENT_REPORT) ? "s3path.IUGOReport-Logo-individualPatientReport" : "s3path.IUGOReport-Logo";
+			s3Consumer.retrieveFileFromS3(ReportGeneratorConfig.getValue(logoPath), StringLiterals.IMAGE, StringLiterals.LAMBDA_BUCKET);
 
 			ReportsGeneratorHandler handler = new ReportsGeneratorHandler(
 					this.logger,
