@@ -15,7 +15,8 @@ jobs:
     # The type of runner that the job will run on
     runs-on: ubuntu-latest
     env:
-      TEMPLATES_LOGO: "iUGOCareW@3x.png"
+      TEMPLATES_LOGO1: "iUGOCareW@3x.png"
+      TEMPLATES_LOGO2: "iUGOCareLogo2.png"
 
     # Steps represent a sequence of tasks that will be executed as part of the job
     steps:
@@ -59,4 +60,5 @@ jobs:
           aws s3 cp environments/$ENVIRONMENTS_FILE s3://$TEMPLATES_S3_BUCKET/environments/apiEndpoints.json
       - name: Upload templates logo image
         run: |
-          aws s3 cp templates/assets/$TEMPLATES_LOGO s3://$TEMPLATES_S3_BUCKET/images/$TEMPLATES_LOGO
+          aws s3 cp templates/assets/$TEMPLATES_LOGO1 s3://$TEMPLATES_S3_BUCKET/images/$TEMPLATES_LOGO1
+          aws s3 cp templates/assets/$TEMPLATES_LOGO2 s3://$TEMPLATES_S3_BUCKET/images/$TEMPLATES_LOGO2
