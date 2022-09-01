@@ -74,7 +74,7 @@ public class HelperFunctions {
 
 		boolean shouldStage = shouldStageReport && !report.equals(ReportsLiterals.EMERGENCY_RECOVERY_REPORT);
 
-		return !Arrays.asList(reportsToAvoidStaging).contains(report) && shouldStage;
+		return !Arrays.asList(reportsToAvoidStaging).contains(report) || shouldStage;
 	}
 	
 	public static boolean shouldSaveZipRecord(String reportType) {
