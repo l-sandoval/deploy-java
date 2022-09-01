@@ -17,6 +17,7 @@ public class HelperFunctions {
 
 	private static String GUID_REG_EX = "\\p{XDigit}{8}-\\p{XDigit}{4}-\\p{XDigit}{4}-\\p{XDigit}{4}-\\p{XDigit}{12}";
     private static List<String> INDIVIDUAL_PATIENT_REPORTS = new ArrayList<String>(Arrays.asList(ReportsLiterals.INDIVIDUAL_PATIENT_REPORT));
+    private static List<String> NON_STAGING_REPORTS = new ArrayList<String>(Arrays.asList(ReportsLiterals.EMERGENCY_RECOVERY_REPORT));
 
 	/*
 	 * Decode xml
@@ -68,13 +69,7 @@ public class HelperFunctions {
 	}
 
 	public static boolean shouldStageReport(String report, Boolean shouldStageReport) {
-		String[] reportsToAvoidStaging = {
-				ReportsLiterals.EMERGENCY_RECOVERY_REPORT
-		};
-
-		boolean shouldStage = shouldStageReport && !report.equals(ReportsLiterals.EMERGENCY_RECOVERY_REPORT);
-
-		return !Arrays.asList(reportsToAvoidStaging).contains(report) || shouldStage;
+		return shouldStageReport && !NON_STAGING_REPORTS.contains(report);
 	}
 	
 	public static boolean shouldSaveZipRecord(String reportType) {
