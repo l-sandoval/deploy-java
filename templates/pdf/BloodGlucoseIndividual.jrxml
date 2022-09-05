@@ -203,7 +203,7 @@
 						</axisFormat>
 					</valueAxisFormat>
 					<rangeAxisMinValueExpression><![CDATA[80]]></rangeAxisMinValueExpression>
-					<rangeAxisMaxValueExpression><![CDATA[180]]></rangeAxisMaxValueExpression>
+					<rangeAxisMaxValueExpression><![CDATA[300]]></rangeAxisMaxValueExpression>
 				</linePlot>
 			</lineChart>
 		</band>
@@ -211,7 +211,7 @@
 	<detail>
 		<band height="15" splitType="Stretch">
 			<property name="com.jaspersoft.studio.unit.height" value="px"/>
-			<textField>
+			<textField isBlankWhenNull="true">
 				<reportElement x="0" y="0" width="160" height="15" uuid="6a409a25-ad4b-489c-8c4d-0715c465d64e">
 					<property name="com.jaspersoft.studio.spreadsheet.connectionID" value="6f0e373a-31d6-4996-8974-70c44bdd9c60"/>
 					<property name="com.jaspersoft.studio.unit.height" value="px"/>
@@ -228,7 +228,7 @@
 				</textElement>
 				<textFieldExpression><![CDATA[java.time.format.DateTimeFormatter.ofPattern($P{DateFormatOut}).withZone(java.time.ZonedDateTime.parse($F{DateTime}).getZone()).format(java.time.ZonedDateTime.parse($F{DateTime}))]]></textFieldExpression>
 			</textField>
-			<textField>
+			<textField isBlankWhenNull="true">
 				<reportElement x="320" y="0" width="272" height="15" uuid="965c6c9c-c30a-4b28-a1c9-c6028fa3a9e6">
 					<property name="com.jaspersoft.studio.spreadsheet.connectionID" value="82e62fa8-d06a-42e4-8e1d-47c06c670590"/>
 					<property name="com.jaspersoft.studio.unit.height" value="px"/>
@@ -246,7 +246,7 @@
 				</textElement>
 				<textFieldExpression><![CDATA[$F{BloodGlucose}+" "+$F{Unit}]]></textFieldExpression>
 			</textField>
-			<textField>
+			<textField isBlankWhenNull="true">
 				<reportElement x="160" y="0" width="160" height="15" uuid="1208458b-bfab-4419-abf3-f395d0518e20">
 					<property name="com.jaspersoft.studio.spreadsheet.connectionID" value="6f0e373a-31d6-4996-8974-70c44bdd9c60"/>
 					<property name="com.jaspersoft.studio.unit.height" value="px"/>

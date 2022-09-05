@@ -50,7 +50,10 @@ public class AmazonDynamoDBConsumer {
             UUID recordId = UUID.randomUUID();
 
             itemValues.put("RecordId", AttributeValue.builder().s(recordId.toString()).build());
-            itemValues.put("EntityId", AttributeValue.builder().s(entityId).build());
+            
+            if(!StringUtils.isNullOrEmpty(entityId)) {
+                itemValues.put("EntityId", AttributeValue.builder().s(entityId).build());
+            }            
             itemValues.put("FilePath", AttributeValue.builder().s(filePath).build());
             itemValues.put("Created", AttributeValue.builder().s(date).build());
             itemValues.put("DocumentCategory", AttributeValue.builder().n(reportCategory.category).build());
