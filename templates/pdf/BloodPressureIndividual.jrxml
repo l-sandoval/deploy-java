@@ -189,7 +189,7 @@
 			<property name="com.jaspersoft.studio.unit.height" value="px"/>
 			<lineChart>
 				<chart evaluationTime="Report">
-					<reportElement isPrintRepeatedValues="false" x="0" y="10" width="592" height="235" isRemoveLineWhenBlank="true" uuid="ac49e91c-12bd-47cb-8f2d-6cad03def5ab">
+					<reportElement isPrintRepeatedValues="false" x="0" y="10" width="592" height="235" isRemoveLineWhenBlank="true" uuid="47bc5bc1-8adc-460a-a9a8-cf2293d57816">
 						<property name="com.jaspersoft.studio.unit.height" value="px"/>
 						<printWhenExpression><![CDATA[$V{PAGE_NUMBER}==1]]></printWhenExpression>
 					</reportElement>
@@ -210,12 +210,12 @@
 					</categorySeries>
 					<categorySeries>
 						<seriesExpression><![CDATA["Diastolic"]]></seriesExpression>
-						<categoryExpression><![CDATA[new java.text.SimpleDateFormat("MM/dd/YYYY").format(java.util.Date.from(java.time.OffsetDateTime.parse($F{DateTime}).toInstant()))]]></categoryExpression>
+						<categoryExpression><![CDATA[java.time.format.DateTimeFormatter.ofPattern($P{DateFormatOut}).withZone(java.time.ZonedDateTime.parse($F{DateTime}).getZone()).format(java.time.ZonedDateTime.parse($F{DateTime}))]]></categoryExpression>
 						<valueExpression><![CDATA[$F{DiastolicBloodPressure}]]></valueExpression>
 					</categorySeries>
 					<categorySeries>
 						<seriesExpression><![CDATA["Pulse"]]></seriesExpression>
-						<categoryExpression><![CDATA[new java.text.SimpleDateFormat("MM/dd/YYYY").format(java.util.Date.from(java.time.OffsetDateTime.parse($F{DateTime}).toInstant()))]]></categoryExpression>
+						<categoryExpression><![CDATA[java.time.format.DateTimeFormatter.ofPattern($P{DateFormatOut}).withZone(java.time.ZonedDateTime.parse($F{DateTime}).getZone()).format(java.time.ZonedDateTime.parse($F{DateTime}))]]></categoryExpression>
 						<valueExpression><![CDATA[$F{Pulse}]]></valueExpression>
 					</categorySeries>
 				</categoryDataset>
