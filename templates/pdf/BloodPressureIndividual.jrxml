@@ -35,11 +35,11 @@
 		<![CDATA[]]>
 	</queryString>
 	<field name="DateTime" class="java.lang.String"/>
-	<field name="SystolicBloodPressure" class="java.lang.Integer"/>
+	<field name="SystolicBloodPressure" class="java.math.BigDecimal"/>
 	<field name="Unit_Systolic" class="java.lang.String"/>
-	<field name="DiastolicBloodPressure" class="java.lang.Integer"/>
+	<field name="DiastolicBloodPressure" class="java.math.BigDecimal"/>
 	<field name="Unit_Diastolic" class="java.lang.String"/>
-	<field name="Pulse" class="java.lang.Integer"/>
+	<field name="Pulse" class="java.math.BigDecimal"/>
 	<field name="Unit_Pulse" class="java.lang.String"/>
 	<variable name="PAGE_CURRENT" class="java.lang.Integer" resetType="None" incrementType="Page">
 		<variableExpression><![CDATA[$V{PAGE_NUMBER}]]></variableExpression>
@@ -280,7 +280,7 @@
 				<textElement textAlignment="Center" verticalAlignment="Middle">
 					<font fontName="Arial" size="8"/>
 				</textElement>
-				<textFieldExpression><![CDATA[$F{SystolicBloodPressure}+"/"+$F{DiastolicBloodPressure}+" "+$F{Unit_Systolic}]]></textFieldExpression>
+				<textFieldExpression><![CDATA[($F{SystolicBloodPressure}.setScale(1,RoundingMode.DOWN).stripTrailingZeros().scale()<1?$F{SystolicBloodPressure}.setScale(0,RoundingMode.DOWN):$F{SystolicBloodPressure}.setScale(1,RoundingMode.DOWN))+"/"+($F{DiastolicBloodPressure}.setScale(1,RoundingMode.DOWN).stripTrailingZeros().scale()<1?($F{DiastolicBloodPressure}.setScale(0,RoundingMode.DOWN)):($F{DiastolicBloodPressure}.setScale(1,RoundingMode.DOWN)))+" "+$F{Unit_Systolic}]]></textFieldExpression>
 			</textField>
 			<textField isBlankWhenNull="true">
 				<reportElement x="460" y="0" width="131" height="15" uuid="0e0baf39-f2cc-44e8-947e-eb62f7eed0fb">
@@ -296,7 +296,7 @@
 				<textElement textAlignment="Center" verticalAlignment="Middle">
 					<font fontName="Arial" size="8"/>
 				</textElement>
-				<textFieldExpression><![CDATA[$F{Pulse}+" "+$F{Unit_Pulse}]]></textFieldExpression>
+				<textFieldExpression><![CDATA[($F{Pulse}.setScale(1,RoundingMode.DOWN).stripTrailingZeros().scale()<1?$F{Pulse}.setScale(0,RoundingMode.DOWN):$F{Pulse}.setScale(1,RoundingMode.DOWN))+" "+$F{Unit_Pulse}]]></textFieldExpression>
 			</textField>
 			<textField isBlankWhenNull="true">
 				<reportElement x="170" y="0" width="154" height="15" uuid="7d995054-e16d-4d2f-8c69-3869c97efe9b">
