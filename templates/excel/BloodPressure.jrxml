@@ -30,11 +30,11 @@
 	<field name="Last Name" class="java.lang.String"/>
 	<field name="First Name" class="java.lang.String"/>
 	<field name="Reading Date/Time" class="java.lang.String"/>
-	<field name="Systolic" class="java.lang.Integer"/>
+	<field name="Systolic" class="java.math.BigDecimal"/>
 	<field name="Unit_Systolic" class="java.lang.String"/>
-	<field name="Diastolic" class="java.lang.Integer"/>
+	<field name="Diastolic" class="java.math.BigDecimal"/>
 	<field name="Unit_Diastolic" class="java.lang.String"/>
-	<field name="Pulse" class="java.lang.Integer"/>
+	<field name="Pulse" class="java.math.BigDecimal"/>
 	<field name="Unit_Pulse" class="java.lang.String"/>
 	<field name="Classification" class="java.lang.String"/>
 	<field name="Reviewed" class="java.lang.String"/>
@@ -423,7 +423,7 @@
 					<font fontName="Arial" size="8"/>
 					<paragraph lineSpacing="Double"/>
 				</textElement>
-				<textFieldExpression><![CDATA[$F{Systolic}]]></textFieldExpression>
+				<textFieldExpression><![CDATA[$F{Systolic}.setScale(1,RoundingMode.DOWN)]]></textFieldExpression>
 			</textField>
 			<textField textAdjust="StretchHeight" isBlankWhenNull="true">
 				<reportElement positionType="Float" stretchType="RelativeToTallestObject" x="608" y="0" width="50" height="21" uuid="5d0b81cd-7db5-4939-9c8b-eb3811622f93">
@@ -460,7 +460,7 @@
 					<font fontName="Arial" size="8"/>
 					<paragraph lineSpacing="Double"/>
 				</textElement>
-				<textFieldExpression><![CDATA[$F{Diastolic}]]></textFieldExpression>
+				<textFieldExpression><![CDATA[$F{Diastolic}.setScale(1,RoundingMode.DOWN)]]></textFieldExpression>
 			</textField>
 			<textField textAdjust="StretchHeight" isBlankWhenNull="true">
 				<reportElement positionType="Float" stretchType="RelativeToTallestObject" x="728" y="0" width="50" height="21" uuid="09de9968-8e08-448e-a970-8f8b422c964c">
@@ -498,7 +498,7 @@
 					<font fontName="Arial" size="8"/>
 					<paragraph lineSpacing="Double"/>
 				</textElement>
-				<textFieldExpression><![CDATA[$F{Pulse}]]></textFieldExpression>
+				<textFieldExpression><![CDATA[$F{Pulse}.setScale(1,RoundingMode.DOWN)]]></textFieldExpression>
 			</textField>
 			<textField textAdjust="StretchHeight" isBlankWhenNull="true">
 				<reportElement positionType="Float" stretchType="RelativeToTallestObject" x="848" y="0" width="50" height="21" uuid="dfdfb961-a909-4eb7-8211-9fafe5feb7e3">
