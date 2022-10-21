@@ -29,9 +29,9 @@
 	<field name="Patient ID" class="java.lang.String"/>
 	<field name="Last Name" class="java.lang.String"/>
 	<field name="First Name" class="java.lang.String"/>
-	<field name="Blood Pressure Systolic Avg" class="java.lang.Integer"/>
-	<field name="Diastolic Avg" class="java.lang.Integer"/>
-	<field name="Pulse Avg" class="java.lang.Integer"/>
+	<field name="Blood Pressure Systolic Avg" class="java.math.BigDecimal"/>
+	<field name="Diastolic Avg" class="java.math.BigDecimal"/>
+	<field name="Pulse Avg" class="java.math.BigDecimal"/>
 	<field name="Systolic change" class="java.math.BigDecimal"/>
 	<field name="Diastolic change" class="java.math.BigDecimal"/>
 	<field name="Pulse change" class="java.math.BigDecimal"/>
@@ -40,7 +40,7 @@
 	<field name="# At Risk BP" class="java.lang.Integer"/>
 	<field name="# Critical BP" class="java.lang.Integer"/>
 	<field name="Adherence BP" class="java.math.BigDecimal"/>
-	<field name="Blood Glucose Avg" class="java.lang.Integer"/>
+	<field name="Blood Glucose Avg" class="java.math.BigDecimal"/>
 	<field name="Blood Glucose Change" class="java.math.BigDecimal"/>
 	<field name="Billable Reading Days BG" class="java.lang.Integer"/>
 	<field name="Total Readings BG" class="java.lang.Integer"/>
@@ -607,7 +607,7 @@
 					<font fontName="Arial" size="8"/>
 					<paragraph lineSpacing="Double"/>
 				</textElement>
-				<textFieldExpression><![CDATA[$F{Blood Pressure Systolic Avg}]]></textFieldExpression>
+				<textFieldExpression><![CDATA[$F{Blood Pressure Systolic Avg}.setScale(1, RoundingMode.DOWN)]]></textFieldExpression>
 			</textField>
 			<textField textAdjust="StretchHeight" isBlankWhenNull="true">
 				<reportElement positionType="Float" stretchType="RelativeToTallestObject" x="395" y="0" width="49" height="21" uuid="501f7c44-bb3b-4e65-84e4-d3b0e231bca3">
@@ -623,7 +623,7 @@
 					<font fontName="Arial" size="8"/>
 					<paragraph lineSpacing="Double"/>
 				</textElement>
-				<textFieldExpression><![CDATA[$F{Diastolic Avg}]]></textFieldExpression>
+				<textFieldExpression><![CDATA[$F{Diastolic Avg}.setScale(1, RoundingMode.DOWN)]]></textFieldExpression>
 			</textField>
 			<textField textAdjust="StretchHeight" isBlankWhenNull="true">
 				<reportElement positionType="Float" stretchType="RelativeToTallestObject" x="444" y="0" width="49" height="21" uuid="ccd976e3-b315-444d-b8e3-7cf66f1e2620">
@@ -639,7 +639,7 @@
 					<font fontName="Arial" size="8"/>
 					<paragraph lineSpacing="Double"/>
 				</textElement>
-				<textFieldExpression><![CDATA[$F{Pulse Avg}]]></textFieldExpression>
+				<textFieldExpression><![CDATA[$F{Pulse Avg}.setScale(1, RoundingMode.DOWN)]]></textFieldExpression>
 			</textField>
 			<textField textAdjust="StretchHeight" isBlankWhenNull="true">
 				<reportElement positionType="Float" stretchType="RelativeToTallestObject" x="493" y="0" width="49" height="21" uuid="3ac08030-5866-4e1f-900c-35eac4f91033">
@@ -655,7 +655,7 @@
 					<font fontName="Arial" size="8"/>
 					<paragraph lineSpacing="Double"/>
 				</textElement>
-				<textFieldExpression><![CDATA[$F{Systolic change}]]></textFieldExpression>
+				<textFieldExpression><![CDATA[$F{Systolic change}.setScale(1, RoundingMode.DOWN)]]></textFieldExpression>
 			</textField>
 			<textField textAdjust="StretchHeight" isBlankWhenNull="true">
 				<reportElement positionType="Float" stretchType="RelativeToTallestObject" x="542" y="0" width="49" height="21" uuid="8bbb3aa1-9f41-434c-9040-344d00d52026">
@@ -671,7 +671,7 @@
 					<font fontName="Arial" size="8"/>
 					<paragraph lineSpacing="Double"/>
 				</textElement>
-				<textFieldExpression><![CDATA[$F{Diastolic change}]]></textFieldExpression>
+				<textFieldExpression><![CDATA[$F{Diastolic change}.setScale(1, RoundingMode.DOWN)]]></textFieldExpression>
 			</textField>
 			<textField textAdjust="StretchHeight" isBlankWhenNull="true">
 				<reportElement positionType="Float" stretchType="RelativeToTallestObject" x="591" y="0" width="49" height="21" uuid="c0f2cde5-ceb2-4772-802d-fafc19142e70">
@@ -688,7 +688,7 @@
 					<font fontName="Arial" size="8"/>
 					<paragraph lineSpacing="Double"/>
 				</textElement>
-				<textFieldExpression><![CDATA[$F{Pulse change}]]></textFieldExpression>
+				<textFieldExpression><![CDATA[$F{Pulse change}.setScale(1, RoundingMode.DOWN)]]></textFieldExpression>
 			</textField>
 			<textField textAdjust="StretchHeight" isBlankWhenNull="true">
 				<reportElement positionType="Float" stretchType="RelativeToTallestObject" x="718" y="0" width="78" height="21" uuid="77983f3b-f7a0-45cb-9dd1-2152bc453396">
@@ -773,7 +773,7 @@
 					<font fontName="Arial" size="8"/>
 					<paragraph lineSpacing="Double"/>
 				</textElement>
-				<textFieldExpression><![CDATA[$F{Blood Glucose Avg}]]></textFieldExpression>
+				<textFieldExpression><![CDATA[$F{Blood Glucose Avg}.setScale(1, RoundingMode.DOWN)]]></textFieldExpression>
 			</textField>
 			<textField textAdjust="StretchHeight" isBlankWhenNull="true">
 				<reportElement positionType="Float" stretchType="RelativeToTallestObject" x="1073" y="0" width="68" height="21" uuid="3d15a5d0-0cfb-4a3d-a9a8-c7abd7a58964">
@@ -790,7 +790,7 @@
 					<font fontName="Arial" size="8"/>
 					<paragraph lineSpacing="Double"/>
 				</textElement>
-				<textFieldExpression><![CDATA[$F{Blood Glucose Change}]]></textFieldExpression>
+				<textFieldExpression><![CDATA[$F{Blood Glucose Change}.setScale(1, RoundingMode.DOWN)]]></textFieldExpression>
 			</textField>
 			<textField textAdjust="StretchHeight" isBlankWhenNull="true">
 				<reportElement positionType="Float" stretchType="RelativeToTallestObject" x="1141" y="0" width="78" height="21" uuid="9e2d25d2-c950-4c8c-9425-9c543209a114">

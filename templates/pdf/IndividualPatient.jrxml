@@ -648,7 +648,8 @@
 					<textElement verticalAlignment="Middle">
 						<font fontName="Arial" size="10"/>
 					</textElement>
-					<textFieldExpression><![CDATA[($P{SystolicBloodPressureAverageValue}.isBlank()?(""):(new java.math.BigDecimal($P{SystolicBloodPressureAverageValue}).setScale(1,BigDecimal.ROUND_HALF_UP)))+($P{DiastolicBloodPressureAverageValue}.isBlank()?(""):(("/")+(new java.math.BigDecimal($P{DiastolicBloodPressureAverageValue}).setScale(1,BigDecimal.ROUND_HALF_UP)))+(" ")+($P{SystolicBloodPressureAverageUnit}))]]></textFieldExpression>
+					<textFieldExpression><![CDATA[($P{SystolicBloodPressureAverageValue}.isBlank()?(""):(new java.math.BigDecimal($P{SystolicBloodPressureAverageValue}).setScale(1,RoundingMode.DOWN).stripTrailingZeros().scale()<1?(new java.math.BigDecimal($P{SystolicBloodPressureAverageValue}).setScale(0,RoundingMode.DOWN)):(new java.math.BigDecimal($P{SystolicBloodPressureAverageValue}).setScale(1,RoundingMode.DOWN))))
++($P{DiastolicBloodPressureAverageValue}.isBlank()?(""):(("/")+(new java.math.BigDecimal($P{DiastolicBloodPressureAverageValue}).setScale(1,RoundingMode.DOWN).stripTrailingZeros().scale()<1?(new java.math.BigDecimal($P{DiastolicBloodPressureAverageValue}).setScale(0,RoundingMode.DOWN)):(new java.math.BigDecimal($P{DiastolicBloodPressureAverageValue}).setScale(1,RoundingMode.DOWN)))))+(" ")+($P{SystolicBloodPressureAverageUnit})]]></textFieldExpression>
 				</textField>
 				<textField evaluationTime="Report" isBlankWhenNull="true">
 					<reportElement x="170" y="59" width="120" height="28" uuid="e211afd9-17da-4073-8050-c9fd98b45a43"/>
@@ -656,7 +657,7 @@
 					<textElement verticalAlignment="Middle">
 						<font fontName="Arial" size="10"/>
 					</textElement>
-					<textFieldExpression><![CDATA[($P{AveragePulseValue}.isBlank()?(""):(new java.math.BigDecimal($P{AveragePulseValue}).setScale(1,BigDecimal.ROUND_HALF_UP))+(" ")+($P{AveragePulseUnit}))]]></textFieldExpression>
+					<textFieldExpression><![CDATA[($P{AveragePulseValue}.isBlank()?(""):(new java.math.BigDecimal($P{AveragePulseValue}).setScale(1,RoundingMode.DOWN).stripTrailingZeros().scale()<1?(new java.math.BigDecimal($P{AveragePulseValue}).setScale(0,RoundingMode.DOWN)):(new java.math.BigDecimal($P{AveragePulseValue}).setScale(1,RoundingMode.DOWN))))+(" ")+($P{AveragePulseUnit})]]></textFieldExpression>
 				</textField>
 				<textField evaluationTime="Report" pattern="###0;###0-" isBlankWhenNull="true">
 					<reportElement x="170" y="117" width="120" height="28" uuid="77172930-5ebd-4eb2-a9bd-a20743ae4d79">
@@ -674,7 +675,7 @@
 					<textElement verticalAlignment="Middle">
 						<font fontName="Arial" size="10"/>
 					</textElement>
-					<textFieldExpression><![CDATA[($P{SystolicfromlastmonthValue}.isBlank()?(""):(new java.math.BigDecimal($P{SystolicfromlastmonthValue}).setScale(1,BigDecimal.ROUND_HALF_UP))+(" ")+$P{SystolicfromlastmonthUnit})]]></textFieldExpression>
+					<textFieldExpression><![CDATA[($P{SystolicfromlastmonthValue}.isBlank()?(""):(new java.math.BigDecimal($P{SystolicfromlastmonthValue}).setScale(1,RoundingMode.DOWN).stripTrailingZeros().scale()<1?(new java.math.BigDecimal($P{SystolicfromlastmonthValue}).setScale(0,RoundingMode.DOWN)):(new java.math.BigDecimal($P{SystolicfromlastmonthValue}).setScale(1,RoundingMode.DOWN))))+(" ")+$P{SystolicfromlastmonthUnit}]]></textFieldExpression>
 				</textField>
 				<textField evaluationTime="Report" isBlankWhenNull="true">
 					<reportElement x="170" y="175" width="120" height="28" uuid="8fd7228f-93dc-4c12-ae72-0f420dd5cad9"/>
@@ -682,7 +683,7 @@
 					<textElement verticalAlignment="Middle">
 						<font fontName="Arial" size="10"/>
 					</textElement>
-					<textFieldExpression><![CDATA[($P{DiastolicfromlastmonthValue}.isBlank()?(""):(new java.math.BigDecimal($P{DiastolicfromlastmonthValue}).setScale(1,BigDecimal.ROUND_HALF_UP))+(" ")+$P{DiastolicfromlastmonthUnit})]]></textFieldExpression>
+					<textFieldExpression><![CDATA[($P{DiastolicfromlastmonthValue}.isBlank()?(""):(new java.math.BigDecimal($P{DiastolicfromlastmonthValue}).setScale(1,RoundingMode.DOWN).stripTrailingZeros().scale()<1?(new java.math.BigDecimal($P{DiastolicfromlastmonthValue}).setScale(0,RoundingMode.DOWN)):(new java.math.BigDecimal($P{DiastolicfromlastmonthValue}).setScale(1,RoundingMode.DOWN))))+(" ")+$P{DiastolicfromlastmonthUnit}]]></textFieldExpression>
 				</textField>
 				<textField evaluationTime="Report" isBlankWhenNull="true">
 					<reportElement x="170" y="204" width="120" height="28" uuid="3aabdbd9-555b-4f18-869c-d3ba50598ecb">
@@ -692,7 +693,7 @@
 					<textElement verticalAlignment="Middle">
 						<font fontName="Arial" size="10"/>
 					</textElement>
-					<textFieldExpression><![CDATA[($P{PulsefromlastreportValue}.isBlank()?(""):(new java.math.BigDecimal($P{PulsefromlastreportValue}).setScale(1,BigDecimal.ROUND_HALF_UP))+(" ")+$P{PulsefromlastreportUnit})]]></textFieldExpression>
+					<textFieldExpression><![CDATA[($P{PulsefromlastreportValue}.isBlank()?(""):(new java.math.BigDecimal($P{PulsefromlastreportValue}).setScale(1,RoundingMode.DOWN).stripTrailingZeros().scale()<1?(new java.math.BigDecimal($P{PulsefromlastreportValue}).setScale(0,RoundingMode.DOWN)):(new java.math.BigDecimal($P{PulsefromlastreportValue}).setScale(1,RoundingMode.DOWN))))+(" ")+$P{PulsefromlastreportUnit}]]></textFieldExpression>
 				</textField>
 				<textField evaluationTime="Report" isBlankWhenNull="true">
 					<reportElement x="170" y="88" width="120" height="28" uuid="56caf5b9-1093-49d4-8239-2caf9bc42d6d">
@@ -829,7 +830,7 @@
 					<textElement verticalAlignment="Middle">
 						<font fontName="Arial" size="10"/>
 					</textElement>
-					<textFieldExpression><![CDATA[($P{AverageBloodGlucoseValue}.isBlank()?(""):(new java.math.BigDecimal($P{AverageBloodGlucoseValue}).setScale(1,BigDecimal.ROUND_HALF_UP))+(" ")+$P{AverageBloodGlucoseUnit})]]></textFieldExpression>
+					<textFieldExpression><![CDATA[($P{AverageBloodGlucoseValue}.isBlank()?(""):(new java.math.BigDecimal($P{AverageBloodGlucoseValue}).setScale(1,RoundingMode.DOWN).stripTrailingZeros().scale()<1?(new java.math.BigDecimal($P{AverageBloodGlucoseValue}).setScale(0,RoundingMode.DOWN)):(new java.math.BigDecimal($P{AverageBloodGlucoseValue}).setScale(1,RoundingMode.DOWN))))+(" ")+$P{AverageBloodGlucoseUnit}]]></textFieldExpression>
 				</textField>
 				<textField evaluationTime="Report" isBlankWhenNull="true">
 					<reportElement x="165" y="63" width="120" height="28" uuid="7bd64df5-7376-42e8-aa33-6b92a346ea47">
@@ -866,7 +867,7 @@
 					<textElement verticalAlignment="Middle">
 						<font fontName="Arial" size="10"/>
 					</textElement>
-					<textFieldExpression><![CDATA[($P{AverageBloodGlucosefromlastmonthValue}.isBlank()?(""):(new java.math.BigDecimal($P{AverageBloodGlucosefromlastmonthValue}).setScale(1,BigDecimal.ROUND_HALF_UP))+(" ")+$P{AverageBloodGlucosefromlastmonthUnit})]]></textFieldExpression>
+					<textFieldExpression><![CDATA[($P{AverageBloodGlucosefromlastmonthValue}.isBlank()?(""):(new java.math.BigDecimal($P{AverageBloodGlucosefromlastmonthValue}).setScale(1,RoundingMode.DOWN).stripTrailingZeros().scale()<1?(new java.math.BigDecimal($P{AverageBloodGlucosefromlastmonthValue}).setScale(0,RoundingMode.DOWN)):(new java.math.BigDecimal($P{AverageBloodGlucosefromlastmonthValue}).setScale(1,RoundingMode.DOWN))))+(" ")+$P{AverageBloodGlucosefromlastmonthUnit}]]></textFieldExpression>
 				</textField>
 				<textField evaluationTime="Report" isBlankWhenNull="true">
 					<reportElement x="165" y="156" width="120" height="28" uuid="1c04cfe3-f4ae-483a-90d9-d2995228f236">

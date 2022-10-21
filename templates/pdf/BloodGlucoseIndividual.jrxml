@@ -30,7 +30,7 @@
 		<![CDATA[]]>
 	</queryString>
 	<field name="DateTime" class="java.lang.String"/>
-	<field name="BloodGlucose" class="java.lang.Integer"/>
+	<field name="BloodGlucose" class="java.math.BigDecimal"/>
 	<field name="Unit" class="java.lang.String"/>
 	<variable name="PAGE_CURRENT" class="java.lang.Integer" incrementType="Page">
 		<variableExpression><![CDATA[$V{PAGE_NUMBER}]]></variableExpression>
@@ -160,7 +160,7 @@
 			<property name="com.jaspersoft.studio.unit.height" value="px"/>
 			<lineChart>
 				<chart isShowLegend="false" evaluationTime="Report">
-					<reportElement isPrintRepeatedValues="false" x="0" y="10" width="592" height="235" isRemoveLineWhenBlank="true" uuid="7043ccac-3a90-43a7-bc56-e4692fdddebd">
+					<reportElement isPrintRepeatedValues="false" x="0" y="10" width="592" height="235" isRemoveLineWhenBlank="true" uuid="988366c1-5d18-4bf3-af65-b776488328a9">
 						<property name="com.jaspersoft.studio.unit.y" value="pixel"/>
 						<printWhenExpression><![CDATA[$V{PAGE_NUMBER}==1]]></printWhenExpression>
 					</reportElement>
@@ -244,7 +244,7 @@
 				<textElement textAlignment="Center" verticalAlignment="Middle">
 					<font fontName="Arial" size="8"/>
 				</textElement>
-				<textFieldExpression><![CDATA[$F{BloodGlucose}+" "+$F{Unit}]]></textFieldExpression>
+				<textFieldExpression><![CDATA[($F{BloodGlucose}.setScale(1,RoundingMode.DOWN).stripTrailingZeros().scale()<1?($F{BloodGlucose}.setScale(0,RoundingMode.DOWN)):($F{BloodGlucose}.setScale(1,RoundingMode.DOWN)))+" "+$F{Unit}]]></textFieldExpression>
 			</textField>
 			<textField isBlankWhenNull="true">
 				<reportElement x="160" y="0" width="160" height="15" uuid="1208458b-bfab-4419-abf3-f395d0518e20">
