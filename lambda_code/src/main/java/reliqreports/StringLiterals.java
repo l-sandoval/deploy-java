@@ -31,7 +31,9 @@ public class StringLiterals {
 	public static final String TYPE_PDF = "pdf";
 	public static final String TYPE_XLSX = "xlsx";
 	public static final String TYPE_XLS = "xls";
-	public static final String HOME_NAME = "Home";	
+	public static final String HOME_NAME = "Home";
+	public static final String SHEET_NAME = "sheet_name";
+	public static final String PATH = "path";
 	public static final String CSV_FIELD_SEPARATOR = ",";
 	public static final String PARAMETER_FILES = "IUGOReport-Parameters";
 	public static final String IUGO_REPORT = "IUGOReport";
