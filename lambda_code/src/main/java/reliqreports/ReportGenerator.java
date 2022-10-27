@@ -100,11 +100,15 @@ public class ReportGenerator {
                 if (key.toLowerCase().contains(StringLiterals.SUBREPORT)) {
                     logger.log("Report... : key=" + key);
                     // get the key and filename
-                    String tab = key.split(StringLiterals.FILENAME_FIELD_SEPARATOR)[2];
-                    logger.log("Report... : key=" + tab);
-                    sheetNameList.add(tab);
-                    String subFileName = parameters.get(key).toString();
-                    fileNameList.add(subFileName);
+                    if (key.toLowerCase().contains(StringLiterals.SHEET_NAME)) {
+                        String tab = key.split(StringLiterals.FILENAME_FIELD_SEPARATOR)[2];
+                        String subFileNameKey = keys.stream().filter(s -> s.contains(tab) &&  s.contains(StringLiterals.PATH)).findFirst().orElse("");
+                        logger.log("Report... : key=" + tab);
+                        sheetNameList.add(tab);
+
+                        String subFileName = parameters.get(subFileNameKey).toString();
+                        fileNameList.add(subFileName);
+                    }
                 }
                 
                 if (key.contains(StringLiterals.PARAMETER_FILES)) {
@@ -293,7 +297,7 @@ public class ReportGenerator {
                     fileNameList.get(i),
                     StringLiterals.FILES_BUCKET);
 
-            logger.log("Retrieve from S3 template= " + sheetNameList.get(i) + ".jrxml" + " csv= " + fileNameList.get(i) + "\r\n");         
+            logger.log("Retrieve from S3 template= " + sheetNameList.get(i) + ".jrxml" + " csv= " + fileNameList.get(i) + "\r\n");
 
             if (sourceStream != null && dataStream != null ) {
                 logger.log("Fill...t=" + (System.currentTimeMillis() - startTime));
