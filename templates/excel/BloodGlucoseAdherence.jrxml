@@ -15,6 +15,9 @@
 	<parameter name="DateFormatOut" class="java.lang.String" isForPrompting="false">
 		<defaultValueExpression><![CDATA["MM/dd/YYYY"]]></defaultValueExpression>
 	</parameter>
+	<parameter name="EmptyFieldExpression" class="java.lang.String" isForPrompting="false">
+		<defaultValueExpression><![CDATA["-"]]></defaultValueExpression>
+	</parameter>
 	<queryString language="csv">
 		<![CDATA[]]>
 	</queryString>
@@ -772,7 +775,7 @@
 	<detail>
 		<band height="21" splitType="Stretch">
 			<property name="com.jaspersoft.studio.unit.height" value="px"/>
-			<textField textAdjust="StretchHeight" isBlankWhenNull="true">
+			<textField textAdjust="StretchHeight" isBlankWhenNull="false">
 				<reportElement positionType="Float" stretchType="RelativeToTallestObject" x="0" y="0" width="100" height="21" uuid="f424901a-aba1-4ba7-a6f9-419b6bd9bd5a">
 					<property name="com.jaspersoft.studio.spreadsheet.connectionID" value="4154789b-3331-4677-a6bf-e45c415a1608"/>
 					<property name="com.jaspersoft.studio.unit.height" value="px"/>
@@ -789,9 +792,9 @@
 					<font fontName="Arial" size="8"/>
 					<paragraph lineSpacing="Double"/>
 				</textElement>
-				<textFieldExpression><![CDATA[$F{Patient ID}]]></textFieldExpression>
+				<textFieldExpression><![CDATA[$F{Patient ID}.isBlank()?$P{EmptyFieldExpression}:$F{Patient ID}]]></textFieldExpression>
 			</textField>
-			<textField textAdjust="StretchHeight" isBlankWhenNull="true">
+			<textField textAdjust="StretchHeight" isBlankWhenNull="false">
 				<reportElement positionType="Float" stretchType="RelativeToTallestObject" x="100" y="0" width="128" height="21" uuid="92a96015-ffe8-45cc-acb8-cae78c00e31f">
 					<property name="com.jaspersoft.studio.spreadsheet.connectionID" value="ad874406-3d69-4d42-8c05-edf2d1a51ca3"/>
 					<property name="com.jaspersoft.studio.unit.width" value="px"/>
@@ -807,9 +810,9 @@
 					<font fontName="Arial" size="8"/>
 					<paragraph lineSpacing="Double"/>
 				</textElement>
-				<textFieldExpression><![CDATA[$F{Last Name}]]></textFieldExpression>
+				<textFieldExpression><![CDATA[$F{Last Name}.isBlank()?$P{EmptyFieldExpression}:$F{Last Name}]]></textFieldExpression>
 			</textField>
-			<textField textAdjust="StretchHeight" isBlankWhenNull="true">
+			<textField textAdjust="StretchHeight" isBlankWhenNull="false">
 				<reportElement positionType="Float" stretchType="RelativeToTallestObject" x="228" y="0" width="118" height="21" uuid="aeaed03e-9453-4400-b286-b3a69c14786f">
 					<property name="com.jaspersoft.studio.spreadsheet.connectionID" value="da9c8ff6-de31-46c7-8c30-26604de891c8"/>
 				</reportElement>
@@ -824,9 +827,9 @@
 					<font fontName="Arial" size="8"/>
 					<paragraph lineSpacing="Double"/>
 				</textElement>
-				<textFieldExpression><![CDATA[$F{First Name}]]></textFieldExpression>
+				<textFieldExpression><![CDATA[$F{First Name}.isBlank()?$P{EmptyFieldExpression}:$F{First Name}]]></textFieldExpression>
 			</textField>
-			<textField textAdjust="StretchHeight" isBlankWhenNull="true">
+			<textField textAdjust="StretchHeight" isBlankWhenNull="false">
 				<reportElement positionType="Float" stretchType="RelativeToTallestObject" x="1276" y="0" width="103" height="21" uuid="bee7b80b-b1a1-4618-9894-954bfcbfa2d9">
 					<property name="com.jaspersoft.studio.spreadsheet.connectionID" value="0dca3b17-aa57-45bd-b7c4-0f6cc29b6384"/>
 				</reportElement>
@@ -841,9 +844,9 @@
 					<font fontName="Arial" size="8"/>
 					<paragraph lineSpacing="Double"/>
 				</textElement>
-				<textFieldExpression><![CDATA[$F{Billable Days}]]></textFieldExpression>
+				<textFieldExpression><![CDATA[$F{Billable Days}==null?$P{EmptyFieldExpression}:$F{Billable Days}]]></textFieldExpression>
 			</textField>
-			<textField textAdjust="StretchHeight" isBlankWhenNull="true">
+			<textField textAdjust="StretchHeight" isBlankWhenNull="false">
 				<reportElement positionType="Float" stretchType="RelativeToTallestObject" x="346" y="0" width="30" height="21" uuid="67478e1d-c5a3-4a83-9184-c5df5ff833c2">
 					<property name="com.jaspersoft.studio.spreadsheet.connectionID" value="6eda697c-8b31-4572-8612-6cc3f5ae0f4c"/>
 					<property name="com.jaspersoft.studio.unit.height" value="px"/>
@@ -860,9 +863,9 @@
 					<font fontName="Arial" size="8"/>
 					<paragraph lineSpacing="Double"/>
 				</textElement>
-				<textFieldExpression><![CDATA[$F{1}]]></textFieldExpression>
+				<textFieldExpression><![CDATA[$F{1}==null?$P{EmptyFieldExpression}:$F{1}]]></textFieldExpression>
 			</textField>
-			<textField textAdjust="StretchHeight" isBlankWhenNull="true">
+			<textField textAdjust="StretchHeight" isBlankWhenNull="false">
 				<reportElement positionType="Float" stretchType="RelativeToTallestObject" x="376" y="0" width="30" height="21" uuid="24a63bbf-f15f-4d79-a165-b2729a7c6634">
 					<property name="com.jaspersoft.studio.spreadsheet.connectionID" value="e7ba17a4-0039-4f2b-994f-4a7e03c4bb5e"/>
 				</reportElement>
@@ -877,9 +880,9 @@
 					<font fontName="Arial" size="8"/>
 					<paragraph lineSpacing="Double"/>
 				</textElement>
-				<textFieldExpression><![CDATA[$F{2}]]></textFieldExpression>
+				<textFieldExpression><![CDATA[$F{2}==null?$P{EmptyFieldExpression}:$F{2}]]></textFieldExpression>
 			</textField>
-			<textField textAdjust="StretchHeight" isBlankWhenNull="true">
+			<textField textAdjust="StretchHeight" isBlankWhenNull="false">
 				<reportElement positionType="Float" stretchType="RelativeToTallestObject" x="406" y="0" width="30" height="21" uuid="8ba6c271-761b-4c88-a33a-c75a8b1d679e">
 					<property name="com.jaspersoft.studio.spreadsheet.connectionID" value="418b9afa-26db-4358-a19a-8c7508ac625a"/>
 				</reportElement>
@@ -894,9 +897,9 @@
 					<font fontName="Arial" size="8"/>
 					<paragraph lineSpacing="Double"/>
 				</textElement>
-				<textFieldExpression><![CDATA[$F{3}]]></textFieldExpression>
+				<textFieldExpression><![CDATA[$F{3}==null?$P{EmptyFieldExpression}:$F{3}]]></textFieldExpression>
 			</textField>
-			<textField textAdjust="StretchHeight" isBlankWhenNull="true">
+			<textField textAdjust="StretchHeight" isBlankWhenNull="false">
 				<reportElement positionType="Float" stretchType="RelativeToTallestObject" x="436" y="0" width="30" height="21" uuid="05060a5b-97c1-408d-9bed-0c1b731f95fe">
 					<property name="com.jaspersoft.studio.spreadsheet.connectionID" value="0aae6186-d84d-426f-a2bd-efb0db1518fb"/>
 				</reportElement>
@@ -911,9 +914,9 @@
 					<font fontName="Arial" size="8"/>
 					<paragraph lineSpacing="Double"/>
 				</textElement>
-				<textFieldExpression><![CDATA[$F{4}]]></textFieldExpression>
+				<textFieldExpression><![CDATA[$F{4}==null?$P{EmptyFieldExpression}:$F{4}]]></textFieldExpression>
 			</textField>
-			<textField textAdjust="StretchHeight" isBlankWhenNull="true">
+			<textField textAdjust="StretchHeight" isBlankWhenNull="false">
 				<reportElement positionType="Float" stretchType="RelativeToTallestObject" x="466" y="0" width="30" height="21" uuid="9b19de96-87c9-4610-ba5a-2681bb285486">
 					<property name="com.jaspersoft.studio.spreadsheet.connectionID" value="1bb73772-7860-43ea-8bd5-5a6131a86bfa"/>
 				</reportElement>
@@ -928,9 +931,9 @@
 					<font fontName="Arial" size="8"/>
 					<paragraph lineSpacing="Double"/>
 				</textElement>
-				<textFieldExpression><![CDATA[$F{5}]]></textFieldExpression>
+				<textFieldExpression><![CDATA[$F{5}==null?$P{EmptyFieldExpression}:$F{5}]]></textFieldExpression>
 			</textField>
-			<textField textAdjust="StretchHeight" isBlankWhenNull="true">
+			<textField textAdjust="StretchHeight" isBlankWhenNull="false">
 				<reportElement positionType="Float" stretchType="RelativeToTallestObject" x="496" y="0" width="30" height="21" uuid="95c84a17-4671-4f4e-b530-9dad93f7150f">
 					<property name="com.jaspersoft.studio.spreadsheet.connectionID" value="960965b5-5fec-4352-ab6e-fcc57c156b55"/>
 				</reportElement>
@@ -945,9 +948,9 @@
 					<font fontName="Arial" size="8"/>
 					<paragraph lineSpacing="Double"/>
 				</textElement>
-				<textFieldExpression><![CDATA[$F{6}]]></textFieldExpression>
+				<textFieldExpression><![CDATA[$F{6}==null?$P{EmptyFieldExpression}:$F{6}]]></textFieldExpression>
 			</textField>
-			<textField textAdjust="StretchHeight" isBlankWhenNull="true">
+			<textField textAdjust="StretchHeight" isBlankWhenNull="false">
 				<reportElement positionType="Float" stretchType="RelativeToTallestObject" x="526" y="0" width="30" height="21" uuid="de490cf7-1afa-489e-83e1-9e64b304c151">
 					<property name="com.jaspersoft.studio.spreadsheet.connectionID" value="3331296d-db3a-47f4-81a1-f5efac2ab5d5"/>
 				</reportElement>
@@ -962,9 +965,9 @@
 					<font fontName="Arial" size="8"/>
 					<paragraph lineSpacing="Double"/>
 				</textElement>
-				<textFieldExpression><![CDATA[$F{7}]]></textFieldExpression>
+				<textFieldExpression><![CDATA[$F{7}==null?$P{EmptyFieldExpression}:$F{7}]]></textFieldExpression>
 			</textField>
-			<textField textAdjust="StretchHeight" isBlankWhenNull="true">
+			<textField textAdjust="StretchHeight" isBlankWhenNull="false">
 				<reportElement positionType="Float" stretchType="RelativeToTallestObject" x="556" y="0" width="30" height="21" uuid="da900e1b-5de5-43cc-8221-2584846e4715">
 					<property name="com.jaspersoft.studio.spreadsheet.connectionID" value="2fb6541c-5b79-4365-8002-8255c60eb5a4"/>
 				</reportElement>
@@ -979,9 +982,9 @@
 					<font fontName="Arial" size="8"/>
 					<paragraph lineSpacing="Double"/>
 				</textElement>
-				<textFieldExpression><![CDATA[$F{8}]]></textFieldExpression>
+				<textFieldExpression><![CDATA[$F{8}==null?$P{EmptyFieldExpression}:$F{8}]]></textFieldExpression>
 			</textField>
-			<textField textAdjust="StretchHeight" isBlankWhenNull="true">
+			<textField textAdjust="StretchHeight" isBlankWhenNull="false">
 				<reportElement positionType="Float" stretchType="RelativeToTallestObject" x="586" y="0" width="30" height="21" uuid="c631d637-7b24-48b5-a8c8-f1edfff4c960">
 					<property name="com.jaspersoft.studio.spreadsheet.connectionID" value="dac4dbc1-b3bb-4539-9a74-c3a0376dd919"/>
 				</reportElement>
@@ -996,9 +999,9 @@
 					<font fontName="Arial" size="8"/>
 					<paragraph lineSpacing="Double"/>
 				</textElement>
-				<textFieldExpression><![CDATA[$F{9}]]></textFieldExpression>
+				<textFieldExpression><![CDATA[$F{9}==null?$P{EmptyFieldExpression}:$F{9}]]></textFieldExpression>
 			</textField>
-			<textField textAdjust="StretchHeight" isBlankWhenNull="true">
+			<textField textAdjust="StretchHeight" isBlankWhenNull="false">
 				<reportElement positionType="Float" stretchType="RelativeToTallestObject" x="616" y="0" width="30" height="21" uuid="0967d877-d60a-4f95-89c9-4cc22b1351a8">
 					<property name="com.jaspersoft.studio.spreadsheet.connectionID" value="6346f673-f88a-4e08-85dd-c4a79cd55e36"/>
 				</reportElement>
@@ -1013,9 +1016,9 @@
 					<font fontName="Arial" size="8"/>
 					<paragraph lineSpacing="Double"/>
 				</textElement>
-				<textFieldExpression><![CDATA[$F{10}]]></textFieldExpression>
+				<textFieldExpression><![CDATA[$F{10}==null?$P{EmptyFieldExpression}:$F{10}]]></textFieldExpression>
 			</textField>
-			<textField textAdjust="StretchHeight" isBlankWhenNull="true">
+			<textField textAdjust="StretchHeight" isBlankWhenNull="false">
 				<reportElement positionType="Float" stretchType="RelativeToTallestObject" x="646" y="0" width="30" height="21" uuid="58ebf231-0016-4920-9fb2-37f55064b051">
 					<property name="com.jaspersoft.studio.spreadsheet.connectionID" value="303dd709-0630-4d2e-ac70-ce0f7a84d054"/>
 				</reportElement>
@@ -1030,9 +1033,9 @@
 					<font fontName="Arial" size="8"/>
 					<paragraph lineSpacing="Double"/>
 				</textElement>
-				<textFieldExpression><![CDATA[$F{11}]]></textFieldExpression>
+				<textFieldExpression><![CDATA[$F{11}==null?$P{EmptyFieldExpression}:$F{11}]]></textFieldExpression>
 			</textField>
-			<textField textAdjust="StretchHeight" isBlankWhenNull="true">
+			<textField textAdjust="StretchHeight" isBlankWhenNull="false">
 				<reportElement positionType="Float" stretchType="RelativeToTallestObject" x="676" y="0" width="30" height="21" uuid="450cece0-21e9-4d59-921c-c48ab2e4c25c">
 					<property name="com.jaspersoft.studio.spreadsheet.connectionID" value="4df14cc1-7d23-40d7-8eae-a264e5bc718c"/>
 				</reportElement>
@@ -1047,9 +1050,9 @@
 					<font fontName="Arial" size="8"/>
 					<paragraph lineSpacing="Double"/>
 				</textElement>
-				<textFieldExpression><![CDATA[$F{12}]]></textFieldExpression>
+				<textFieldExpression><![CDATA[$F{12}==null?$P{EmptyFieldExpression}:$F{12}]]></textFieldExpression>
 			</textField>
-			<textField textAdjust="StretchHeight" isBlankWhenNull="true">
+			<textField textAdjust="StretchHeight" isBlankWhenNull="false">
 				<reportElement positionType="Float" stretchType="RelativeToTallestObject" x="706" y="0" width="30" height="21" uuid="0d4b1341-cddc-4899-9855-6fb2e0741a5f">
 					<property name="com.jaspersoft.studio.spreadsheet.connectionID" value="8e036618-f2e8-4ea9-b4b0-756ea93e3de0"/>
 				</reportElement>
@@ -1064,9 +1067,9 @@
 					<font fontName="Arial" size="8"/>
 					<paragraph lineSpacing="Double"/>
 				</textElement>
-				<textFieldExpression><![CDATA[$F{13}]]></textFieldExpression>
+				<textFieldExpression><![CDATA[$F{13}==null?$P{EmptyFieldExpression}:$F{13}]]></textFieldExpression>
 			</textField>
-			<textField textAdjust="StretchHeight" isBlankWhenNull="true">
+			<textField textAdjust="StretchHeight" isBlankWhenNull="false">
 				<reportElement positionType="Float" stretchType="RelativeToTallestObject" x="736" y="0" width="30" height="21" uuid="b1b717ea-218e-49bf-9b6f-8a81b1de4f2f">
 					<property name="com.jaspersoft.studio.spreadsheet.connectionID" value="ae2d4285-e33b-4214-978c-0627cb52aa1e"/>
 				</reportElement>
@@ -1081,9 +1084,9 @@
 					<font fontName="Arial" size="8"/>
 					<paragraph lineSpacing="Double"/>
 				</textElement>
-				<textFieldExpression><![CDATA[$F{14}]]></textFieldExpression>
+				<textFieldExpression><![CDATA[$F{14}==null?$P{EmptyFieldExpression}:$F{14}]]></textFieldExpression>
 			</textField>
-			<textField textAdjust="StretchHeight" isBlankWhenNull="true">
+			<textField textAdjust="StretchHeight" isBlankWhenNull="false">
 				<reportElement positionType="Float" stretchType="RelativeToTallestObject" x="766" y="0" width="30" height="21" uuid="b65ef787-4972-4c85-b0fd-a3168e3e0eee">
 					<property name="com.jaspersoft.studio.spreadsheet.connectionID" value="06e66566-9627-459e-a81c-15d78f9276d8"/>
 				</reportElement>
@@ -1098,9 +1101,9 @@
 					<font fontName="Arial" size="8"/>
 					<paragraph lineSpacing="Double"/>
 				</textElement>
-				<textFieldExpression><![CDATA[$F{15}]]></textFieldExpression>
+				<textFieldExpression><![CDATA[$F{15}==null?$P{EmptyFieldExpression}:$F{15}]]></textFieldExpression>
 			</textField>
-			<textField textAdjust="StretchHeight" isBlankWhenNull="true">
+			<textField textAdjust="StretchHeight" isBlankWhenNull="false">
 				<reportElement positionType="Float" stretchType="RelativeToTallestObject" x="796" y="0" width="30" height="21" uuid="f6cc2887-3a41-4e97-8b10-2e5eae333d68">
 					<property name="com.jaspersoft.studio.spreadsheet.connectionID" value="454e968f-704f-4703-b291-a370a706ee31"/>
 				</reportElement>
@@ -1115,9 +1118,9 @@
 					<font fontName="Arial" size="8"/>
 					<paragraph lineSpacing="Double"/>
 				</textElement>
-				<textFieldExpression><![CDATA[$F{16}]]></textFieldExpression>
+				<textFieldExpression><![CDATA[$F{16}==null?$P{EmptyFieldExpression}:$F{16}]]></textFieldExpression>
 			</textField>
-			<textField textAdjust="StretchHeight" isBlankWhenNull="true">
+			<textField textAdjust="StretchHeight" isBlankWhenNull="false">
 				<reportElement positionType="Float" stretchType="RelativeToTallestObject" x="826" y="0" width="30" height="21" uuid="9dd859ea-ed15-4f2a-89e0-9add7dba7aed">
 					<property name="com.jaspersoft.studio.spreadsheet.connectionID" value="614fb755-f1ca-4db8-83b4-0a0cc98d9542"/>
 				</reportElement>
@@ -1132,9 +1135,9 @@
 					<font fontName="Arial" size="8"/>
 					<paragraph lineSpacing="Double"/>
 				</textElement>
-				<textFieldExpression><![CDATA[$F{17}]]></textFieldExpression>
+				<textFieldExpression><![CDATA[$F{17}==null?$P{EmptyFieldExpression}:$F{17}]]></textFieldExpression>
 			</textField>
-			<textField textAdjust="StretchHeight" isBlankWhenNull="true">
+			<textField textAdjust="StretchHeight" isBlankWhenNull="false">
 				<reportElement positionType="Float" stretchType="RelativeToTallestObject" x="856" y="0" width="30" height="21" uuid="3fea651a-19ff-4c7e-a213-7eee16a9351e">
 					<property name="com.jaspersoft.studio.spreadsheet.connectionID" value="54fde7fb-8841-4c5a-9980-884445a03213"/>
 				</reportElement>
@@ -1149,9 +1152,9 @@
 					<font fontName="Arial" size="8"/>
 					<paragraph lineSpacing="Double"/>
 				</textElement>
-				<textFieldExpression><![CDATA[$F{18}]]></textFieldExpression>
+				<textFieldExpression><![CDATA[$F{18}==null?$P{EmptyFieldExpression}:$F{18}]]></textFieldExpression>
 			</textField>
-			<textField textAdjust="StretchHeight" isBlankWhenNull="true">
+			<textField textAdjust="StretchHeight" isBlankWhenNull="false">
 				<reportElement positionType="Float" stretchType="RelativeToTallestObject" x="886" y="0" width="30" height="21" uuid="3d111bb9-dca8-4e90-b0d4-08d67016f2ea">
 					<property name="com.jaspersoft.studio.spreadsheet.connectionID" value="b2df75ad-5a34-4eae-b4e5-3982ad056d88"/>
 				</reportElement>
@@ -1166,9 +1169,9 @@
 					<font fontName="Arial" size="8"/>
 					<paragraph lineSpacing="Double"/>
 				</textElement>
-				<textFieldExpression><![CDATA[$F{19}]]></textFieldExpression>
+				<textFieldExpression><![CDATA[$F{19}==null?$P{EmptyFieldExpression}:$F{19}]]></textFieldExpression>
 			</textField>
-			<textField textAdjust="StretchHeight" isBlankWhenNull="true">
+			<textField textAdjust="StretchHeight" isBlankWhenNull="false">
 				<reportElement positionType="Float" stretchType="RelativeToTallestObject" x="916" y="0" width="30" height="21" uuid="f3b1e18b-fcda-4290-9854-6c57fd9378a5">
 					<property name="com.jaspersoft.studio.spreadsheet.connectionID" value="b489ef59-2a1d-440f-a2cf-e274c128920e"/>
 				</reportElement>
@@ -1183,9 +1186,9 @@
 					<font fontName="Arial" size="8"/>
 					<paragraph lineSpacing="Double"/>
 				</textElement>
-				<textFieldExpression><![CDATA[$F{20}]]></textFieldExpression>
+				<textFieldExpression><![CDATA[$F{20}==null?$P{EmptyFieldExpression}:$F{20}]]></textFieldExpression>
 			</textField>
-			<textField textAdjust="StretchHeight" isBlankWhenNull="true">
+			<textField textAdjust="StretchHeight" isBlankWhenNull="false">
 				<reportElement positionType="Float" stretchType="RelativeToTallestObject" x="946" y="0" width="30" height="21" uuid="eee52e38-a5e4-4f10-a88f-82492815c7dc">
 					<property name="com.jaspersoft.studio.spreadsheet.connectionID" value="bc1bdaf9-3e5e-4077-a75e-ad813fd992cd"/>
 				</reportElement>
@@ -1200,9 +1203,9 @@
 					<font fontName="Arial" size="8"/>
 					<paragraph lineSpacing="Double"/>
 				</textElement>
-				<textFieldExpression><![CDATA[$F{21}]]></textFieldExpression>
+				<textFieldExpression><![CDATA[$F{21}==null?$P{EmptyFieldExpression}:$F{21}]]></textFieldExpression>
 			</textField>
-			<textField textAdjust="StretchHeight" isBlankWhenNull="true">
+			<textField textAdjust="StretchHeight" isBlankWhenNull="false">
 				<reportElement positionType="Float" stretchType="RelativeToTallestObject" x="976" y="0" width="30" height="21" uuid="66d8b0da-0937-42be-a81c-b3b55cd93d90">
 					<property name="com.jaspersoft.studio.spreadsheet.connectionID" value="16a5d9e1-d526-4b4d-a2fb-03c46c2ff437"/>
 				</reportElement>
@@ -1217,9 +1220,9 @@
 					<font fontName="Arial" size="8"/>
 					<paragraph lineSpacing="Double"/>
 				</textElement>
-				<textFieldExpression><![CDATA[$F{22}]]></textFieldExpression>
+				<textFieldExpression><![CDATA[$F{22}==null?$P{EmptyFieldExpression}:$F{22}]]></textFieldExpression>
 			</textField>
-			<textField textAdjust="StretchHeight" isBlankWhenNull="true">
+			<textField textAdjust="StretchHeight" isBlankWhenNull="false">
 				<reportElement positionType="Float" stretchType="RelativeToTallestObject" x="1006" y="0" width="30" height="21" uuid="9db27318-034a-44f6-bdba-efdc0b902181">
 					<property name="com.jaspersoft.studio.spreadsheet.connectionID" value="6bc232d2-739f-48f1-98f4-f659342db5ec"/>
 				</reportElement>
@@ -1234,9 +1237,9 @@
 					<font fontName="Arial" size="8"/>
 					<paragraph lineSpacing="Double"/>
 				</textElement>
-				<textFieldExpression><![CDATA[$F{23}]]></textFieldExpression>
+				<textFieldExpression><![CDATA[$F{23}==null?$P{EmptyFieldExpression}:$F{23}]]></textFieldExpression>
 			</textField>
-			<textField textAdjust="StretchHeight" isBlankWhenNull="true">
+			<textField textAdjust="StretchHeight" isBlankWhenNull="false">
 				<reportElement positionType="Float" stretchType="RelativeToTallestObject" x="1036" y="0" width="30" height="21" uuid="66a0edc0-d6b0-4167-92dc-34167479b426">
 					<property name="com.jaspersoft.studio.spreadsheet.connectionID" value="9a842a84-3e78-47c1-8787-0776b64d24f2"/>
 				</reportElement>
@@ -1251,9 +1254,9 @@
 					<font fontName="Arial" size="8"/>
 					<paragraph lineSpacing="Double"/>
 				</textElement>
-				<textFieldExpression><![CDATA[$F{24}]]></textFieldExpression>
+				<textFieldExpression><![CDATA[$F{24}==null?$P{EmptyFieldExpression}:$F{24}]]></textFieldExpression>
 			</textField>
-			<textField textAdjust="StretchHeight" isBlankWhenNull="true">
+			<textField textAdjust="StretchHeight" isBlankWhenNull="false">
 				<reportElement positionType="Float" stretchType="RelativeToTallestObject" x="1066" y="0" width="30" height="21" uuid="3b8d48e8-b80c-42f6-9dee-e296169f3ddc">
 					<property name="com.jaspersoft.studio.spreadsheet.connectionID" value="28b77c8d-af01-4a52-bfa8-39e3aaccf449"/>
 				</reportElement>
@@ -1268,9 +1271,9 @@
 					<font fontName="Arial" size="8"/>
 					<paragraph lineSpacing="Double"/>
 				</textElement>
-				<textFieldExpression><![CDATA[$F{25}]]></textFieldExpression>
+				<textFieldExpression><![CDATA[$F{25}==null?$P{EmptyFieldExpression}:$F{25}]]></textFieldExpression>
 			</textField>
-			<textField textAdjust="StretchHeight" isBlankWhenNull="true">
+			<textField textAdjust="StretchHeight" isBlankWhenNull="false">
 				<reportElement positionType="Float" stretchType="RelativeToTallestObject" x="1096" y="0" width="30" height="21" uuid="45e7ead0-8a3c-4da9-9b81-cbc08151b807">
 					<property name="com.jaspersoft.studio.spreadsheet.connectionID" value="dc9a7ec1-4a96-4fcd-a0d6-f568cecdedb1"/>
 				</reportElement>
@@ -1285,9 +1288,9 @@
 					<font fontName="Arial" size="8"/>
 					<paragraph lineSpacing="Double"/>
 				</textElement>
-				<textFieldExpression><![CDATA[$F{26}]]></textFieldExpression>
+				<textFieldExpression><![CDATA[$F{26}==null?$P{EmptyFieldExpression}:$F{26}]]></textFieldExpression>
 			</textField>
-			<textField textAdjust="StretchHeight" isBlankWhenNull="true">
+			<textField textAdjust="StretchHeight" isBlankWhenNull="false">
 				<reportElement positionType="Float" stretchType="RelativeToTallestObject" x="1126" y="0" width="30" height="21" uuid="49e50aa0-c653-411d-a9f0-88bd2517747f">
 					<property name="com.jaspersoft.studio.spreadsheet.connectionID" value="ef2de8d0-7ee8-41f8-a405-faa8cb81fa4f"/>
 				</reportElement>
@@ -1302,9 +1305,9 @@
 					<font fontName="Arial" size="8"/>
 					<paragraph lineSpacing="Double"/>
 				</textElement>
-				<textFieldExpression><![CDATA[$F{27}]]></textFieldExpression>
+				<textFieldExpression><![CDATA[$F{27}==null?$P{EmptyFieldExpression}:$F{27}]]></textFieldExpression>
 			</textField>
-			<textField textAdjust="StretchHeight" isBlankWhenNull="true">
+			<textField textAdjust="StretchHeight" isBlankWhenNull="false">
 				<reportElement positionType="Float" stretchType="RelativeToTallestObject" x="1156" y="0" width="30" height="21" uuid="064f17aa-4c06-4202-886d-077a3232c224">
 					<property name="com.jaspersoft.studio.spreadsheet.connectionID" value="4d1ddd47-ebda-482f-95b0-e40f7d5175d4"/>
 				</reportElement>
@@ -1319,9 +1322,9 @@
 					<font fontName="Arial" size="8"/>
 					<paragraph lineSpacing="Double"/>
 				</textElement>
-				<textFieldExpression><![CDATA[$F{28}]]></textFieldExpression>
+				<textFieldExpression><![CDATA[$F{28}==null?$P{EmptyFieldExpression}:$F{28}]]></textFieldExpression>
 			</textField>
-			<textField textAdjust="StretchHeight" isBlankWhenNull="true">
+			<textField textAdjust="StretchHeight" isBlankWhenNull="false">
 				<reportElement positionType="Float" stretchType="RelativeToTallestObject" x="1186" y="0" width="30" height="21" uuid="1866940d-9d8b-43ca-8766-9af8cba1728d">
 					<property name="com.jaspersoft.studio.spreadsheet.connectionID" value="7e6469af-2c06-4b8a-bf6e-9dd35d7507fd"/>
 				</reportElement>
@@ -1336,9 +1339,9 @@
 					<font fontName="Arial" size="8"/>
 					<paragraph lineSpacing="Double"/>
 				</textElement>
-				<textFieldExpression><![CDATA[$F{29}]]></textFieldExpression>
+				<textFieldExpression><![CDATA[$F{29}==null?$P{EmptyFieldExpression}:$F{29}]]></textFieldExpression>
 			</textField>
-			<textField textAdjust="StretchHeight" isBlankWhenNull="true">
+			<textField textAdjust="StretchHeight" isBlankWhenNull="false">
 				<reportElement positionType="Float" stretchType="RelativeToTallestObject" x="1216" y="0" width="30" height="21" uuid="155f72d0-47cb-4f67-be83-de16ca83952e">
 					<property name="com.jaspersoft.studio.spreadsheet.connectionID" value="f6f23797-a8fb-4c4f-a7c1-483744ad59be"/>
 				</reportElement>
@@ -1353,9 +1356,9 @@
 					<font fontName="Arial" size="8"/>
 					<paragraph lineSpacing="Double"/>
 				</textElement>
-				<textFieldExpression><![CDATA[$F{30}]]></textFieldExpression>
+				<textFieldExpression><![CDATA[$F{30}==null?$P{EmptyFieldExpression}:$F{30}]]></textFieldExpression>
 			</textField>
-			<textField textAdjust="StretchHeight" isBlankWhenNull="true">
+			<textField textAdjust="StretchHeight" isBlankWhenNull="false">
 				<reportElement positionType="Float" stretchType="RelativeToTallestObject" x="1246" y="0" width="30" height="21" uuid="522a8b40-6d11-4ddd-9a32-c35df3a41f9c">
 					<property name="com.jaspersoft.studio.spreadsheet.connectionID" value="ac84bd9d-1217-46df-aefa-654353bf4df5"/>
 				</reportElement>
@@ -1370,9 +1373,9 @@
 					<font fontName="Arial" size="8"/>
 					<paragraph lineSpacing="Double"/>
 				</textElement>
-				<textFieldExpression><![CDATA[$F{31}]]></textFieldExpression>
+				<textFieldExpression><![CDATA[$F{31}==null?$P{EmptyFieldExpression}:$F{31}]]></textFieldExpression>
 			</textField>
-			<textField textAdjust="StretchHeight" pattern="##0%" isBlankWhenNull="true">
+			<textField textAdjust="StretchHeight" pattern="##0%" isBlankWhenNull="false">
 				<reportElement positionType="Float" stretchType="RelativeToTallestObject" x="1482" y="0" width="103" height="21" uuid="1cabcfe7-dff5-46ef-8894-ec632d4e70be">
 					<property name="com.jaspersoft.studio.spreadsheet.connectionID" value="b642bf92-65da-40bf-a559-393d5d2d81aa"/>
 					<property name="com.jaspersoft.studio.unit.width" value="px"/>
@@ -1388,9 +1391,9 @@
 					<font fontName="Arial" size="8"/>
 					<paragraph lineSpacing="Double"/>
 				</textElement>
-				<textFieldExpression><![CDATA[$F{Adherence}]]></textFieldExpression>
+				<textFieldExpression><![CDATA[$F{Adherence}==null?$P{EmptyFieldExpression}:$F{Adherence}]]></textFieldExpression>
 			</textField>
-			<textField textAdjust="StretchHeight" isBlankWhenNull="true">
+			<textField textAdjust="StretchHeight" isBlankWhenNull="false">
 				<reportElement positionType="Float" stretchType="RelativeToTallestObject" x="1379" y="0" width="103" height="21" uuid="9b541c5b-e3d1-42f2-b07f-5403d6eac8c7">
 					<property name="com.jaspersoft.studio.spreadsheet.connectionID" value="da71c7fb-6cdb-4b80-8713-35b0ba4a3337"/>
 				</reportElement>
@@ -1405,7 +1408,7 @@
 					<font fontName="Arial" size="8"/>
 					<paragraph lineSpacing="Double"/>
 				</textElement>
-				<textFieldExpression><![CDATA[$F{Total Readings}]]></textFieldExpression>
+				<textFieldExpression><![CDATA[$F{Total Readings}==null?$P{EmptyFieldExpression}:$F{Total Readings}]]></textFieldExpression>
 			</textField>
 		</band>
 	</detail>
