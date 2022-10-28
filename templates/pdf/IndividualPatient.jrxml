@@ -69,6 +69,9 @@
 	<parameter name="DateFormatOut" class="java.lang.String" isForPrompting="false">
 		<defaultValueExpression><![CDATA["MM/dd/YYYY"]]></defaultValueExpression>
 	</parameter>
+	<parameter name="EmptyFieldExpression" class="java.lang.String" isForPrompting="false">
+		<defaultValueExpression><![CDATA["-"]]></defaultValueExpression>
+	</parameter>
 	<queryString>
 		<![CDATA[]]>
 	</queryString>
@@ -148,7 +151,7 @@
 					</textElement>
 					<text><![CDATA[Patient Demographics]]></text>
 				</staticText>
-				<textField isBlankWhenNull="true">
+				<textField isBlankWhenNull="false">
 					<reportElement x="165" y="28" width="120" height="28" uuid="a1522720-dc5d-4dbf-8d96-220d4f699f99">
 						<property name="com.jaspersoft.studio.unit.width" value="px"/>
 						<property name="com.jaspersoft.studio.unit.x" value="px"/>
@@ -159,9 +162,9 @@
 					<textElement verticalAlignment="Middle">
 						<font fontName="Arial" size="10"/>
 					</textElement>
-					<textFieldExpression><![CDATA[$P{IUGOReport-PatientDemographics-LastName}]]></textFieldExpression>
+					<textFieldExpression><![CDATA[$P{IUGOReport-PatientDemographics-LastName}==null?$P{EmptyFieldExpression}:$P{IUGOReport-PatientDemographics-LastName}]]></textFieldExpression>
 				</textField>
-				<textField isBlankWhenNull="true">
+				<textField isBlankWhenNull="false">
 					<reportElement x="165" y="59" width="120" height="28" uuid="a92cbe6e-25cf-4f01-aa57-1ec1e42ae030">
 						<property name="com.jaspersoft.studio.unit.y" value="px"/>
 					</reportElement>
@@ -169,9 +172,9 @@
 					<textElement verticalAlignment="Middle">
 						<font fontName="Arial" size="10"/>
 					</textElement>
-					<textFieldExpression><![CDATA[$P{IUGOReport-PatientDemographics-FirstName}]]></textFieldExpression>
+					<textFieldExpression><![CDATA[$P{IUGOReport-PatientDemographics-FirstName}==null?$P{EmptyFieldExpression}:$P{IUGOReport-PatientDemographics-FirstName}]]></textFieldExpression>
 				</textField>
-				<textField isBlankWhenNull="true">
+				<textField isBlankWhenNull="false">
 					<reportElement x="165" y="90" width="120" height="28" uuid="2d7fbf20-f3a0-4871-a2c9-17b59ac0c8b3">
 						<property name="com.jaspersoft.studio.unit.width" value="px"/>
 						<property name="com.jaspersoft.studio.unit.y" value="px"/>
@@ -180,9 +183,10 @@
 					<textElement verticalAlignment="Middle">
 						<font fontName="Arial" size="10"/>
 					</textElement>
-					<textFieldExpression><![CDATA[$P{IUGOReport-PatientDemographics-Age}+$P{IUGOReport-PatientDemographics-Gender}]]></textFieldExpression>
+					<textFieldExpression><![CDATA[($P{IUGOReport-PatientDemographics-Age}==null&&$P{IUGOReport-PatientDemographics-Gender}==null)?$P{EmptyFieldExpression}:(($P{IUGOReport-PatientDemographics-Age}==null?$P{EmptyFieldExpression}:$P{IUGOReport-PatientDemographics-Age})+
+($P{IUGOReport-PatientDemographics-Gender}==null?$P{EmptyFieldExpression}:$P{IUGOReport-PatientDemographics-Gender}))]]></textFieldExpression>
 				</textField>
-				<textField isBlankWhenNull="true">
+				<textField isBlankWhenNull="false">
 					<reportElement x="165" y="121" width="120" height="28" uuid="426f5bca-830c-4f82-94fa-cc7bd0f6198d">
 						<property name="com.jaspersoft.studio.unit.width" value="px"/>
 						<property name="com.jaspersoft.studio.unit.y" value="px"/>
@@ -191,9 +195,9 @@
 					<textElement verticalAlignment="Middle">
 						<font fontName="Arial" size="10"/>
 					</textElement>
-					<textFieldExpression><![CDATA[new java.text.SimpleDateFormat($P{DateFormatOut}).format(new java.text.SimpleDateFormat("yyyy-MM-dd").parse($P{IUGOReport-PatientDemographics-DoB}))]]></textFieldExpression>
+					<textFieldExpression><![CDATA[$P{IUGOReport-PatientDemographics-DoB}==null?$P{EmptyFieldExpression}:(new java.text.SimpleDateFormat($P{DateFormatOut}).format(new java.text.SimpleDateFormat("yyyy-MM-dd").parse($P{IUGOReport-PatientDemographics-DoB})))]]></textFieldExpression>
 				</textField>
-				<textField isBlankWhenNull="true">
+				<textField isBlankWhenNull="false">
 					<reportElement x="165" y="183" width="120" height="28" uuid="b83353cc-db6f-415c-8642-e6dce945bc28">
 						<property name="com.jaspersoft.studio.unit.width" value="px"/>
 						<property name="com.jaspersoft.studio.unit.y" value="px"/>
@@ -202,9 +206,9 @@
 					<textElement verticalAlignment="Middle">
 						<font fontName="Arial" size="10"/>
 					</textElement>
-					<textFieldExpression><![CDATA[$P{IUGOReport-PatientDemographics-PrimaryInsuranceNumber}]]></textFieldExpression>
+					<textFieldExpression><![CDATA[$P{IUGOReport-PatientDemographics-PrimaryInsuranceNumber}==null?$P{EmptyFieldExpression}:$P{IUGOReport-PatientDemographics-PrimaryInsuranceNumber}]]></textFieldExpression>
 				</textField>
-				<textField isBlankWhenNull="true">
+				<textField isBlankWhenNull="false">
 					<reportElement x="165" y="274" width="120" height="28" uuid="6afaad77-afb0-4b3b-b507-d8605b5a7f93">
 						<property name="com.jaspersoft.studio.unit.width" value="px"/>
 						<property name="com.jaspersoft.studio.unit.y" value="px"/>
@@ -213,9 +217,9 @@
 					<textElement verticalAlignment="Middle">
 						<font fontName="Arial" size="10"/>
 					</textElement>
-					<textFieldExpression><![CDATA[$P{IUGOReport-Provider-Name}]]></textFieldExpression>
+					<textFieldExpression><![CDATA[$P{IUGOReport-Provider-Name}==null?$P{EmptyFieldExpression}:$P{IUGOReport-Provider-Name}]]></textFieldExpression>
 				</textField>
-				<textField isBlankWhenNull="true">
+				<textField isBlankWhenNull="false">
 					<reportElement x="165" y="305" width="120" height="28" uuid="d54c4c3b-7799-4b4f-8e63-b90808c2ebe3">
 						<property name="com.jaspersoft.studio.unit.width" value="px"/>
 						<property name="com.jaspersoft.studio.unit.y" value="px"/>
@@ -224,9 +228,9 @@
 					<textElement verticalAlignment="Middle">
 						<font fontName="Arial" size="10"/>
 					</textElement>
-					<textFieldExpression><![CDATA[$P{IUGOReport-Provider-NPI}]]></textFieldExpression>
+					<textFieldExpression><![CDATA[$P{IUGOReport-Provider-NPI}==null?$P{EmptyFieldExpression}:$P{IUGOReport-Provider-NPI}]]></textFieldExpression>
 				</textField>
-				<textField isBlankWhenNull="true">
+				<textField isBlankWhenNull="false">
 					<reportElement x="165" y="336" width="120" height="28" uuid="2f456346-441a-440d-b8e1-a0cca8509e66">
 						<property name="com.jaspersoft.studio.unit.width" value="px"/>
 						<property name="com.jaspersoft.studio.unit.y" value="px"/>
@@ -235,7 +239,7 @@
 					<textElement verticalAlignment="Middle">
 						<font fontName="Arial" size="10"/>
 					</textElement>
-					<textFieldExpression><![CDATA[$P{IUGOReport-PatientDemographics-Status}]]></textFieldExpression>
+					<textFieldExpression><![CDATA[$P{IUGOReport-PatientDemographics-Status}==null?$P{EmptyFieldExpression}:$P{IUGOReport-PatientDemographics-Status}]]></textFieldExpression>
 				</textField>
 				<staticText>
 					<reportElement x="5" y="28" width="155" height="28" uuid="7ba9bd0b-1c4c-499d-895d-8865c7eb1c8f">
@@ -328,7 +332,7 @@
 					</textElement>
 					<text><![CDATA[RPM Time Spent]]></text>
 				</staticText>
-				<textField isBlankWhenNull="true">
+				<textField isBlankWhenNull="false">
 					<reportElement x="165" y="367" width="120" height="28" uuid="767fd062-d527-466c-9410-82ae9d46a773">
 						<property name="com.jaspersoft.studio.unit.width" value="px"/>
 						<property name="com.jaspersoft.studio.unit.height" value="px"/>
@@ -338,9 +342,9 @@
 					<textElement verticalAlignment="Middle">
 						<font fontName="Arial" size="10"/>
 					</textElement>
-					<textFieldExpression><![CDATA[$P{IUGOReport-PatientDemographics-RPMTimeSpent}]]></textFieldExpression>
+					<textFieldExpression><![CDATA[$P{IUGOReport-PatientDemographics-RPMTimeSpent}==null?$P{EmptyFieldExpression}:$P{IUGOReport-PatientDemographics-RPMTimeSpent}]]></textFieldExpression>
 				</textField>
-				<textField isBlankWhenNull="true">
+				<textField isBlankWhenNull="false">
 					<reportElement x="165" y="244" width="120" height="28" uuid="ffd3b173-ece0-404b-8170-ac2a6ff5027c">
 						<property name="com.jaspersoft.studio.unit.width" value="px"/>
 						<property name="com.jaspersoft.studio.unit.y" value="px"/>
@@ -349,7 +353,7 @@
 					<textElement verticalAlignment="Middle">
 						<font fontName="Arial" size="10"/>
 					</textElement>
-					<textFieldExpression><![CDATA[$P{IUGOReport-PatientDemographics-SecondaryInsuranceNumber}]]></textFieldExpression>
+					<textFieldExpression><![CDATA[$P{IUGOReport-PatientDemographics-SecondaryInsuranceNumber}==null?$P{EmptyFieldExpression}:$P{IUGOReport-PatientDemographics-SecondaryInsuranceNumber}]]></textFieldExpression>
 				</textField>
 				<staticText>
 					<reportElement x="5" y="152" width="155" height="28" uuid="7c22e23e-6bdb-4447-bf90-e47591360922">
@@ -395,7 +399,7 @@
 					</textElement>
 					<text><![CDATA[Secondary Insurance Number]]></text>
 				</staticText>
-				<textField isBlankWhenNull="true">
+				<textField isBlankWhenNull="false">
 					<reportElement x="165" y="152" width="120" height="28" uuid="492db6ea-80fc-4f38-8088-9df62e8dfd26">
 						<property name="com.jaspersoft.studio.unit.width" value="px"/>
 						<property name="com.jaspersoft.studio.unit.x" value="px"/>
@@ -405,9 +409,9 @@
 					<textElement verticalAlignment="Middle">
 						<font fontName="Arial" size="10"/>
 					</textElement>
-					<textFieldExpression><![CDATA[$P{IUGOReport-PatientDemographics-PrimaryInsuranceName}]]></textFieldExpression>
+					<textFieldExpression><![CDATA[$P{IUGOReport-PatientDemographics-PrimaryInsuranceName}==null?$P{EmptyFieldExpression}:$P{IUGOReport-PatientDemographics-PrimaryInsuranceName}]]></textFieldExpression>
 				</textField>
-				<textField isBlankWhenNull="true">
+				<textField isBlankWhenNull="false">
 					<reportElement x="165" y="214" width="120" height="28" uuid="700338b5-3f8c-4bbc-9cd4-eb1f3a6e53bd">
 						<property name="com.jaspersoft.studio.unit.width" value="px"/>
 						<property name="com.jaspersoft.studio.unit.x" value="px"/>
@@ -417,7 +421,7 @@
 					<textElement verticalAlignment="Middle">
 						<font fontName="Arial" size="10"/>
 					</textElement>
-					<textFieldExpression><![CDATA[$P{IUGOReport-PatientDemographics-SecondaryInsuranceName}]]></textFieldExpression>
+					<textFieldExpression><![CDATA[$P{IUGOReport-PatientDemographics-SecondaryInsuranceName}==null?$P{EmptyFieldExpression}:$P{IUGOReport-PatientDemographics-SecondaryInsuranceName}]]></textFieldExpression>
 				</textField>
 				<staticText>
 					<reportElement x="6" y="397" width="155" height="28" uuid="d776e7ff-859e-4076-adce-8de6b9c0271e"/>
@@ -455,7 +459,7 @@
 					</textElement>
 					<text><![CDATA[RTM Time Spent]]></text>
 				</staticText>
-				<textField isBlankWhenNull="true">
+				<textField isBlankWhenNull="false">
 					<reportElement x="165" y="397" width="120" height="28" uuid="838e80f3-f05f-4734-a827-5b9b7733b517">
 						<property name="com.jaspersoft.studio.unit.width" value="px"/>
 						<property name="com.jaspersoft.studio.unit.height" value="px"/>
@@ -466,9 +470,9 @@
 					<textElement verticalAlignment="Middle">
 						<font fontName="Arial" size="10"/>
 					</textElement>
-					<textFieldExpression><![CDATA[$P{IUGOReport-PatientDemographics-CCMTimeSpent}]]></textFieldExpression>
+					<textFieldExpression><![CDATA[$P{IUGOReport-PatientDemographics-CCMTimeSpent}==null?$P{EmptyFieldExpression}:$P{IUGOReport-PatientDemographics-CCMTimeSpent}]]></textFieldExpression>
 				</textField>
-				<textField isBlankWhenNull="true">
+				<textField isBlankWhenNull="false">
 					<reportElement x="165" y="427" width="120" height="28" uuid="ea99661b-9b5f-4b44-8ea0-923ab9d9b369">
 						<property name="com.jaspersoft.studio.unit.width" value="px"/>
 						<property name="com.jaspersoft.studio.unit.height" value="px"/>
@@ -479,9 +483,9 @@
 					<textElement verticalAlignment="Middle">
 						<font fontName="Arial" size="10"/>
 					</textElement>
-					<textFieldExpression><![CDATA[$P{IUGOReport-PatientDemographics-PCMTimeSpent}]]></textFieldExpression>
+					<textFieldExpression><![CDATA[$P{IUGOReport-PatientDemographics-PCMTimeSpent}==null?$P{EmptyFieldExpression}:$P{IUGOReport-PatientDemographics-PCMTimeSpent}]]></textFieldExpression>
 				</textField>
-				<textField isBlankWhenNull="true">
+				<textField isBlankWhenNull="false">
 					<reportElement x="165" y="457" width="120" height="28" uuid="5477094c-4fd2-45c6-a56b-3d0732a5be0c">
 						<property name="com.jaspersoft.studio.unit.width" value="px"/>
 						<property name="com.jaspersoft.studio.unit.height" value="px"/>
@@ -492,9 +496,9 @@
 					<textElement verticalAlignment="Middle">
 						<font fontName="Arial" size="10"/>
 					</textElement>
-					<textFieldExpression><![CDATA[$P{IUGOReport-PatientDemographics-BHITimeSpent}]]></textFieldExpression>
+					<textFieldExpression><![CDATA[$P{IUGOReport-PatientDemographics-BHITimeSpent}==null?$P{EmptyFieldExpression}:$P{IUGOReport-PatientDemographics-BHITimeSpent}]]></textFieldExpression>
 				</textField>
-				<textField isBlankWhenNull="true">
+				<textField isBlankWhenNull="false">
 					<reportElement x="165" y="487" width="120" height="28" uuid="0a65dadb-6241-44cf-9666-c368fc7364a5">
 						<property name="com.jaspersoft.studio.unit.width" value="px"/>
 						<property name="com.jaspersoft.studio.unit.height" value="px"/>
@@ -505,7 +509,7 @@
 					<textElement verticalAlignment="Middle">
 						<font fontName="Arial" size="10"/>
 					</textElement>
-					<textFieldExpression><![CDATA[$P{IUGOReport-PatientDemographics-RTMTimeSpent}]]></textFieldExpression>
+					<textFieldExpression><![CDATA[$P{IUGOReport-PatientDemographics-RTMTimeSpent}==null?$P{EmptyFieldExpression}:$P{IUGOReport-PatientDemographics-RTMTimeSpent}]]></textFieldExpression>
 				</textField>
 			</frame>
 			<frame>
@@ -638,7 +642,7 @@
 					</textElement>
 					<text><![CDATA[Total Readings]]></text>
 				</staticText>
-				<textField evaluationTime="Report" isBlankWhenNull="true">
+				<textField evaluationTime="Report" isBlankWhenNull="false">
 					<reportElement x="170" y="28" width="120" height="28" uuid="a8afd988-0ec5-42c6-9dcb-6432cb340180">
 						<property name="com.jaspersoft.studio.unit.width" value="px"/>
 						<property name="com.jaspersoft.studio.unit.height" value="px"/>
@@ -648,18 +652,18 @@
 					<textElement verticalAlignment="Middle">
 						<font fontName="Arial" size="10"/>
 					</textElement>
-					<textFieldExpression><![CDATA[($P{SystolicBloodPressureAverageValue}.isBlank()?(""):(new java.math.BigDecimal($P{SystolicBloodPressureAverageValue}).setScale(1,RoundingMode.DOWN).stripTrailingZeros().scale()<1?(new java.math.BigDecimal($P{SystolicBloodPressureAverageValue}).setScale(0,RoundingMode.DOWN)):(new java.math.BigDecimal($P{SystolicBloodPressureAverageValue}).setScale(1,RoundingMode.DOWN))))
-+($P{DiastolicBloodPressureAverageValue}.isBlank()?(""):(("/")+(new java.math.BigDecimal($P{DiastolicBloodPressureAverageValue}).setScale(1,RoundingMode.DOWN).stripTrailingZeros().scale()<1?(new java.math.BigDecimal($P{DiastolicBloodPressureAverageValue}).setScale(0,RoundingMode.DOWN)):(new java.math.BigDecimal($P{DiastolicBloodPressureAverageValue}).setScale(1,RoundingMode.DOWN)))))+(" ")+($P{SystolicBloodPressureAverageUnit})]]></textFieldExpression>
+					<textFieldExpression><![CDATA[($P{SystolicBloodPressureAverageValue}==null&&$P{DiastolicBloodPressureAverageValue}==null)?$P{EmptyFieldExpression}:(($P{SystolicBloodPressureAverageValue}.isBlank()?(""):(new java.math.BigDecimal($P{SystolicBloodPressureAverageValue}).setScale(1,RoundingMode.DOWN).stripTrailingZeros().scale()<1?(new java.math.BigDecimal($P{SystolicBloodPressureAverageValue}).setScale(0,RoundingMode.DOWN)):(new java.math.BigDecimal($P{SystolicBloodPressureAverageValue}).setScale(1,RoundingMode.DOWN))))
++($P{DiastolicBloodPressureAverageValue}.isBlank()?(""):(("/")+(new java.math.BigDecimal($P{DiastolicBloodPressureAverageValue}).setScale(1,RoundingMode.DOWN).stripTrailingZeros().scale()<1?(new java.math.BigDecimal($P{DiastolicBloodPressureAverageValue}).setScale(0,RoundingMode.DOWN)):(new java.math.BigDecimal($P{DiastolicBloodPressureAverageValue}).setScale(1,RoundingMode.DOWN)))))+(" ")+($P{SystolicBloodPressureAverageUnit}))]]></textFieldExpression>
 				</textField>
-				<textField evaluationTime="Report" isBlankWhenNull="true">
+				<textField evaluationTime="Report" isBlankWhenNull="false">
 					<reportElement x="170" y="59" width="120" height="28" uuid="e211afd9-17da-4073-8050-c9fd98b45a43"/>
 					<box padding="1"/>
 					<textElement verticalAlignment="Middle">
 						<font fontName="Arial" size="10"/>
 					</textElement>
-					<textFieldExpression><![CDATA[($P{AveragePulseValue}.isBlank()?(""):(new java.math.BigDecimal($P{AveragePulseValue}).setScale(1,RoundingMode.DOWN).stripTrailingZeros().scale()<1?(new java.math.BigDecimal($P{AveragePulseValue}).setScale(0,RoundingMode.DOWN)):(new java.math.BigDecimal($P{AveragePulseValue}).setScale(1,RoundingMode.DOWN))))+(" ")+($P{AveragePulseUnit})]]></textFieldExpression>
+					<textFieldExpression><![CDATA[$P{AveragePulseValue}==null?$P{EmptyFieldExpression}:(((new java.math.BigDecimal($P{AveragePulseValue}).setScale(1,RoundingMode.DOWN).stripTrailingZeros().scale()<1?(new java.math.BigDecimal($P{AveragePulseValue}).setScale(0,RoundingMode.DOWN)):(new java.math.BigDecimal($P{AveragePulseValue}).setScale(1,RoundingMode.DOWN))))+(" ")+($P{AveragePulseUnit}))]]></textFieldExpression>
 				</textField>
-				<textField evaluationTime="Report" pattern="###0;###0-" isBlankWhenNull="true">
+				<textField evaluationTime="Report" pattern="###0;###0-" isBlankWhenNull="false">
 					<reportElement x="170" y="117" width="120" height="28" uuid="77172930-5ebd-4eb2-a9bd-a20743ae4d79">
 						<property name="com.jaspersoft.studio.unit.width" value="px"/>
 					</reportElement>
@@ -667,25 +671,25 @@
 					<textElement verticalAlignment="Middle">
 						<font fontName="Arial" size="10"/>
 					</textElement>
-					<textFieldExpression><![CDATA[$P{SystolicBloodPressureAverageAtRiskReadings}]]></textFieldExpression>
+					<textFieldExpression><![CDATA[$P{SystolicBloodPressureAverageAtRiskReadings}==null?$P{EmptyFieldExpression}:$P{SystolicBloodPressureAverageAtRiskReadings}]]></textFieldExpression>
 				</textField>
-				<textField evaluationTime="Report" isBlankWhenNull="true">
+				<textField evaluationTime="Report" isBlankWhenNull="false">
 					<reportElement x="170" y="146" width="120" height="28" uuid="1f047a9d-2f58-4649-b44d-0f37f1db80cf"/>
 					<box padding="1"/>
 					<textElement verticalAlignment="Middle">
 						<font fontName="Arial" size="10"/>
 					</textElement>
-					<textFieldExpression><![CDATA[($P{SystolicfromlastmonthValue}.isBlank()?(""):(new java.math.BigDecimal($P{SystolicfromlastmonthValue}).setScale(1,RoundingMode.DOWN).stripTrailingZeros().scale()<1?(new java.math.BigDecimal($P{SystolicfromlastmonthValue}).setScale(0,RoundingMode.DOWN)):(new java.math.BigDecimal($P{SystolicfromlastmonthValue}).setScale(1,RoundingMode.DOWN))))+(" ")+$P{SystolicfromlastmonthUnit}]]></textFieldExpression>
+					<textFieldExpression><![CDATA[$P{SystolicfromlastmonthValue}==null?$P{EmptyFieldExpression}:(((new java.math.BigDecimal($P{SystolicfromlastmonthValue}).setScale(1,RoundingMode.DOWN).stripTrailingZeros().scale()<1?(new java.math.BigDecimal($P{SystolicfromlastmonthValue}).setScale(0,RoundingMode.DOWN)):(new java.math.BigDecimal($P{SystolicfromlastmonthValue}).setScale(1,RoundingMode.DOWN))))+(" ")+$P{SystolicfromlastmonthUnit})]]></textFieldExpression>
 				</textField>
-				<textField evaluationTime="Report" isBlankWhenNull="true">
+				<textField evaluationTime="Report" isBlankWhenNull="false">
 					<reportElement x="170" y="175" width="120" height="28" uuid="8fd7228f-93dc-4c12-ae72-0f420dd5cad9"/>
 					<box padding="1"/>
 					<textElement verticalAlignment="Middle">
 						<font fontName="Arial" size="10"/>
 					</textElement>
-					<textFieldExpression><![CDATA[($P{DiastolicfromlastmonthValue}.isBlank()?(""):(new java.math.BigDecimal($P{DiastolicfromlastmonthValue}).setScale(1,RoundingMode.DOWN).stripTrailingZeros().scale()<1?(new java.math.BigDecimal($P{DiastolicfromlastmonthValue}).setScale(0,RoundingMode.DOWN)):(new java.math.BigDecimal($P{DiastolicfromlastmonthValue}).setScale(1,RoundingMode.DOWN))))+(" ")+$P{DiastolicfromlastmonthUnit}]]></textFieldExpression>
+					<textFieldExpression><![CDATA[$P{DiastolicfromlastmonthValue}==null?$P{EmptyFieldExpression}:(((new java.math.BigDecimal($P{DiastolicfromlastmonthValue}).setScale(1,RoundingMode.DOWN).stripTrailingZeros().scale()<1?(new java.math.BigDecimal($P{DiastolicfromlastmonthValue}).setScale(0,RoundingMode.DOWN)):(new java.math.BigDecimal($P{DiastolicfromlastmonthValue}).setScale(1,RoundingMode.DOWN))))+(" ")+$P{DiastolicfromlastmonthUnit})]]></textFieldExpression>
 				</textField>
-				<textField evaluationTime="Report" isBlankWhenNull="true">
+				<textField evaluationTime="Report" isBlankWhenNull="false">
 					<reportElement x="170" y="204" width="120" height="28" uuid="3aabdbd9-555b-4f18-869c-d3ba50598ecb">
 						<property name="com.jaspersoft.studio.unit.height" value="px"/>
 					</reportElement>
@@ -693,9 +697,9 @@
 					<textElement verticalAlignment="Middle">
 						<font fontName="Arial" size="10"/>
 					</textElement>
-					<textFieldExpression><![CDATA[($P{PulsefromlastreportValue}.isBlank()?(""):(new java.math.BigDecimal($P{PulsefromlastreportValue}).setScale(1,RoundingMode.DOWN).stripTrailingZeros().scale()<1?(new java.math.BigDecimal($P{PulsefromlastreportValue}).setScale(0,RoundingMode.DOWN)):(new java.math.BigDecimal($P{PulsefromlastreportValue}).setScale(1,RoundingMode.DOWN))))+(" ")+$P{PulsefromlastreportUnit}]]></textFieldExpression>
+					<textFieldExpression><![CDATA[$P{PulsefromlastreportValue}==null?$P{EmptyFieldExpression}:(((new java.math.BigDecimal($P{PulsefromlastreportValue}).setScale(1,RoundingMode.DOWN).stripTrailingZeros().scale()<1?(new java.math.BigDecimal($P{PulsefromlastreportValue}).setScale(0,RoundingMode.DOWN)):(new java.math.BigDecimal($P{PulsefromlastreportValue}).setScale(1,RoundingMode.DOWN))))+(" ")+$P{PulsefromlastreportUnit})]]></textFieldExpression>
 				</textField>
-				<textField evaluationTime="Report" isBlankWhenNull="true">
+				<textField evaluationTime="Report" isBlankWhenNull="false">
 					<reportElement x="170" y="88" width="120" height="28" uuid="56caf5b9-1093-49d4-8239-2caf9bc42d6d">
 						<property name="com.jaspersoft.studio.unit.width" value="px"/>
 					</reportElement>
@@ -703,9 +707,9 @@
 					<textElement verticalAlignment="Middle">
 						<font fontName="Arial" size="10"/>
 					</textElement>
-					<textFieldExpression><![CDATA[$P{SystolicBloodPressureAverageCriticalReadings}]]></textFieldExpression>
+					<textFieldExpression><![CDATA[$P{SystolicBloodPressureAverageCriticalReadings}==null?$P{EmptyFieldExpression}:$P{SystolicBloodPressureAverageCriticalReadings}]]></textFieldExpression>
 				</textField>
-				<textField evaluationTime="Report" isBlankWhenNull="true">
+				<textField evaluationTime="Report" isBlankWhenNull="false">
 					<reportElement x="170" y="233" width="120" height="28" uuid="75a2f717-e337-4099-b50b-fce94456e00c">
 						<property name="com.jaspersoft.studio.unit.x" value="px"/>
 						<property name="com.jaspersoft.studio.unit.height" value="px"/>
@@ -714,9 +718,9 @@
 					<textElement verticalAlignment="Middle">
 						<font fontName="Arial" size="10"/>
 					</textElement>
-					<textFieldExpression><![CDATA[$P{SystolicBloodPressureAverageBillableReadingDays}]]></textFieldExpression>
+					<textFieldExpression><![CDATA[$P{SystolicBloodPressureAverageBillableReadingDays}==null?$P{EmptyFieldExpression}:$P{SystolicBloodPressureAverageBillableReadingDays}]]></textFieldExpression>
 				</textField>
-				<textField evaluationTime="Report" isBlankWhenNull="true">
+				<textField evaluationTime="Report" isBlankWhenNull="false">
 					<reportElement x="170" y="262" width="120" height="28" uuid="fd273043-38ad-4eb7-bf12-8d3a98fd2582">
 						<property name="com.jaspersoft.studio.unit.x" value="px"/>
 						<property name="com.jaspersoft.studio.unit.height" value="px"/>
@@ -725,7 +729,7 @@
 					<textElement verticalAlignment="Middle">
 						<font fontName="Arial" size="10"/>
 					</textElement>
-					<textFieldExpression><![CDATA[$P{SystolicBloodPressureAverageTotalReadings}]]></textFieldExpression>
+					<textFieldExpression><![CDATA[$P{SystolicBloodPressureAverageTotalReadings}==null?$P{EmptyFieldExpression}:$P{SystolicBloodPressureAverageTotalReadings}]]></textFieldExpression>
 				</textField>
 			</frame>
 			<frame>
@@ -820,7 +824,7 @@
 					</textElement>
 					<text><![CDATA[Total Readings]]></text>
 				</staticText>
-				<textField evaluationTime="Report" isBlankWhenNull="true">
+				<textField evaluationTime="Report" isBlankWhenNull="false">
 					<reportElement x="165" y="32" width="120" height="28" uuid="0791469e-17b7-404d-a3c2-a7df3f544421">
 						<property name="com.jaspersoft.studio.unit.width" value="px"/>
 						<property name="com.jaspersoft.studio.unit.x" value="px"/>
@@ -830,9 +834,9 @@
 					<textElement verticalAlignment="Middle">
 						<font fontName="Arial" size="10"/>
 					</textElement>
-					<textFieldExpression><![CDATA[($P{AverageBloodGlucoseValue}.isBlank()?(""):(new java.math.BigDecimal($P{AverageBloodGlucoseValue}).setScale(1,RoundingMode.DOWN).stripTrailingZeros().scale()<1?(new java.math.BigDecimal($P{AverageBloodGlucoseValue}).setScale(0,RoundingMode.DOWN)):(new java.math.BigDecimal($P{AverageBloodGlucoseValue}).setScale(1,RoundingMode.DOWN))))+(" ")+$P{AverageBloodGlucoseUnit}]]></textFieldExpression>
+					<textFieldExpression><![CDATA[$P{AverageBloodGlucoseValue}==null?$P{EmptyFieldExpression}:(((new java.math.BigDecimal($P{AverageBloodGlucoseValue}).setScale(1,RoundingMode.DOWN).stripTrailingZeros().scale()<1?(new java.math.BigDecimal($P{AverageBloodGlucoseValue}).setScale(0,RoundingMode.DOWN)):(new java.math.BigDecimal($P{AverageBloodGlucoseValue}).setScale(1,RoundingMode.DOWN))))+(" ")+$P{AverageBloodGlucoseUnit})]]></textFieldExpression>
 				</textField>
-				<textField evaluationTime="Report" isBlankWhenNull="true">
+				<textField evaluationTime="Report" isBlankWhenNull="false">
 					<reportElement x="165" y="63" width="120" height="28" uuid="7bd64df5-7376-42e8-aa33-6b92a346ea47">
 						<property name="com.jaspersoft.studio.unit.width" value="px"/>
 						<property name="com.jaspersoft.studio.unit.x" value="px"/>
@@ -842,9 +846,9 @@
 					<textElement verticalAlignment="Middle">
 						<font fontName="Arial" size="10"/>
 					</textElement>
-					<textFieldExpression><![CDATA[$P{AverageBloodGlucoseCriticalReadings}]]></textFieldExpression>
+					<textFieldExpression><![CDATA[$P{AverageBloodGlucoseCriticalReadings}==null?$P{EmptyFieldExpression}:$P{AverageBloodGlucoseCriticalReadings}]]></textFieldExpression>
 				</textField>
-				<textField evaluationTime="Report" isBlankWhenNull="true">
+				<textField evaluationTime="Report" isBlankWhenNull="false">
 					<reportElement x="165" y="94" width="120" height="28" uuid="bfedbce7-9416-4f2e-a411-61c30d2607eb">
 						<property name="com.jaspersoft.studio.unit.width" value="px"/>
 						<property name="com.jaspersoft.studio.unit.x" value="px"/>
@@ -854,9 +858,9 @@
 					<textElement verticalAlignment="Middle">
 						<font fontName="Arial" size="10"/>
 					</textElement>
-					<textFieldExpression><![CDATA[$P{AverageBloodGlucoseAtRiskReadings}]]></textFieldExpression>
+					<textFieldExpression><![CDATA[$P{AverageBloodGlucoseAtRiskReadings}==null?$P{EmptyFieldExpression}:$P{AverageBloodGlucoseAtRiskReadings}]]></textFieldExpression>
 				</textField>
-				<textField evaluationTime="Report" isBlankWhenNull="true">
+				<textField evaluationTime="Report" isBlankWhenNull="false">
 					<reportElement x="165" y="125" width="120" height="28" uuid="86ffaaf6-0fee-462f-a82d-a0fcd63d9cd1">
 						<property name="com.jaspersoft.studio.unit.width" value="px"/>
 						<property name="com.jaspersoft.studio.unit.x" value="px"/>
@@ -867,9 +871,9 @@
 					<textElement verticalAlignment="Middle">
 						<font fontName="Arial" size="10"/>
 					</textElement>
-					<textFieldExpression><![CDATA[($P{AverageBloodGlucosefromlastmonthValue}.isBlank()?(""):(new java.math.BigDecimal($P{AverageBloodGlucosefromlastmonthValue}).setScale(1,RoundingMode.DOWN).stripTrailingZeros().scale()<1?(new java.math.BigDecimal($P{AverageBloodGlucosefromlastmonthValue}).setScale(0,RoundingMode.DOWN)):(new java.math.BigDecimal($P{AverageBloodGlucosefromlastmonthValue}).setScale(1,RoundingMode.DOWN))))+(" ")+$P{AverageBloodGlucosefromlastmonthUnit}]]></textFieldExpression>
+					<textFieldExpression><![CDATA[$P{AverageBloodGlucosefromlastmonthValue}==null?($P{EmptyFieldExpression}):(((new java.math.BigDecimal($P{AverageBloodGlucosefromlastmonthValue}).setScale(1,RoundingMode.DOWN).stripTrailingZeros().scale()<1?(new java.math.BigDecimal($P{AverageBloodGlucosefromlastmonthValue}).setScale(0,RoundingMode.DOWN)):(new java.math.BigDecimal($P{AverageBloodGlucosefromlastmonthValue}).setScale(1,RoundingMode.DOWN))))+(" ")+$P{AverageBloodGlucosefromlastmonthUnit})]]></textFieldExpression>
 				</textField>
-				<textField evaluationTime="Report" isBlankWhenNull="true">
+				<textField evaluationTime="Report" isBlankWhenNull="false">
 					<reportElement x="165" y="156" width="120" height="28" uuid="1c04cfe3-f4ae-483a-90d9-d2995228f236">
 						<property name="com.jaspersoft.studio.unit.x" value="px"/>
 						<property name="com.jaspersoft.studio.unit.y" value="px"/>
@@ -879,7 +883,7 @@
 					<textElement verticalAlignment="Middle">
 						<font fontName="Arial" size="10"/>
 					</textElement>
-					<textFieldExpression><![CDATA[$P{AverageBloodGlucoseBillableReadingDays}]]></textFieldExpression>
+					<textFieldExpression><![CDATA[$P{AverageBloodGlucoseBillableReadingDays}==null?$P{EmptyFieldExpression}:$P{AverageBloodGlucoseBillableReadingDays}]]></textFieldExpression>
 				</textField>
 				<textField evaluationTime="Report">
 					<reportElement x="165" y="187" width="120" height="28" uuid="4ac64a72-1a6d-4798-a027-76f53a9301e3">
@@ -890,7 +894,7 @@
 					<textElement verticalAlignment="Middle">
 						<font fontName="Arial" size="10"/>
 					</textElement>
-					<textFieldExpression><![CDATA[$P{AverageBloodGlucoseTotalReadings}]]></textFieldExpression>
+					<textFieldExpression><![CDATA[$P{AverageBloodGlucoseTotalReadings}==null?$P{EmptyFieldExpression}:$P{AverageBloodGlucoseTotalReadings}]]></textFieldExpression>
 				</textField>
 			</frame>
 			<frame>
@@ -917,7 +921,7 @@
 					</textElement>
 					<text><![CDATA[ICD 10 Codes]]></text>
 				</staticText>
-				<textField isBlankWhenNull="true">
+				<textField isBlankWhenNull="false">
 					<reportElement x="4" y="30" width="280" height="90" uuid="21ce6d3b-7ef8-4ff7-893a-aade472b8f49">
 						<property name="com.jaspersoft.studio.unit.width" value="px"/>
 						<property name="com.jaspersoft.studio.unit.height" value="px"/>
@@ -926,7 +930,7 @@
 					<textElement>
 						<font fontName="Arial" size="10"/>
 					</textElement>
-					<textFieldExpression><![CDATA[$P{ICD10CodesValue}]]></textFieldExpression>
+					<textFieldExpression><![CDATA[$P{ICD10CodesValue}==null?$P{EmptyFieldExpression}:$P{ICD10CodesValue}]]></textFieldExpression>
 				</textField>
 			</frame>
 			<frame>
@@ -955,7 +959,7 @@
 					</textElement>
 					<text><![CDATA[Billing Codes]]></text>
 				</staticText>
-				<textField isBlankWhenNull="true">
+				<textField isBlankWhenNull="false">
 					<reportElement x="4" y="30" width="280" height="90" uuid="ed79b710-5223-4bd9-a869-7fda649e13dc">
 						<property name="com.jaspersoft.studio.unit.width" value="px"/>
 						<property name="com.jaspersoft.studio.unit.x" value="px"/>
@@ -965,7 +969,7 @@
 					<textElement>
 						<font fontName="Arial" size="10"/>
 					</textElement>
-					<textFieldExpression><![CDATA[$P{BillingCodesValue}]]></textFieldExpression>
+					<textFieldExpression><![CDATA[$P{BillingCodesValue}==null?$P{EmptyFieldExpression}:$P{BillingCodesValue}]]></textFieldExpression>
 				</textField>
 			</frame>
 		</band>
