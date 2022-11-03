@@ -6,4 +6,5 @@ public class ReportsLiterals {
     public static final String EMERGENCY_RECOVERY_REPORT = "EmergencyRecoveryReport";
     public static final String INDIVIDUAL_RPM_READINGS_REPORT = "IndividualRPMReadingsReport";
     public static final String INDIVIDUAL_PATIENT_REPORT = "IndividualPatient";
+    public static final String DAILY_CRITICAL_READINGS_REPORT = "DailyCriticalReadingsReport";
 }
