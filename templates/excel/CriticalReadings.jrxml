@@ -232,7 +232,7 @@
 				<textElement textAlignment="Center" verticalAlignment="Middle">
 					<font fontName="Tahoma" size="10"/>
 				</textElement>
-				<text><![CDATA[# of Previous Day Critical Readings]]></text>
+				<text><![CDATA[Number of Previous Day Critical Readings]]></text>
 			</staticText>
 			<staticText>
 				<reportElement mode="Opaque" x="985" y="0" width="150" height="32" forecolor="#FFFFFF" backcolor="#007EC7" uuid="725c8111-44c0-4bc4-8535-52559c9e7a6c">
