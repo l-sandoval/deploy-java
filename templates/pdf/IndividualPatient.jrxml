@@ -671,7 +671,7 @@
 					<textElement verticalAlignment="Middle">
 						<font fontName="Arial" size="10"/>
 					</textElement>
-					<textFieldExpression><![CDATA[$P{SystolicBloodPressureAverageAtRiskReadings}==null?$P{EmptyFieldExpression}:$P{SystolicBloodPressureAverageAtRiskReadings}]]></textFieldExpression>
+					<textFieldExpression><![CDATA[($P{SystolicBloodPressureAverageAtRiskReadings}==null || $P{SystolicBloodPressureAverageAtRiskReadings}.length()==0)?$P{EmptyFieldExpression}:$P{SystolicBloodPressureAverageAtRiskReadings}]]></textFieldExpression>
 				</textField>
 				<textField evaluationTime="Report" isBlankWhenNull="false">
 					<reportElement x="170" y="146" width="120" height="28" uuid="1f047a9d-2f58-4649-b44d-0f37f1db80cf"/>
@@ -687,8 +687,7 @@
 					<textElement verticalAlignment="Middle">
 						<font fontName="Arial" size="10"/>
 					</textElement>
-					<textFieldExpression><![CDATA[($P{DiastolicfromlastmonthValue}!=null && $P{DiastolicfromlastmonthUnit}!=null)?($P{DiastolicfromlastmonthValue}.isBlank()?$P{EmptyFieldExpression}:(new java.math.BigDecimal($P{DiastolicfromlastmonthValue}).setScale(1,RoundingMode.DOWN).stripTrailingZeros().scale()<1?(new java.math.BigDecimal($P{DiastolicfromlastmonthValue}).setScale(0,RoundingMode.DOWN)):(new java.math.BigDecimal($P{DiastolicfromlastmonthValue}).setScale(1,RoundingMode.DOWN)))+(" ")+$P{DiastolicfromlastmonthUnit}):$P{EmptyFieldExpression}
-]]></textFieldExpression>
+					<textFieldExpression><![CDATA[($P{DiastolicfromlastmonthValue}!=null && $P{DiastolicfromlastmonthUnit}!=null)?($P{DiastolicfromlastmonthValue}.isBlank()?$P{EmptyFieldExpression}:(new java.math.BigDecimal($P{DiastolicfromlastmonthValue}).setScale(1,RoundingMode.DOWN).stripTrailingZeros().scale()<1?(new java.math.BigDecimal($P{DiastolicfromlastmonthValue}).setScale(0,RoundingMode.DOWN)):(new java.math.BigDecimal($P{DiastolicfromlastmonthValue}).setScale(1,RoundingMode.DOWN)))+(" ")+$P{DiastolicfromlastmonthUnit}):$P{EmptyFieldExpression}]]></textFieldExpression>
 				</textField>
 				<textField evaluationTime="Report" isBlankWhenNull="false">
 					<reportElement x="170" y="204" width="120" height="28" uuid="3aabdbd9-555b-4f18-869c-d3ba50598ecb">
@@ -708,7 +707,7 @@
 					<textElement verticalAlignment="Middle">
 						<font fontName="Arial" size="10"/>
 					</textElement>
-					<textFieldExpression><![CDATA[$P{SystolicBloodPressureAverageCriticalReadings}==null?$P{EmptyFieldExpression}:$P{SystolicBloodPressureAverageCriticalReadings}]]></textFieldExpression>
+					<textFieldExpression><![CDATA[($P{SystolicBloodPressureAverageCriticalReadings}==null || $P{SystolicBloodPressureAverageCriticalReadings}.length()==0)?$P{EmptyFieldExpression}:$P{SystolicBloodPressureAverageCriticalReadings}]]></textFieldExpression>
 				</textField>
 				<textField evaluationTime="Report" isBlankWhenNull="false">
 					<reportElement x="170" y="233" width="120" height="28" uuid="75a2f717-e337-4099-b50b-fce94456e00c">
@@ -719,7 +718,7 @@
 					<textElement verticalAlignment="Middle">
 						<font fontName="Arial" size="10"/>
 					</textElement>
-					<textFieldExpression><![CDATA[$P{SystolicBloodPressureAverageBillableReadingDays}==null?$P{EmptyFieldExpression}:$P{SystolicBloodPressureAverageBillableReadingDays}]]></textFieldExpression>
+					<textFieldExpression><![CDATA[($P{SystolicBloodPressureAverageBillableReadingDays}==null || $P{SystolicBloodPressureAverageBillableReadingDays}.length()==0)?$P{EmptyFieldExpression}:$P{SystolicBloodPressureAverageBillableReadingDays}]]></textFieldExpression>
 				</textField>
 				<textField evaluationTime="Report" isBlankWhenNull="false">
 					<reportElement x="170" y="262" width="120" height="28" uuid="fd273043-38ad-4eb7-bf12-8d3a98fd2582">
@@ -730,7 +729,7 @@
 					<textElement verticalAlignment="Middle">
 						<font fontName="Arial" size="10"/>
 					</textElement>
-					<textFieldExpression><![CDATA[$P{SystolicBloodPressureAverageTotalReadings}==null?$P{EmptyFieldExpression}:$P{SystolicBloodPressureAverageTotalReadings}]]></textFieldExpression>
+					<textFieldExpression><![CDATA[($P{SystolicBloodPressureAverageTotalReadings}==null || $P{SystolicBloodPressureAverageTotalReadings}.length()==0) ?$P{EmptyFieldExpression}:$P{SystolicBloodPressureAverageTotalReadings}]]></textFieldExpression>
 				</textField>
 			</frame>
 			<frame>
@@ -835,8 +834,7 @@
 					<textElement verticalAlignment="Middle">
 						<font fontName="Arial" size="10"/>
 					</textElement>
-					<textFieldExpression><![CDATA[($P{AverageBloodGlucoseValue}!=null && $P{AverageBloodGlucoseUnit}!=null)?($P{AverageBloodGlucoseValue}.isBlank()?$P{EmptyFieldExpression}:(new java.math.BigDecimal($P{AverageBloodGlucoseValue}).setScale(1,RoundingMode.DOWN).stripTrailingZeros().scale()<1?(new java.math.BigDecimal($P{AverageBloodGlucoseValue}).setScale(0,RoundingMode.DOWN)):(new java.math.BigDecimal($P{AverageBloodGlucoseValue}).setScale(1,RoundingMode.DOWN)))+(" ")+$P{AverageBloodGlucoseUnit}):$P{EmptyFieldExpression}
-]]></textFieldExpression>
+					<textFieldExpression><![CDATA[($P{AverageBloodGlucoseValue}!=null && $P{AverageBloodGlucoseUnit}!=null)?($P{AverageBloodGlucoseValue}.isBlank()?$P{EmptyFieldExpression}:(new java.math.BigDecimal($P{AverageBloodGlucoseValue}).setScale(1,RoundingMode.DOWN).stripTrailingZeros().scale()<1?(new java.math.BigDecimal($P{AverageBloodGlucoseValue}).setScale(0,RoundingMode.DOWN)):(new java.math.BigDecimal($P{AverageBloodGlucoseValue}).setScale(1,RoundingMode.DOWN)))+(" ")+$P{AverageBloodGlucoseUnit}):$P{EmptyFieldExpression}]]></textFieldExpression>
 				</textField>
 				<textField evaluationTime="Report" isBlankWhenNull="false">
 					<reportElement x="165" y="63" width="120" height="28" uuid="7bd64df5-7376-42e8-aa33-6b92a346ea47">
@@ -848,7 +846,7 @@
 					<textElement verticalAlignment="Middle">
 						<font fontName="Arial" size="10"/>
 					</textElement>
-					<textFieldExpression><![CDATA[$P{AverageBloodGlucoseCriticalReadings}==null?$P{EmptyFieldExpression}:$P{AverageBloodGlucoseCriticalReadings}]]></textFieldExpression>
+					<textFieldExpression><![CDATA[($P{AverageBloodGlucoseCriticalReadings}==null || $P{AverageBloodGlucoseCriticalReadings}.length()==0)?$P{EmptyFieldExpression}:$P{AverageBloodGlucoseCriticalReadings}]]></textFieldExpression>
 				</textField>
 				<textField evaluationTime="Report" isBlankWhenNull="false">
 					<reportElement x="165" y="94" width="120" height="28" uuid="bfedbce7-9416-4f2e-a411-61c30d2607eb">
@@ -860,7 +858,7 @@
 					<textElement verticalAlignment="Middle">
 						<font fontName="Arial" size="10"/>
 					</textElement>
-					<textFieldExpression><![CDATA[$P{AverageBloodGlucoseAtRiskReadings}==null?$P{EmptyFieldExpression}:$P{AverageBloodGlucoseAtRiskReadings}]]></textFieldExpression>
+					<textFieldExpression><![CDATA[($P{AverageBloodGlucoseAtRiskReadings}==null || $P{AverageBloodGlucoseAtRiskReadings}.length()==0)?$P{EmptyFieldExpression}:$P{AverageBloodGlucoseAtRiskReadings}]]></textFieldExpression>
 				</textField>
 				<textField evaluationTime="Report" isBlankWhenNull="false">
 					<reportElement x="165" y="125" width="120" height="28" uuid="86ffaaf6-0fee-462f-a82d-a0fcd63d9cd1">
@@ -885,7 +883,7 @@
 					<textElement verticalAlignment="Middle">
 						<font fontName="Arial" size="10"/>
 					</textElement>
-					<textFieldExpression><![CDATA[$P{AverageBloodGlucoseBillableReadingDays}==null?$P{EmptyFieldExpression}:$P{AverageBloodGlucoseBillableReadingDays}]]></textFieldExpression>
+					<textFieldExpression><![CDATA[($P{AverageBloodGlucoseBillableReadingDays}==null || $P{AverageBloodGlucoseBillableReadingDays}.length()==0)?$P{EmptyFieldExpression}:$P{AverageBloodGlucoseBillableReadingDays}]]></textFieldExpression>
 				</textField>
 				<textField evaluationTime="Report">
 					<reportElement x="165" y="187" width="120" height="28" uuid="4ac64a72-1a6d-4798-a027-76f53a9301e3">
@@ -896,7 +894,7 @@
 					<textElement verticalAlignment="Middle">
 						<font fontName="Arial" size="10"/>
 					</textElement>
-					<textFieldExpression><![CDATA[$P{AverageBloodGlucoseTotalReadings}==null?$P{EmptyFieldExpression}:$P{AverageBloodGlucoseTotalReadings}]]></textFieldExpression>
+					<textFieldExpression><![CDATA[($P{AverageBloodGlucoseTotalReadings}==null || $P{AverageBloodGlucoseTotalReadings}.length()==0)?$P{EmptyFieldExpression}:$P{AverageBloodGlucoseTotalReadings}]]></textFieldExpression>
 				</textField>
 			</frame>
 			<frame>
