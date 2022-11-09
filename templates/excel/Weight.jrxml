@@ -433,7 +433,7 @@
 					<font fontName="Arial" size="8"/>
 					<paragraph lineSpacing="Double"/>
 				</textElement>
-				<textFieldExpression><![CDATA[$F{Reading Date/Time}.isBlank()?$P{EmptyFieldExpression}:(java.time.format.DateTimeFormatter.ofPattern("HH:mm:ss zzz").withZone(java.time.ZonedDateTime.parse($F{Reading Date/Time}).getZone()).format(java.time.ZonedDateTime.parse($F{Reading Date/Time})))]]></textFieldExpression>
+				<textFieldExpression><![CDATA[$F{Reading Date/Time}.isBlank()?$P{EmptyFieldExpression}:(java.time.format.DateTimeFormatter.ofPattern("HH:mm:ss").withZone(java.time.ZonedDateTime.parse($F{Reading Date/Time}).getZone()).format(java.time.ZonedDateTime.parse($F{Reading Date/Time})))]]></textFieldExpression>
 			</textField>
 		</band>
 	</detail>
