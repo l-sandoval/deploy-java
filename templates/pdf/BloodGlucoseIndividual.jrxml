@@ -261,7 +261,7 @@
 				<textElement textAlignment="Center" verticalAlignment="Middle">
 					<font fontName="Arial" size="8"/>
 				</textElement>
-				<textFieldExpression><![CDATA[java.time.format.DateTimeFormatter.ofPattern("HH:mm:ss zzz").withZone(java.time.ZonedDateTime.parse($F{DateTime}).getZone()).format(java.time.ZonedDateTime.parse($F{DateTime}))]]></textFieldExpression>
+				<textFieldExpression><![CDATA[java.time.format.DateTimeFormatter.ofPattern("HH:mm:ss").withZone(java.time.ZonedDateTime.parse($F{DateTime}).getZone()).format(java.time.ZonedDateTime.parse($F{DateTime}))]]></textFieldExpression>
 			</textField>
 		</band>
 	</detail>
