@@ -8,5 +8,6 @@ public class ReportsLiterals {
     public static final String INDIVIDUAL_PATIENT_REPORT = "IndividualPatient";
     public static final String DAILY_CRITICAL_READINGS_REPORT = "DailyCriticalReadingsReport";
     public static final String COMPLIANCE_DATA_REPORT_FOR_INSTANCE = "InstanceMonthlyDataReport";
+    public static final String WEEKLY_ADHERENCE_REPORT = "WeeklyAdherenceReport";
 
 }
