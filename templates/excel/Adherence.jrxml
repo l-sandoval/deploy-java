@@ -917,7 +917,7 @@
 				<textElement textAlignment="Center" verticalAlignment="Middle">
 					<font fontName="Tahoma" size="8" isBold="false"/>
 				</textElement>
-				<text><![CDATA[Pulse Ox]]></text>
+				<text><![CDATA[Oxygen Saturation]]></text>
 			</staticText>
 			<staticText>
 				<reportElement mode="Opaque" x="1503" y="36" width="162" height="16" forecolor="#FFFFFF" backcolor="#007EC7" uuid="35713052-e809-46e5-ab15-299c08f8236d">
