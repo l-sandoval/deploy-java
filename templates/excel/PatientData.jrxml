@@ -287,7 +287,7 @@
 				<textElement textAlignment="Center" verticalAlignment="Middle">
 					<font fontName="Tahoma" size="10"/>
 				</textElement>
-				<text><![CDATA[Insurer ID]]></text>
+				<text><![CDATA[Insurance ID]]></text>
 			</staticText>
 			<staticText>
 				<reportElement mode="Opaque" x="1228" y="0" width="80" height="32" forecolor="#FFFFFF" backcolor="#007EC7" uuid="cd4a6aa4-8293-4b80-ad58-a39cfeb82efd">
