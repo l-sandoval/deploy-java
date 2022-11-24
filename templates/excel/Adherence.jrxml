@@ -76,31 +76,31 @@
 	</style>
 	<style name="Weekly RPM Time">
 		<conditionalStyle>
-			<conditionExpression><![CDATA[($F{Weekly RPM Total Time}.compareTo( "0:10:00" ) <0) && ($F{Weekly RPM Total Time}.length()!=0)]]></conditionExpression>
+			<conditionExpression><![CDATA[($F{Weekly RPM Total Time}.compareTo( "00:10:00" ) <0) && ($F{Weekly RPM Total Time}.length()!=0)]]></conditionExpression>
 			<style mode="Opaque" forecolor="#000000" backcolor="#81CEFF" fontName="Arial" fontSize="8"/>
 		</conditionalStyle>
 	</style>
 	<style name="Weekly CCM Time">
 		<conditionalStyle>
-			<conditionExpression><![CDATA[($F{Weekly CCM Total Time}.compareTo( "0:10:00" ) <0) && ($F{Weekly CCM Total Time}.length()!=0)]]></conditionExpression>
+			<conditionExpression><![CDATA[($F{Weekly CCM Total Time}.compareTo( "00:10:00" ) <0) && ($F{Weekly CCM Total Time}.length()!=0)]]></conditionExpression>
 			<style mode="Opaque" forecolor="#000000" backcolor="#81CEFF"/>
 		</conditionalStyle>
 	</style>
 	<style name="Weekly BHI Time">
 		<conditionalStyle>
-			<conditionExpression><![CDATA[($F{Weekly BHI Total Time}.compareTo( "0:10:00" ) <0) && ($F{Weekly BHI Total Time}.length()!=0)]]></conditionExpression>
+			<conditionExpression><![CDATA[($F{Weekly BHI Total Time}.compareTo( "00:10:00" ) <0) && ($F{Weekly BHI Total Time}.length()!=0)]]></conditionExpression>
 			<style mode="Opaque" forecolor="#000000" backcolor="#81CEFF"/>
 		</conditionalStyle>
 	</style>
 	<style name="Weekly RTM Time">
 		<conditionalStyle>
-			<conditionExpression><![CDATA[($F{Weekly RTM Total Time}.compareTo( "0:10:00" ) <0) && ($F{Weekly RTM Total Time}.length()!=0)]]></conditionExpression>
+			<conditionExpression><![CDATA[($F{Weekly RTM Total Time}.compareTo( "00:10:00" ) <0) && ($F{Weekly RTM Total Time}.length()!=0)]]></conditionExpression>
 			<style mode="Opaque" forecolor="#000000" backcolor="#81CEFF"/>
 		</conditionalStyle>
 	</style>
 	<style name="Weekly PCM Time">
 		<conditionalStyle>
-			<conditionExpression><![CDATA[($F{Weekly PCM Total Time}.compareTo( "0:10:00" ) <0) && ($F{Weekly PCM Total Time}.length()!=0)]]></conditionExpression>
+			<conditionExpression><![CDATA[($F{Weekly PCM Total Time}.compareTo( "00:10:00" ) <0) && ($F{Weekly PCM Total Time}.length()!=0)]]></conditionExpression>
 			<style mode="Opaque" forecolor="#000000" backcolor="#81CEFF"/>
 		</conditionalStyle>
 	</style>
@@ -154,31 +154,31 @@
 	</style>
 	<style name="Monthly RPM Time">
 		<conditionalStyle>
-			<conditionExpression><![CDATA[(($P{IUGOReport-PeriodStart}.endsWith( "01" )) && ($F{Monthly RPM Total Time}.compareTo( "0:05:00") < 0)) || (($P{IUGOReport-PeriodStart}.endsWith( "08" )) && ($F{Monthly RPM Total Time}.compareTo( "0:10:00") < 0)) || (($P{IUGOReport-PeriodStart}.endsWith( "15" )) && ($F{Monthly RPM Total Time}.compareTo( "0:15:00") < 0)) || (($P{IUGOReport-PeriodStart}.endsWith( "22" )) && ($F{Monthly RPM Total Time}.compareTo( "0:20:00") < 0)) && ($F{Monthly RPM Total Time}.length()!=0)]]></conditionExpression>
+			<conditionExpression><![CDATA[(($P{IUGOReport-PeriodStart}.endsWith( "01" )) && ($F{Monthly RPM Total Time}.compareTo( "00:05:00") < 0)) || (($P{IUGOReport-PeriodStart}.endsWith( "08" )) && ($F{Monthly RPM Total Time}.compareTo( "00:10:00") < 0)) || (($P{IUGOReport-PeriodStart}.endsWith( "15" )) && ($F{Monthly RPM Total Time}.compareTo( "00:15:00") < 0)) || (($P{IUGOReport-PeriodStart}.endsWith( "22" )) && ($F{Monthly RPM Total Time}.compareTo( "00:20:00") < 0)) && ($F{Monthly RPM Total Time}.length()!=0)]]></conditionExpression>
 			<style mode="Opaque" forecolor="#000000" backcolor="#81CEFF"/>
 		</conditionalStyle>
 	</style>
 	<style name="Monthly CCM Time">
 		<conditionalStyle>
-			<conditionExpression><![CDATA[(($P{IUGOReport-PeriodStart}.endsWith( "01" )) && ($F{Monthly CCM Total Time}.compareTo( "0:05:00") < 0)) || (($P{IUGOReport-PeriodStart}.endsWith( "08" )) && ($F{Monthly CCM Total Time}.compareTo( "0:10:00") < 0)) || (($P{IUGOReport-PeriodStart}.endsWith( "15" )) && ($F{Monthly CCM Total Time}.compareTo( "0:15:00") < 0)) || (($P{IUGOReport-PeriodStart}.endsWith( "22" )) && ($F{Monthly CCM Total Time}.compareTo( "0:20:00") < 0)) && ($F{Monthly CCM Total Time}.length()!=0)]]></conditionExpression>
+			<conditionExpression><![CDATA[(($P{IUGOReport-PeriodStart}.endsWith( "01" )) && ($F{Monthly CCM Total Time}.compareTo( "00:05:00") < 0)) || (($P{IUGOReport-PeriodStart}.endsWith( "08" )) && ($F{Monthly CCM Total Time}.compareTo( "00:10:00") < 0)) || (($P{IUGOReport-PeriodStart}.endsWith( "15" )) && ($F{Monthly CCM Total Time}.compareTo( "00:15:00") < 0)) || (($P{IUGOReport-PeriodStart}.endsWith( "22" )) && ($F{Monthly CCM Total Time}.compareTo( "00:20:00") < 0)) && ($F{Monthly CCM Total Time}.length()!=0)]]></conditionExpression>
 			<style mode="Opaque" forecolor="#000000" backcolor="#81CEFF"/>
 		</conditionalStyle>
 	</style>
 	<style name="Monthly PCM Time">
 		<conditionalStyle>
-			<conditionExpression><![CDATA[(($P{IUGOReport-PeriodStart}.endsWith( "01" )) && ($F{Monthly PCM Total Time}.compareTo( "0:05:00") < 0)) || (($P{IUGOReport-PeriodStart}.endsWith( "08" )) && ($F{Monthly PCM Total Time}.compareTo( "0:10:00") < 0)) || (($P{IUGOReport-PeriodStart}.endsWith( "15" )) && ($F{Monthly PCM Total Time}.compareTo( "0:15:00") < 0)) || (($P{IUGOReport-PeriodStart}.endsWith( "22" )) && ($F{Monthly PCM Total Time}.compareTo( "0:20:00") < 0)) && ($F{Monthly PCM Total Time}.length()!=0)]]></conditionExpression>
+			<conditionExpression><![CDATA[(($P{IUGOReport-PeriodStart}.endsWith( "01" )) && ($F{Monthly PCM Total Time}.compareTo( "00:05:00") < 0)) || (($P{IUGOReport-PeriodStart}.endsWith( "08" )) && ($F{Monthly PCM Total Time}.compareTo( "00:10:00") < 0)) || (($P{IUGOReport-PeriodStart}.endsWith( "15" )) && ($F{Monthly PCM Total Time}.compareTo( "00:15:00") < 0)) || (($P{IUGOReport-PeriodStart}.endsWith( "22" )) && ($F{Monthly PCM Total Time}.compareTo( "00:20:00") < 0)) && ($F{Monthly PCM Total Time}.length()!=0)]]></conditionExpression>
 			<style mode="Opaque" forecolor="#000000" backcolor="#81CEFF"/>
 		</conditionalStyle>
 	</style>
 	<style name="Monthly RTM Time">
 		<conditionalStyle>
-			<conditionExpression><![CDATA[(($P{IUGOReport-PeriodStart}.endsWith( "01" )) && ($F{Monthly RTM Total Time}.compareTo( "0:05:00") < 0)) || (($P{IUGOReport-PeriodStart}.endsWith( "08" )) && ($F{Monthly RTM Total Time}.compareTo( "0:10:00") < 0)) || (($P{IUGOReport-PeriodStart}.endsWith( "15" )) && ($F{Monthly RTM Total Time}.compareTo( "0:15:00") < 0)) || (($P{IUGOReport-PeriodStart}.endsWith( "22" )) && ($F{Monthly RTM Total Time}.compareTo( "0:20:00") < 0)) && ($F{Monthly RTM Total Time}.length()!=0)]]></conditionExpression>
+			<conditionExpression><![CDATA[(($P{IUGOReport-PeriodStart}.endsWith( "01" )) && ($F{Monthly RTM Total Time}.compareTo( "00:05:00") < 0)) || (($P{IUGOReport-PeriodStart}.endsWith( "08" )) && ($F{Monthly RTM Total Time}.compareTo( "00:10:00") < 0)) || (($P{IUGOReport-PeriodStart}.endsWith( "15" )) && ($F{Monthly RTM Total Time}.compareTo( "00:15:00") < 0)) || (($P{IUGOReport-PeriodStart}.endsWith( "22" )) && ($F{Monthly RTM Total Time}.compareTo( "00:20:00") < 0)) && ($F{Monthly RTM Total Time}.length()!=0)]]></conditionExpression>
 			<style mode="Opaque" forecolor="#000000" backcolor="#81CEFF"/>
 		</conditionalStyle>
 	</style>
 	<style name="Monthly BHI Time">
 		<conditionalStyle>
-			<conditionExpression><![CDATA[(($P{IUGOReport-PeriodStart}.endsWith( "01" )) && ($F{Monthly BHI Total Time}.compareTo( "0:05:00") < 0)) || (($P{IUGOReport-PeriodStart}.endsWith( "08" )) && ($F{Monthly BHI Total Time}.compareTo( "0:10:00") < 0)) || (($P{IUGOReport-PeriodStart}.endsWith( "15" )) && ($F{Monthly BHI Total Time}.compareTo( "0:15:00") < 0)) || (($P{IUGOReport-PeriodStart}.endsWith( "22" )) && ($F{Monthly BHI Total Time}.compareTo( "0:20:00") < 0)) && ($F{Monthly BHI Total Time}.length()!=0)]]></conditionExpression>
+			<conditionExpression><![CDATA[(($P{IUGOReport-PeriodStart}.endsWith( "01" )) && ($F{Monthly BHI Total Time}.compareTo( "00:05:00") < 0)) || (($P{IUGOReport-PeriodStart}.endsWith( "08" )) && ($F{Monthly BHI Total Time}.compareTo( "00:10:00") < 0)) || (($P{IUGOReport-PeriodStart}.endsWith( "15" )) && ($F{Monthly BHI Total Time}.compareTo( "00:15:00") < 0)) || (($P{IUGOReport-PeriodStart}.endsWith( "22" )) && ($F{Monthly BHI Total Time}.compareTo( "00:20:00") < 0)) && ($F{Monthly BHI Total Time}.length()!=0)]]></conditionExpression>
 			<style mode="Opaque" forecolor="#000000" backcolor="#81CEFF"/>
 		</conditionalStyle>
 	</style>
@@ -917,7 +917,7 @@
 				<textElement textAlignment="Center" verticalAlignment="Middle">
 					<font fontName="Tahoma" size="8" isBold="false"/>
 				</textElement>
-				<text><![CDATA[Pulse Ox]]></text>
+				<text><![CDATA[Oxygen Saturation]]></text>
 			</staticText>
 			<staticText>
 				<reportElement mode="Opaque" x="1503" y="36" width="162" height="16" forecolor="#FFFFFF" backcolor="#007EC7" uuid="35713052-e809-46e5-ab15-299c08f8236d">
