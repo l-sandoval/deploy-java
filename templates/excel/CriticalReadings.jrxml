@@ -73,10 +73,10 @@
 		</band>
 	</title>
 	<columnHeader>
-		<band height="32" splitType="Stretch">
+		<band height="50" splitType="Stretch">
 			<property name="com.jaspersoft.studio.unit.height" value="px"/>
 			<staticText>
-				<reportElement mode="Opaque" x="0" y="0" width="100" height="32" forecolor="#FFFFFF" backcolor="#007EC7" uuid="a73cabbd-ea70-4b28-ba3f-bbac4705c500">
+				<reportElement mode="Opaque" x="0" y="18" width="100" height="32" forecolor="#FFFFFF" backcolor="#007EC7" uuid="a73cabbd-ea70-4b28-ba3f-bbac4705c500">
 					<property name="com.jaspersoft.studio.spreadsheet.connectionID" value="343edf4d-e80b-46be-9303-502bddfa7c9f"/>
 					<property name="com.jaspersoft.studio.unit.height" value="px"/>
 					<property name="com.jaspersoft.studio.unit.width" value="px"/>
@@ -91,10 +91,10 @@
 				<textElement textAlignment="Center" verticalAlignment="Middle">
 					<font fontName="Tahoma" size="10"/>
 				</textElement>
-				<text><![CDATA[Patient ID]]></text>
+				<text><![CDATA[ID]]></text>
 			</staticText>
 			<staticText>
-				<reportElement mode="Opaque" x="100" y="0" width="134" height="32" forecolor="#FFFFFF" backcolor="#007EC7" uuid="9ee79170-cdf5-44b3-910e-6eb47ed23282">
+				<reportElement mode="Opaque" x="100" y="18" width="134" height="32" forecolor="#FFFFFF" backcolor="#007EC7" uuid="9ee79170-cdf5-44b3-910e-6eb47ed23282">
 					<property name="com.jaspersoft.studio.spreadsheet.connectionID" value="d8db8df1-4bc3-4d9a-9386-c6321c1dfa1b"/>
 					<property name="com.jaspersoft.studio.unit.height" value="px"/>
 				</reportElement>
@@ -111,7 +111,7 @@
 				<text><![CDATA[Last Name]]></text>
 			</staticText>
 			<staticText>
-				<reportElement mode="Opaque" x="234" y="0" width="134" height="32" forecolor="#FFFFFF" backcolor="#007EC7" uuid="0c11a52f-77ac-44f2-ad22-22b2c4d2652d">
+				<reportElement mode="Opaque" x="234" y="18" width="134" height="32" forecolor="#FFFFFF" backcolor="#007EC7" uuid="0c11a52f-77ac-44f2-ad22-22b2c4d2652d">
 					<property name="com.jaspersoft.studio.spreadsheet.connectionID" value="8edb6212-6603-4e10-8c7c-09908804a2a0"/>
 					<property name="com.jaspersoft.studio.unit.height" value="px"/>
 				</reportElement>
@@ -128,7 +128,7 @@
 				<text><![CDATA[First Name]]></text>
 			</staticText>
 			<staticText>
-				<reportElement mode="Opaque" x="368" y="0" width="80" height="32" forecolor="#FFFFFF" backcolor="#007EC7" uuid="48098de1-6ea4-4bb4-95c7-a11ca92d13ae">
+				<reportElement mode="Opaque" x="368" y="18" width="80" height="32" forecolor="#FFFFFF" backcolor="#007EC7" uuid="48098de1-6ea4-4bb4-95c7-a11ca92d13ae">
 					<property name="com.jaspersoft.studio.spreadsheet.connectionID" value="8fdfd0f6-f82e-4b5e-8f03-0760c2fe3b3f"/>
 					<property name="com.jaspersoft.studio.unit.height" value="px"/>
 					<property name="com.jaspersoft.studio.unit.width" value="px"/>
@@ -146,7 +146,7 @@
 				<text><![CDATA[Date of Birth]]></text>
 			</staticText>
 			<staticText>
-				<reportElement mode="Opaque" x="448" y="0" width="60" height="32" forecolor="#FFFFFF" backcolor="#007EC7" uuid="39e713f4-7180-4dff-b807-43a21c3b797c">
+				<reportElement mode="Opaque" x="448" y="18" width="60" height="32" forecolor="#FFFFFF" backcolor="#007EC7" uuid="39e713f4-7180-4dff-b807-43a21c3b797c">
 					<property name="com.jaspersoft.studio.spreadsheet.connectionID" value="8fdfd0f6-f82e-4b5e-8f03-0760c2fe3b3f"/>
 					<property name="com.jaspersoft.studio.unit.height" value="px"/>
 				</reportElement>
@@ -163,7 +163,7 @@
 				<text><![CDATA[Age]]></text>
 			</staticText>
 			<staticText>
-				<reportElement mode="Opaque" x="508" y="0" width="60" height="32" forecolor="#FFFFFF" backcolor="#007EC7" uuid="b451b05a-b32a-43ae-ad35-e97ae414f949">
+				<reportElement mode="Opaque" x="508" y="18" width="60" height="32" forecolor="#FFFFFF" backcolor="#007EC7" uuid="b451b05a-b32a-43ae-ad35-e97ae414f949">
 					<property name="com.jaspersoft.studio.spreadsheet.connectionID" value="5fa1e63b-418c-49a0-8f38-0210cd980b28"/>
 					<property name="com.jaspersoft.studio.unit.height" value="px"/>
 					<property name="com.jaspersoft.studio.unit.width" value="px"/>
@@ -181,7 +181,7 @@
 				<text><![CDATA[Gender]]></text>
 			</staticText>
 			<staticText>
-				<reportElement mode="Opaque" x="568" y="0" width="157" height="32" forecolor="#FFFFFF" backcolor="#007EC7" uuid="4b919a54-ac1f-4d25-b0e0-561c65b18001">
+				<reportElement mode="Opaque" x="568" y="18" width="157" height="32" forecolor="#FFFFFF" backcolor="#007EC7" uuid="4b919a54-ac1f-4d25-b0e0-561c65b18001">
 					<property name="com.jaspersoft.studio.spreadsheet.connectionID" value="24db2c41-4769-4885-ae35-dad32c7e0fa1"/>
 					<property name="com.jaspersoft.studio.unit.height" value="px"/>
 					<property name="com.jaspersoft.studio.unit.width" value="px"/>
@@ -199,7 +199,7 @@
 				<text><![CDATA[Organization]]></text>
 			</staticText>
 			<staticText>
-				<reportElement mode="Opaque" x="725" y="0" width="60" height="32" forecolor="#FFFFFF" backcolor="#007EC7" uuid="afda5e49-20b6-4f35-8285-08431f997340">
+				<reportElement mode="Opaque" x="725" y="18" width="60" height="32" forecolor="#FFFFFF" backcolor="#007EC7" uuid="afda5e49-20b6-4f35-8285-08431f997340">
 					<property name="com.jaspersoft.studio.spreadsheet.connectionID" value="98cb97a4-55ce-4ac5-b7a7-d792f8c84852"/>
 					<property name="com.jaspersoft.studio.unit.height" value="px"/>
 					<property name="com.jaspersoft.studio.unit.width" value="px"/>
@@ -217,7 +217,7 @@
 				<text><![CDATA[Status]]></text>
 			</staticText>
 			<staticText>
-				<reportElement mode="Opaque" x="785" y="0" width="200" height="32" forecolor="#FFFFFF" backcolor="#007EC7" uuid="291589e1-14a5-498d-b052-2216de2429cf">
+				<reportElement mode="Opaque" x="785" y="18" width="200" height="32" forecolor="#FFFFFF" backcolor="#007EC7" uuid="291589e1-14a5-498d-b052-2216de2429cf">
 					<property name="com.jaspersoft.studio.spreadsheet.connectionID" value="d1f252e0-d3f8-4d09-a420-abae4821dfa4"/>
 					<property name="com.jaspersoft.studio.unit.height" value="px"/>
 					<property name="com.jaspersoft.studio.unit.width" value="px"/>
@@ -235,7 +235,7 @@
 				<text><![CDATA[Number of Previous Day Critical Readings]]></text>
 			</staticText>
 			<staticText>
-				<reportElement mode="Opaque" x="985" y="0" width="150" height="32" forecolor="#FFFFFF" backcolor="#007EC7" uuid="725c8111-44c0-4bc4-8535-52559c9e7a6c">
+				<reportElement mode="Opaque" x="985" y="18" width="150" height="32" forecolor="#FFFFFF" backcolor="#007EC7" uuid="725c8111-44c0-4bc4-8535-52559c9e7a6c">
 					<property name="com.jaspersoft.studio.spreadsheet.connectionID" value="c9ceea94-ae01-4afa-9633-a1b50f0a645c"/>
 					<property name="com.jaspersoft.studio.unit.height" value="px"/>
 				</reportElement>
@@ -252,7 +252,7 @@
 				<text><![CDATA[Observation Type]]></text>
 			</staticText>
 			<staticText>
-				<reportElement mode="Opaque" x="1135" y="0" width="150" height="32" forecolor="#FFFFFF" backcolor="#007EC7" uuid="db029f7e-a1d2-451e-8429-837afb6fbe9f">
+				<reportElement mode="Opaque" x="1135" y="18" width="150" height="32" forecolor="#FFFFFF" backcolor="#007EC7" uuid="db029f7e-a1d2-451e-8429-837afb6fbe9f">
 					<property name="com.jaspersoft.studio.spreadsheet.connectionID" value="c9ceea94-ae01-4afa-9633-a1b50f0a645c"/>
 					<property name="com.jaspersoft.studio.unit.height" value="px"/>
 				</reportElement>
@@ -269,7 +269,7 @@
 				<text><![CDATA[Observation Value]]></text>
 			</staticText>
 			<staticText>
-				<reportElement mode="Opaque" x="1285" y="0" width="150" height="32" forecolor="#FFFFFF" backcolor="#007EC7" uuid="cb1a9b79-7802-479d-af1c-7ef9610ac940">
+				<reportElement mode="Opaque" x="1285" y="18" width="150" height="32" forecolor="#FFFFFF" backcolor="#007EC7" uuid="cb1a9b79-7802-479d-af1c-7ef9610ac940">
 					<property name="com.jaspersoft.studio.spreadsheet.connectionID" value="c9ceea94-ae01-4afa-9633-a1b50f0a645c"/>
 					<property name="com.jaspersoft.studio.unit.height" value="px"/>
 				</reportElement>
@@ -286,7 +286,7 @@
 				<text><![CDATA[Observation Date]]></text>
 			</staticText>
 			<staticText>
-				<reportElement mode="Opaque" x="1435" y="0" width="150" height="32" forecolor="#FFFFFF" backcolor="#007EC7" uuid="cd4a6aa4-8293-4b80-ad58-a39cfeb82efd">
+				<reportElement mode="Opaque" x="1435" y="18" width="150" height="32" forecolor="#FFFFFF" backcolor="#007EC7" uuid="cd4a6aa4-8293-4b80-ad58-a39cfeb82efd">
 					<property name="com.jaspersoft.studio.spreadsheet.connectionID" value="c9ceea94-ae01-4afa-9633-a1b50f0a645c"/>
 					<property name="com.jaspersoft.studio.unit.height" value="px"/>
 					<property name="com.jaspersoft.studio.unit.width" value="px"/>
@@ -302,6 +302,42 @@
 					<font fontName="Tahoma" size="10"/>
 				</textElement>
 				<text><![CDATA[Observation Time]]></text>
+			</staticText>
+			<staticText>
+				<reportElement mode="Opaque" x="0" y="0" width="785" height="18" forecolor="#FFFFFF" backcolor="#007EC7" uuid="c40aded1-8b2b-4a51-8d29-0156dcd95c6c">
+					<property name="com.jaspersoft.studio.spreadsheet.connectionID" value="343edf4d-e80b-46be-9303-502bddfa7c9f"/>
+					<property name="com.jaspersoft.studio.unit.width" value="px"/>
+					<property name="com.jaspersoft.studio.unit.height" value="px"/>
+				</reportElement>
+				<box padding="1">
+					<pen lineColor="#FFFFFF"/>
+					<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<bottomPen lineWidth="1.0" lineStyle="Solid" lineColor="#FFFFFF"/>
+					<rightPen lineWidth="1.0" lineStyle="Solid" lineColor="#FFFFFF"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="Tahoma" size="10"/>
+				</textElement>
+				<text><![CDATA[Patient]]></text>
+			</staticText>
+			<staticText>
+				<reportElement mode="Opaque" x="785" y="0" width="799" height="18" forecolor="#FFFFFF" backcolor="#007EC7" uuid="9423f60b-0f98-4acd-a3f2-b7b16be0d487">
+					<property name="com.jaspersoft.studio.spreadsheet.connectionID" value="343edf4d-e80b-46be-9303-502bddfa7c9f"/>
+					<property name="com.jaspersoft.studio.unit.width" value="px"/>
+					<property name="com.jaspersoft.studio.unit.height" value="px"/>
+				</reportElement>
+				<box padding="1">
+					<pen lineColor="#FFFFFF"/>
+					<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<bottomPen lineWidth="1.0" lineStyle="Solid" lineColor="#FFFFFF"/>
+					<rightPen lineWidth="1.0" lineStyle="Solid" lineColor="#FFFFFF"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="Tahoma" size="10"/>
+				</textElement>
+				<text><![CDATA[Critical Readings]]></text>
 			</staticText>
 		</band>
 	</columnHeader>
