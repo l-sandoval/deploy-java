@@ -40,7 +40,7 @@ public class ReportGenerator {
     }
 
     private long startTime = System.currentTimeMillis();    
-    private Map<String, Object> parameters = new HashMap<String, Object>();    
+    private Map<String, Object> parameters = new LinkedHashMap<String, Object>();    
 
     /**
      * Generate a report according to the type
@@ -71,9 +71,9 @@ public class ReportGenerator {
 
         logger.log("GenerateReport: " + reportName + "t=" + (System.currentTimeMillis() - startTime));
 
-        parameters = new HashMap<String, Object>();
-        ArrayList<String> sheetNameList = new ArrayList<String>();
-        ArrayList<String> fileNameList = new ArrayList<String>();
+        parameters = new LinkedHashMap<String, Object>();
+        List<String> sheetNameList = new ArrayList<String>();
+        List<String> fileNameList = new ArrayList<String>();
         
         InputStream dataSource = getInputStreamFileFromS3(xmlFile, StringLiterals.FILES_BUCKET);
 
@@ -94,7 +94,7 @@ public class ReportGenerator {
 
             // get the sheet names & source files from the parameters
             Set<String> keys = parameters.keySet();
-            Map<String, Object> otherParams = new HashMap<String, Object>();
+            Map<String, Object> otherParams = new LinkedHashMap<String, Object>();
             
             for (String key : keys) {
                 if (key.toLowerCase().contains(StringLiterals.SUBREPORT)) {
@@ -279,7 +279,7 @@ public class ReportGenerator {
      * Create each sheet from the associated CSV data file
      * @throws JRException 
      */
-    private void createSheetsFromCSVData (ArrayList<String> sheetNameList, String[] sheetNames, String jasperPath, ArrayList<String> fileNameList, JasperPrint jpMaster) throws JRException{
+    private void createSheetsFromCSVData (List<String> sheetNameList, String[] sheetNames, String jasperPath, List<String> fileNameList, JasperPrint jpMaster) throws JRException{
         for (int i = 0; i < sheetNameList.size(); i++) {
             String sheetName = sheetNameList.get(i);
 
@@ -323,7 +323,7 @@ public class ReportGenerator {
     }
     
     private Map<String, String> getParametersFromCsvFile(InputStream parametersSource) throws JRException {
-        Map<String, String> csvParameters = new HashMap<String, String>();
+        Map<String, String> csvParameters = new LinkedHashMap<String, String>();
         BufferedReader reader = null;
         logger.log("Extract csv parameters");
         
