@@ -2,17 +2,20 @@ package reliqreports.ReportsGeneratorHandler;
 
 import com.amazonaws.services.lambda.runtime.LambdaLogger;
 import org.json.simple.JSONObject;
+
+import reliqreports.HelperFunctions;
 import reliqreports.ReportGenerator;
 import reliqreports.ReportGeneratorConfig;
 import reliqreports.ReportsLiterals;
 import reliqreports.StringLiterals;
 import java.util.HashMap;
+import java.util.Map;
 
 public class ReportsGeneratorHandler {
     private LambdaLogger logger;
     private String[] reportsToBeGenerated;
-    private HashMap<String, HashMap<String, String[]>> xmlFiles;
-    private HashMap<String, String> reportTypes;
+    private Map<String, HashMap<String, String[]>> xmlFiles;
+    private Map<String, String> reportTypes;
     private String[] reportsList;
     private String generationDate;
     private String reportPeriodDate;
@@ -62,14 +65,14 @@ public class ReportsGeneratorHandler {
                     this.logger.log("Generating report: " + report + " for environment: " + environment);
                     String apiEndpoint = (String) this.environmentsApiEndpoints.get(environment);
                     String[] xmlFiles = this.xmlFiles.get(environment).get(report);
-                    generateReport(xmlFiles, report, generateOutputFolder(environment), apiEndpoint);
+                    generateReport(xmlFiles, report, generateOutputFolder(report, environment), apiEndpoint);
                 }
             }
         }
     }
 
-    public String generateOutputFolder(String environment){    	
-        return ReportGeneratorConfig.getValue("s3path.Output") + "/" +  this.reportPeriodDate + "/" + this.generationDate + "/" + environment;
+    public String generateOutputFolder(String report, String environment){    	
+        return ReportGeneratorConfig.getValue("s3path.Output") + "/" +  this.reportPeriodDate + "/" + HelperFunctions.getTypeOfReportFolderName(report) + "/" + this.generationDate + "/" + environment;
     }
 
     public void validateIfReportIsSupported(String report) {

@@ -80,4 +80,21 @@ public class HelperFunctions {
 	public static boolean shouldSaveZipRecord(String reportType) {
 	    return INDIVIDUAL_PATIENT_REPORTS.contains(reportType);
 	}
+	
+	public static String getTypeOfReportFolderName(String reportType) {
+	    switch(reportType) {
+	        case ReportsLiterals.DAILY_CRITICAL_READINGS_REPORT:
+	            return StringLiterals.DAILY;
+	        case ReportsLiterals.WEEKLY_ADHERENCE_REPORT:
+	            return StringLiterals.WEEKLY;
+	        case ReportsLiterals.CUSTOMER_BILLING_REPORT:
+	        case ReportsLiterals.EMERGENCY_RECOVERY_REPORT:
+	        case ReportsLiterals.COMPLIANCE_BILLING_REPORT: 
+	        case ReportsLiterals.INDIVIDUAL_RPM_READINGS_REPORT:
+	        case ReportsLiterals.INDIVIDUAL_PATIENT_REPORT:
+	        case ReportsLiterals.COMPLIANCE_DATA_REPORT_FOR_INSTANCE:
+	        default:
+	            return StringLiterals.MONTLY;
+	    }
+	}
 }
