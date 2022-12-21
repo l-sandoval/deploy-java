@@ -42,4 +42,9 @@ public class StringLiterals {
 
 	public static final String LAMBDA_BUCKET = "lambda-bucket";
 	public static final String FILES_BUCKET = "files-bucket";
+	
+
+    public static final String DAILY  ="Daily";
+    public static final String WEEKLY = "Weekly";
+    public static final String MONTLY = "Monthly";
 }
