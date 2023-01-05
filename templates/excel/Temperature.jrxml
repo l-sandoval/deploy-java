@@ -35,7 +35,7 @@
 		<band height="54" splitType="Stretch">
 			<property name="com.jaspersoft.studio.unit.height" value="px"/>
 			<staticText>
-				<reportElement mode="Opaque" x="0" y="0" width="1396" height="54" forecolor="#FFFFFF" backcolor="#007EC7" uuid="0b657d52-83fc-42ed-9197-f76b3f4f678e">
+				<reportElement mode="Opaque" x="0" y="0" width="874" height="54" forecolor="#FFFFFF" backcolor="#007EC7" uuid="0b657d52-83fc-42ed-9197-f76b3f4f678e">
 					<property name="com.jaspersoft.studio.unit.height" value="px"/>
 					<property name="com.jaspersoft.studio.unit.width" value="px"/>
 				</reportElement>
@@ -51,10 +51,10 @@
 				</textElement>
 				<text><![CDATA[90 Day Temperature Readings]]></text>
 			</staticText>
-			<image hAlign="Center" vAlign="Middle">
-				<reportElement mode="Opaque" x="1396" y="0" width="189" height="54" backcolor="#007EC7" uuid="fc207859-2531-496f-9bd5-78f8ab2be4b8">
-					<property name="com.jaspersoft.studio.unit.width" value="px"/>
+			<image hAlign="Right" vAlign="Middle">
+				<reportElement mode="Opaque" x="874" y="0" width="711" height="54" backcolor="#007EC7" uuid="fc207859-2531-496f-9bd5-78f8ab2be4b8">
 					<property name="com.jaspersoft.studio.unit.height" value="px"/>
+					<property name="com.jaspersoft.studio.unit.width" value="px"/>
 				</reportElement>
 				<box padding="1">
 					<pen lineColor="#FFFFFF"/>
@@ -445,7 +445,7 @@
 					<property name="com.jaspersoft.studio.unit.height" value="px"/>
 				</reportElement>
 				<textField>
-					<reportElement x="0" y="0" width="220" height="20" forecolor="#FFFFFF" uuid="f4ed1058-c1e0-4ff5-adac-b8e8b5a4ec75">
+					<reportElement x="0" y="0" width="234" height="20" forecolor="#FFFFFF" uuid="f4ed1058-c1e0-4ff5-adac-b8e8b5a4ec75">
 						<property name="com.jaspersoft.studio.unit.height" value="px"/>
 						<property name="net.sf.jasperreports.export.xls.pattern" value="dd MMMM yyyy"/>
 					</reportElement>
@@ -456,8 +456,9 @@
 					<textFieldExpression><![CDATA[new java.text.SimpleDateFormat($P{DateFormatOut}).format(new java.util.Date())]]></textFieldExpression>
 				</textField>
 				<textField evaluationTime="Auto">
-					<reportElement x="1364" y="0" width="221" height="20" forecolor="#FFFFFF" uuid="83ae2566-b6c7-40d8-8e6d-3ec4fa29650d">
+					<reportElement x="874" y="0" width="711" height="20" forecolor="#FFFFFF" uuid="83ae2566-b6c7-40d8-8e6d-3ec4fa29650d">
 						<property name="com.jaspersoft.studio.unit.height" value="px"/>
+						<property name="com.jaspersoft.studio.unit.width" value="px"/>
 					</reportElement>
 					<box padding="1"/>
 					<textElement textAlignment="Right" verticalAlignment="Middle">

@@ -46,7 +46,7 @@
 		<band height="54" splitType="Stretch">
 			<property name="com.jaspersoft.studio.unit.height" value="px"/>
 			<staticText>
-				<reportElement mode="Opaque" x="0" y="0" width="1396" height="54" forecolor="#FFFFFF" backcolor="#007EC7" uuid="1215b023-404a-4535-9bfc-51aa4494b236">
+				<reportElement mode="Opaque" x="0" y="0" width="964" height="54" forecolor="#FFFFFF" backcolor="#007EC7" uuid="1215b023-404a-4535-9bfc-51aa4494b236">
 					<property name="com.jaspersoft.studio.unit.height" value="px"/>
 					<property name="com.jaspersoft.studio.unit.width" value="px"/>
 				</reportElement>
@@ -62,10 +62,10 @@
 				</textElement>
 				<text><![CDATA[90 Day Oxygen Saturation Readings]]></text>
 			</staticText>
-			<image hAlign="Center" vAlign="Middle">
-				<reportElement mode="Opaque" x="1396" y="0" width="189" height="54" backcolor="#007EC7" uuid="1e7a1c3d-f694-4112-81c2-26e0b9d07d1c">
-					<property name="com.jaspersoft.studio.unit.width" value="px"/>
+			<image hAlign="Right" vAlign="Middle">
+				<reportElement mode="Opaque" x="964" y="0" width="621" height="54" backcolor="#007EC7" uuid="1e7a1c3d-f694-4112-81c2-26e0b9d07d1c">
 					<property name="com.jaspersoft.studio.unit.height" value="px"/>
+					<property name="com.jaspersoft.studio.unit.width" value="px"/>
 				</reportElement>
 				<box padding="1">
 					<pen lineColor="#FFFFFF"/>
@@ -530,7 +530,7 @@
 					<property name="com.jaspersoft.studio.unit.height" value="px"/>
 				</reportElement>
 				<textField pattern="EEEEE dd MMMMM yyyy">
-					<reportElement x="0" y="0" width="220" height="20" forecolor="#FFFFFF" uuid="2af80fb1-d8c3-4473-b7a0-ea56250f7e1e">
+					<reportElement x="0" y="0" width="234" height="20" forecolor="#FFFFFF" uuid="2af80fb1-d8c3-4473-b7a0-ea56250f7e1e">
 						<property name="com.jaspersoft.studio.unit.height" value="px"/>
 						<property name="net.sf.jasperreports.export.xls.pattern" value="dd MMMM yyyy"/>
 					</reportElement>
@@ -541,8 +541,9 @@
 					<textFieldExpression><![CDATA[new java.text.SimpleDateFormat($P{DateFormatOut}).format(new java.util.Date())]]></textFieldExpression>
 				</textField>
 				<textField evaluationTime="Auto">
-					<reportElement x="1364" y="0" width="221" height="20" forecolor="#FFFFFF" uuid="393debbe-88ca-4a7e-9357-677c731bfc23">
+					<reportElement x="964" y="0" width="621" height="20" forecolor="#FFFFFF" uuid="393debbe-88ca-4a7e-9357-677c731bfc23">
 						<property name="com.jaspersoft.studio.unit.height" value="px"/>
+						<property name="com.jaspersoft.studio.unit.width" value="px"/>
 					</reportElement>
 					<box padding="1"/>
 					<textElement textAlignment="Right" verticalAlignment="Middle">
