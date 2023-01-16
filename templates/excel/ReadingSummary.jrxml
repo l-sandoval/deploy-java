@@ -26,16 +26,16 @@
 	<field name="Blood Pressure Systolic Avg" class="java.math.BigDecimal"/>
 	<field name="Diastolic Avg" class="java.math.BigDecimal"/>
 	<field name="Pulse Avg" class="java.math.BigDecimal"/>
-	<field name="Systolic change" class="java.math.BigDecimal"/>
-	<field name="Diastolic change" class="java.math.BigDecimal"/>
-	<field name="Pulse change" class="java.math.BigDecimal"/>
+	<field name="Systolic change" class="java.lang.String"/>
+	<field name="Diastolic change" class="java.lang.String"/>
+	<field name="Pulse change" class="java.lang.String"/>
 	<field name="Billable Reading Days BP" class="java.lang.Integer"/>
 	<field name="Total Readings BP" class="java.lang.Integer"/>
 	<field name="# At Risk BP" class="java.lang.Integer"/>
 	<field name="# Critical BP" class="java.lang.Integer"/>
 	<field name="Adherence BP" class="java.math.BigDecimal"/>
 	<field name="Blood Glucose Avg" class="java.math.BigDecimal"/>
-	<field name="Blood Glucose Change" class="java.math.BigDecimal"/>
+	<field name="Blood Glucose Change" class="java.lang.String"/>
 	<field name="Billable Reading Days BG" class="java.lang.Integer"/>
 	<field name="Total Readings BG" class="java.lang.Integer"/>
 	<field name="# At Risk BG" class="java.lang.Integer"/>
@@ -43,28 +43,28 @@
 	<field name="#Hypoglycemic" class="java.lang.Integer"/>
 	<field name="Adherence BG" class="java.math.BigDecimal"/>
 	<field name="Weight Average" class="java.math.BigDecimal"/>
-	<field name="Weight Change" class="java.math.BigDecimal"/>
+	<field name="Weight Change" class="java.lang.String"/>
 	<field name="Billable Reading Days Weight" class="java.lang.Integer"/>
 	<field name="Total Readings Weight" class="java.lang.Integer"/>
 	<field name="# At Risk Weight" class="java.lang.Integer"/>
 	<field name="# Critical Weight" class="java.lang.Integer"/>
 	<field name="Adherence Weight" class="java.math.BigDecimal"/>
 	<field name="Heart Rate Average" class="java.math.BigDecimal"/>
-	<field name="Heart Rate Change" class="java.math.BigDecimal"/>
+	<field name="Heart Rate Change" class="java.lang.String"/>
 	<field name="Billable Reading Days Heart Rate" class="java.lang.Integer"/>
 	<field name="Total Readings Heart Rate" class="java.lang.Integer"/>
 	<field name="# At Risk Heart Rate" class="java.lang.Integer"/>
 	<field name="# Critical Heart Rate" class="java.lang.Integer"/>
 	<field name="Adherence Heart Rate" class="java.math.BigDecimal"/>
 	<field name="Oxygen Saturation Average" class="java.math.BigDecimal"/>
-	<field name="Oxygen Saturation Change" class="java.math.BigDecimal"/>
+	<field name="Oxygen Saturation Change" class="java.lang.String"/>
 	<field name="Billable Reading Days Oxygen Saturation" class="java.lang.Integer"/>
 	<field name="Total Readings Oxygen Saturation" class="java.lang.Integer"/>
 	<field name="# At Risk Oxygen Saturation" class="java.lang.Integer"/>
 	<field name="# Critical Oxygen Saturation" class="java.lang.Integer"/>
 	<field name="Adherence Oxygen Saturation" class="java.math.BigDecimal"/>
 	<field name="Temperature Average" class="java.math.BigDecimal"/>
-	<field name="Temperature Change" class="java.math.BigDecimal"/>
+	<field name="Temperature Change" class="java.lang.String"/>
 	<field name="Billable Reading Days Temperature" class="java.lang.Integer"/>
 	<field name="Total Readings Temperature" class="java.lang.Integer"/>
 	<field name="# At Risk Temperature" class="java.lang.Integer"/>
@@ -1289,7 +1289,7 @@
 					<font fontName="Arial" size="8"/>
 					<paragraph lineSpacing="Double"/>
 				</textElement>
-				<textFieldExpression><![CDATA[$F{Systolic change}==null?$P{EmptyFieldExpression}:($F{Systolic change}.setScale(1, RoundingMode.DOWN))]]></textFieldExpression>
+				<textFieldExpression><![CDATA[$F{Systolic change}==null?$P{EmptyFieldExpression}:$F{Systolic change}]]></textFieldExpression>
 			</textField>
 			<textField textAdjust="StretchHeight" isBlankWhenNull="false">
 				<reportElement positionType="Float" stretchType="RelativeToTallestObject" x="542" y="0" width="49" height="21" uuid="8bbb3aa1-9f41-434c-9040-344d00d52026">
@@ -1305,7 +1305,7 @@
 					<font fontName="Arial" size="8"/>
 					<paragraph lineSpacing="Double"/>
 				</textElement>
-				<textFieldExpression><![CDATA[$F{Diastolic change}==null?$P{EmptyFieldExpression}:($F{Diastolic change}.setScale(1, RoundingMode.DOWN))]]></textFieldExpression>
+				<textFieldExpression><![CDATA[$F{Diastolic change}==null?$P{EmptyFieldExpression}:$F{Diastolic change}]]></textFieldExpression>
 			</textField>
 			<textField textAdjust="StretchHeight" isBlankWhenNull="false">
 				<reportElement positionType="Float" stretchType="RelativeToTallestObject" x="591" y="0" width="49" height="21" uuid="c0f2cde5-ceb2-4772-802d-fafc19142e70">
@@ -1322,7 +1322,7 @@
 					<font fontName="Arial" size="8"/>
 					<paragraph lineSpacing="Double"/>
 				</textElement>
-				<textFieldExpression><![CDATA[$F{Pulse change}==null?$P{EmptyFieldExpression}:($F{Pulse change}.setScale(1, RoundingMode.DOWN))]]></textFieldExpression>
+				<textFieldExpression><![CDATA[$F{Pulse change}==null?$P{EmptyFieldExpression}:$F{Pulse change}]]></textFieldExpression>
 			</textField>
 			<textField textAdjust="StretchHeight" isBlankWhenNull="false">
 				<reportElement positionType="Float" stretchType="RelativeToTallestObject" x="718" y="0" width="78" height="21" uuid="77983f3b-f7a0-45cb-9dd1-2152bc453396">
@@ -1424,7 +1424,7 @@
 					<font fontName="Arial" size="8"/>
 					<paragraph lineSpacing="Double"/>
 				</textElement>
-				<textFieldExpression><![CDATA[$F{Blood Glucose Change}==null?$P{EmptyFieldExpression}:($F{Blood Glucose Change}.setScale(1, RoundingMode.DOWN))]]></textFieldExpression>
+				<textFieldExpression><![CDATA[$F{Blood Glucose Change}==null?$P{EmptyFieldExpression}:$F{Blood Glucose Change}]]></textFieldExpression>
 			</textField>
 			<textField textAdjust="StretchHeight" isBlankWhenNull="false">
 				<reportElement positionType="Float" stretchType="RelativeToTallestObject" x="1141" y="0" width="78" height="21" uuid="9e2d25d2-c950-4c8c-9425-9c543209a114">
@@ -1625,7 +1625,7 @@
 					<font fontName="Arial" size="8"/>
 					<paragraph lineSpacing="Double"/>
 				</textElement>
-				<textFieldExpression><![CDATA[$F{Weight Change}==null?$P{EmptyFieldExpression}:($F{Weight Change}.setScale(1, RoundingMode.DOWN))]]></textFieldExpression>
+				<textFieldExpression><![CDATA[$F{Weight Change}==null?$P{EmptyFieldExpression}:$F{Weight Change}]]></textFieldExpression>
 			</textField>
 			<textField textAdjust="StretchHeight" isBlankWhenNull="false">
 				<reportElement positionType="Float" stretchType="RelativeToTallestObject" x="1760" y="0" width="78" height="21" uuid="5b6c36ce-a711-4280-a63f-062f58f8348c">
@@ -1812,7 +1812,7 @@
 					<font fontName="Arial" size="8"/>
 					<paragraph lineSpacing="Double"/>
 				</textElement>
-				<textFieldExpression><![CDATA[$F{Heart Rate Change}==null?$P{EmptyFieldExpression}:($F{Heart Rate Change}.setScale(1, RoundingMode.DOWN))]]></textFieldExpression>
+				<textFieldExpression><![CDATA[$F{Heart Rate Change}==null?$P{EmptyFieldExpression}:$F{Heart Rate Change}]]></textFieldExpression>
 			</textField>
 			<textField textAdjust="StretchHeight" isBlankWhenNull="false">
 				<reportElement positionType="Float" stretchType="RelativeToTallestObject" x="2124" y="0" width="68" height="21" uuid="6b88386c-99e7-404e-a957-c11e23e56803">
@@ -1863,7 +1863,7 @@
 					<font fontName="Arial" size="8"/>
 					<paragraph lineSpacing="Double"/>
 				</textElement>
-				<textFieldExpression><![CDATA[$F{Oxygen Saturation Change}==null?$P{EmptyFieldExpression}:($F{Oxygen Saturation Change}.setScale(1, RoundingMode.DOWN))]]></textFieldExpression>
+				<textFieldExpression><![CDATA[$F{Oxygen Saturation Change}==null?$P{EmptyFieldExpression}:$F{Oxygen Saturation Change}]]></textFieldExpression>
 			</textField>
 			<textField textAdjust="StretchHeight" isBlankWhenNull="false">
 				<reportElement positionType="Float" stretchType="RelativeToTallestObject" x="2760" y="0" width="78" height="21" uuid="d02d879a-265b-48c8-a7c6-734e4c56435b">
@@ -2050,7 +2050,7 @@
 					<font fontName="Arial" size="8"/>
 					<paragraph lineSpacing="Double"/>
 				</textElement>
-				<textFieldExpression><![CDATA[$F{Temperature Change}==null?$P{EmptyFieldExpression}:($F{Temperature Change}.setScale(1, RoundingMode.DOWN))]]></textFieldExpression>
+				<textFieldExpression><![CDATA[$F{Temperature Change}==null?$P{EmptyFieldExpression}:$F{Temperature Change}]]></textFieldExpression>
 			</textField>
 			<textField textAdjust="StretchHeight" isBlankWhenNull="false">
 				<reportElement positionType="Float" stretchType="RelativeToTallestObject" x="3124" y="0" width="68" height="21" uuid="f491b1ec-3191-40db-bf70-b7347bb775e3">
