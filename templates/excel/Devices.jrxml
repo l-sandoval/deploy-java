@@ -38,7 +38,7 @@
 		<band height="54">
 			<property name="com.jaspersoft.studio.unit.height" value="px"/>
 			<staticText>
-				<reportElement mode="Opaque" x="0" y="0" width="1396" height="54" forecolor="#FFFFFF" backcolor="#007EC7" uuid="852dfb16-d9b8-4b41-b4c6-281a13fb3245">
+				<reportElement mode="Opaque" x="0" y="0" width="1298" height="54" forecolor="#FFFFFF" backcolor="#007EC7" uuid="852dfb16-d9b8-4b41-b4c6-281a13fb3245">
 					<property name="com.jaspersoft.studio.unit.width" value="px"/>
 					<property name="com.jaspersoft.studio.unit.height" value="px"/>
 				</reportElement>
@@ -54,8 +54,8 @@
 				</textElement>
 				<text><![CDATA[Devices]]></text>
 			</staticText>
-			<image hAlign="Center" vAlign="Middle">
-				<reportElement mode="Opaque" x="1396" y="0" width="189" height="54" forecolor="#FFFFFF" backcolor="#007EC7" uuid="a90dc781-4ba4-4472-8fc9-180989ff0215">
+			<image hAlign="Right" vAlign="Middle">
+				<reportElement mode="Opaque" x="1298" y="0" width="287" height="54" forecolor="#FFFFFF" backcolor="#007EC7" uuid="a90dc781-4ba4-4472-8fc9-180989ff0215">
 					<property name="com.jaspersoft.studio.unit.width" value="px"/>
 					<property name="com.jaspersoft.studio.unit.height" value="px"/>
 				</reportElement>
@@ -359,7 +359,7 @@
 			<frame>
 				<reportElement mode="Opaque" x="0" y="0" width="1585" height="20" forecolor="#FFFFFF" backcolor="#007EC7" uuid="95975399-c836-49d4-a543-e426e8b4b9c7"/>
 				<textField>
-					<reportElement x="2" y="0" width="197" height="20" forecolor="#FFFFFF" uuid="75b70b29-a77f-4c0b-9a44-5100f175dfc3">
+					<reportElement x="0" y="0" width="287" height="20" forecolor="#FFFFFF" uuid="75b70b29-a77f-4c0b-9a44-5100f175dfc3">
 						<property name="com.jaspersoft.studio.unit.height" value="px"/>
 						<property name="net.sf.jasperreports.export.xls.pattern" value="dd MMMM yyyy"/>
 					</reportElement>
@@ -370,7 +370,7 @@
 					<textFieldExpression><![CDATA[new java.text.SimpleDateFormat($P{DateFormatOut}).format(new java.util.Date())]]></textFieldExpression>
 				</textField>
 				<textField evaluationTime="Auto">
-					<reportElement x="1466" y="0" width="119" height="20" forecolor="#FFFFFF" uuid="c0eea776-aa77-4135-a64e-31702ac88cf0">
+					<reportElement x="1298" y="0" width="287" height="20" forecolor="#FFFFFF" uuid="c0eea776-aa77-4135-a64e-31702ac88cf0">
 						<property name="com.jaspersoft.studio.unit.height" value="px"/>
 					</reportElement>
 					<box padding="1"/>

@@ -73,7 +73,7 @@
 		<band height="54">
 			<property name="com.jaspersoft.studio.unit.height" value="px"/>
 			<staticText>
-				<reportElement mode="Opaque" x="0" y="0" width="1190" height="54" forecolor="#FFFFFF" backcolor="#007EC7" uuid="61ec36a1-7d27-4d9d-927e-a3211222cc1f">
+				<reportElement mode="Opaque" x="0" y="0" width="1186" height="54" forecolor="#FFFFFF" backcolor="#007EC7" uuid="61ec36a1-7d27-4d9d-927e-a3211222cc1f">
 					<property name="com.jaspersoft.studio.unit.width" value="px"/>
 					<property name="com.jaspersoft.studio.unit.height" value="px"/>
 				</reportElement>
@@ -89,8 +89,8 @@
 				</textElement>
 				<text><![CDATA[Sleep]]></text>
 			</staticText>
-			<image hAlign="Center" vAlign="Middle">
-				<reportElement mode="Opaque" x="1190" y="0" width="189" height="54" forecolor="#FFFFFF" backcolor="#007EC7" uuid="fc0b56af-7e56-45a6-9279-21d63b84d558">
+			<image hAlign="Right" vAlign="Middle">
+				<reportElement mode="Opaque" x="1186" y="0" width="193" height="54" forecolor="#FFFFFF" backcolor="#007EC7" uuid="fc0b56af-7e56-45a6-9279-21d63b84d558">
 					<property name="com.jaspersoft.studio.unit.height" value="px"/>
 					<property name="com.jaspersoft.studio.unit.width" value="px"/>
 				</reportElement>
@@ -1358,7 +1358,7 @@
 					<property name="com.jaspersoft.studio.unit.height" value="px"/>
 				</reportElement>
 				<textField>
-					<reportElement x="0" y="0" width="220" height="20" forecolor="#FFFFFF" uuid="9ff16b62-1c27-4859-92b6-f7fe04af92af">
+					<reportElement x="0" y="0" width="228" height="20" forecolor="#FFFFFF" uuid="9ff16b62-1c27-4859-92b6-f7fe04af92af">
 						<property name="com.jaspersoft.studio.unit.height" value="px"/>
 						<property name="net.sf.jasperreports.export.xls.pattern" value="dd MMMM yyyy"/>
 					</reportElement>
@@ -1369,7 +1369,7 @@
 					<textFieldExpression><![CDATA[new java.text.SimpleDateFormat($P{DateFormatOut}).format(new java.util.Date())]]></textFieldExpression>
 				</textField>
 				<textField evaluationTime="Auto">
-					<reportElement x="1158" y="0" width="221" height="20" forecolor="#FFFFFF" uuid="1215a71b-b2f9-44ab-ac52-781fa4cd4b5b">
+					<reportElement x="1186" y="0" width="193" height="20" forecolor="#FFFFFF" uuid="1215a71b-b2f9-44ab-ac52-781fa4cd4b5b">
 						<property name="com.jaspersoft.studio.unit.height" value="px"/>
 					</reportElement>
 					<box padding="1"/>

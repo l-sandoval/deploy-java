@@ -35,7 +35,7 @@
 		<band height="54" splitType="Stretch">
 			<property name="com.jaspersoft.studio.unit.height" value="px"/>
 			<staticText>
-				<reportElement mode="Opaque" x="0" y="0" width="1396" height="54" forecolor="#FFFFFF" backcolor="#007EC7" uuid="c4991998-361e-409d-8159-61ba2a18aa88">
+				<reportElement mode="Opaque" x="0" y="0" width="874" height="54" forecolor="#FFFFFF" backcolor="#007EC7" uuid="c4991998-361e-409d-8159-61ba2a18aa88">
 					<property name="com.jaspersoft.studio.unit.height" value="px"/>
 					<property name="com.jaspersoft.studio.unit.width" value="px"/>
 				</reportElement>
@@ -51,9 +51,8 @@
 				</textElement>
 				<text><![CDATA[90 Day Heart Rate Readings]]></text>
 			</staticText>
-			<image hAlign="Center" vAlign="Middle">
-				<reportElement mode="Opaque" x="1396" y="0" width="189" height="54" backcolor="#007EC7" uuid="63dcc26a-9e3f-4943-8167-adefab2d7daf">
-					<property name="com.jaspersoft.studio.unit.width" value="px"/>
+			<image hAlign="Right" vAlign="Middle">
+				<reportElement mode="Opaque" x="874" y="0" width="711" height="54" backcolor="#007EC7" uuid="63dcc26a-9e3f-4943-8167-adefab2d7daf">
 					<property name="com.jaspersoft.studio.unit.height" value="px"/>
 				</reportElement>
 				<box padding="1">
@@ -445,7 +444,7 @@
 					<property name="com.jaspersoft.studio.unit.height" value="px"/>
 				</reportElement>
 				<textField>
-					<reportElement x="0" y="0" width="220" height="20" forecolor="#FFFFFF" uuid="eabd743a-ecb0-4caa-9c3a-a19d2707cf64">
+					<reportElement x="0" y="0" width="234" height="20" forecolor="#FFFFFF" uuid="eabd743a-ecb0-4caa-9c3a-a19d2707cf64">
 						<property name="com.jaspersoft.studio.unit.height" value="px"/>
 						<property name="net.sf.jasperreports.export.xls.pattern" value="dd MMMM yyyy"/>
 					</reportElement>
@@ -456,8 +455,9 @@
 					<textFieldExpression><![CDATA[new java.text.SimpleDateFormat($P{DateFormatOut}).format(new java.util.Date())]]></textFieldExpression>
 				</textField>
 				<textField evaluationTime="Auto">
-					<reportElement x="1364" y="0" width="221" height="20" forecolor="#FFFFFF" uuid="7475c820-cdb1-40b4-a5aa-869aba46c687">
+					<reportElement x="874" y="0" width="711" height="20" forecolor="#FFFFFF" uuid="7475c820-cdb1-40b4-a5aa-869aba46c687">
 						<property name="com.jaspersoft.studio.unit.height" value="px"/>
+						<property name="com.jaspersoft.studio.unit.width" value="px"/>
 					</reportElement>
 					<box padding="1"/>
 					<textElement textAlignment="Right" verticalAlignment="Middle">
