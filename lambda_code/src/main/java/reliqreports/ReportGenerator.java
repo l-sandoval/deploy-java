@@ -209,7 +209,7 @@ public class ReportGenerator {
             SimpleXlsxReportConfiguration configuration = new SimpleXlsxReportConfiguration();
             configuration.setOnePagePerSheet(true);
             configuration.setDetectCellType(true);
-            configuration.setCollapseRowSpan(false);
+            configuration.setCollapseRowSpan(true);
             configuration.setSheetNames(sheetNames);
             exporter.setConfiguration(configuration);
 
@@ -227,7 +227,7 @@ public class ReportGenerator {
             SimpleXlsReportConfiguration configuration = new SimpleXlsReportConfiguration();
             configuration.setOnePagePerSheet(true);
             configuration.setDetectCellType(true);
-            configuration.setCollapseRowSpan(false);
+            configuration.setCollapseRowSpan(true);
             configuration.setSheetNames(sheetNames);
             exporter.setConfiguration(configuration);
 
