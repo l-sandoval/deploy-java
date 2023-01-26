@@ -74,7 +74,7 @@
 					<textElement textAlignment="Center" verticalAlignment="Middle">
 						<font fontName="Tahoma" size="30"/>
 					</textElement>
-					<text><![CDATA[Instance Compliance Billing Report]]></text>
+					<text><![CDATA[Compliance Billing Report]]></text>
 				</staticText>
 			</frame>
 		</band>

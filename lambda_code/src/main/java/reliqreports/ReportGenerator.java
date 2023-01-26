@@ -9,6 +9,7 @@ import net.sf.jasperreports.engine.query.JRXPathQueryExecuterFactory;
 import net.sf.jasperreports.engine.util.JRXmlUtils;
 import net.sf.jasperreports.export.*;
 import reliqreports.common.EReportCategory;
+import reliqreports.common.SubReportDto;
 
 import org.apache.commons.io.FileUtils;
 import org.w3c.dom.Document;
@@ -72,7 +73,6 @@ public class ReportGenerator {
         logger.log("GenerateReport: " + reportName + "t=" + (System.currentTimeMillis() - startTime));
 
         parameters = new LinkedHashMap<String, Object>();
-        List<String> sheetNameList = new ArrayList<String>();
         List<String> fileNameList = new ArrayList<String>();
         
         InputStream dataSource = getInputStreamFileFromS3(xmlFile, StringLiterals.FILES_BUCKET);
@@ -95,6 +95,7 @@ public class ReportGenerator {
             // get the sheet names & source files from the parameters
             Set<String> keys = parameters.keySet();
             Map<String, Object> otherParams = new LinkedHashMap<String, Object>();
+            List<SubReportDto> subReportList = new ArrayList<SubReportDto>();
             
             for (String key : keys) {
                 if (key.toLowerCase().contains(StringLiterals.SUBREPORT)) {
@@ -103,11 +104,12 @@ public class ReportGenerator {
                     if (key.toLowerCase().contains(StringLiterals.SHEET_NAME)) {
                         String tab = key.split(StringLiterals.FILENAME_FIELD_SEPARATOR)[2];
                         String subFileNameKey = keys.stream().filter(s -> s.contains(tab) &&  s.contains(StringLiterals.PATH)).findFirst().orElse("");
-                        logger.log("Report... : key=" + tab);
-                        sheetNameList.add(tab);
+                        logger.log("Report... : key=" + tab);                
 
                         String subFileName = parameters.get(subFileNameKey).toString();
                         fileNameList.add(subFileName);
+                        SubReportDto dto = new SubReportDto(tab, parameters.get(key).toString(), parameters.get(subFileNameKey).toString());
+                        subReportList.add(dto);
                     }
                 }
                 
@@ -133,17 +135,17 @@ public class ReportGenerator {
             logger.log("Filling time : " + (System.currentTimeMillis() - startTime));
 
             // convert sheetNames list to array, add the home item
-            String[] sheetNames = new String[sheetNameList.size() + 1];
-            sheetNames[0] = StringLiterals.HOME_NAME;
+            List<String> sheetNames = new ArrayList<String>();
+            sheetNames.add(StringLiterals.HOME_NAME);
 
-            createSheetsFromCSVData(sheetNameList, sheetNames, jasperPath, fileNameList, jpMaster);
+            sheetNames.addAll(createSheetsFromCSVData(subReportList, jasperPath, jpMaster));
 
             // find the file type required
             if (type == null && parameters.containsKey(StringLiterals.FILE_TYPE)) {
                 type = parameters.get(StringLiterals.FILE_TYPE).toString().toLowerCase();   
             }
 
-            byte[] fileByteArray = generateReportFile(type, jpMaster, sheetNames);
+            byte[] fileByteArray = generateReportFile(type, jpMaster, sheetNames.toArray(new String[0]));
             EReportCategory reportCategory = HelperFunctions.getReportCategory(reportName);
             String reportFileName = xmlFile.substring(xmlFile.lastIndexOf("/") + 1, xmlFile.lastIndexOf(".")) + "." + type; 
             String folderPath = getReportFolderPath(reportCategory, buildPath, entityId, organizationId);
@@ -279,25 +281,27 @@ public class ReportGenerator {
      * Create each sheet from the associated CSV data file
      * @throws JRException 
      */
-    private void createSheetsFromCSVData (List<String> sheetNameList, String[] sheetNames, String jasperPath, List<String> fileNameList, JasperPrint jpMaster) throws JRException{
-        for (int i = 0; i < sheetNameList.size(); i++) {
-            String sheetName = sheetNameList.get(i);
+    private List<String> createSheetsFromCSVData (List<SubReportDto> subReportList, String jasperPath, JasperPrint jpMaster) throws JRException{
+        List<String> sheetNames = new ArrayList<String>();
+        
+        for(int i = 0; i < subReportList.size(); i++) {
+            SubReportDto sr = subReportList.get(i);
 
             // copy to the array
-            sheetNames[i + 1] = sheetName;
+            sheetNames.add(sr.getSubReportSheetName());
 
             // set the page number in the report
             parameters.put(StringLiterals.PAGE_NUMBER, Integer.toString(i + 1));            
 
             InputStream sourceStream = getInputStreamFileFromS3(
-                    jasperPath + StringLiterals.FILE_SEPARATOR_FOR_S3_QUERIES + sheetNameList.get(i) + ".jrxml",
+                    jasperPath + StringLiterals.FILE_SEPARATOR_FOR_S3_QUERIES + sr.getSubReportName() + ".jrxml",
                     StringLiterals.LAMBDA_BUCKET);
 
             InputStream dataStream = getInputStreamFileFromS3(
-                    fileNameList.get(i),
+                    sr.getSubReportFilePath(),
                     StringLiterals.FILES_BUCKET);
 
-            logger.log("Retrieve from S3 template= " + sheetNameList.get(i) + ".jrxml" + " csv= " + fileNameList.get(i) + "\r\n");
+            logger.log("Retrieve from S3 template= " + sr.getSubReportName() + ".jrxml" + " csv= " + sr.getSubReportFilePath() + "\r\n");
 
             if (sourceStream != null && dataStream != null ) {
                 logger.log("Fill...t=" + (System.currentTimeMillis() - startTime));
@@ -311,15 +315,16 @@ public class ReportGenerator {
 
                 // add all the pages into the master doc
                 List<JRPrintPage> pp = jasperPrint.getPages();
-                jpMaster.setName(sheetName);
+                jpMaster.setName(sr.getSubReportSheetName());
                 for (int j = 0; j < pp.size(); j++) {
-                    logger.log("fill... : Add page : " + sheetName + "|" + j + 1);
+                    logger.log("fill... : Add page : " + sr.getSubReportName() + "|" + j + 1);
                     jpMaster.addPage(pp.get(j));
                 }
             } else {
                 logger.log("Fill...Error - cannot load files\r\n");
             }
         }
+        return sheetNames;
     }
     
     private Map<String, String> getParametersFromCsvFile(InputStream parametersSource) throws JRException {
