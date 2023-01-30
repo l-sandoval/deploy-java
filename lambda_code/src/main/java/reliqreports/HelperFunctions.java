@@ -94,6 +94,8 @@ public class HelperFunctions {
 	        case ReportsLiterals.INDIVIDUAL_PATIENT_REPORT:
 	        case ReportsLiterals.COMPLIANCE_DATA_REPORT_FOR_INSTANCE:
 	        case ReportsLiterals.INSTANCE_COMPLIANCE_BILLING_REPORT:
+            case ReportsLiterals.INSTANCE_CUSTOMER_BILLING_REPORT:
+            case ReportsLiterals.INSTANCE_RPM_READINGS_REPORT:
 	        default:
 	            return StringLiterals.MONTLY;
 	    }
