@@ -133,5 +133,6 @@ public class ReportsGeneratorHandler {
         this.reportTypes.put(ReportsLiterals.DAILY_CRITICAL_READINGS_REPORT, StringLiterals.TYPE_XLS);
         this.reportTypes.put(ReportsLiterals.WEEKLY_ADHERENCE_REPORT, StringLiterals.TYPE_XLS);
         this.reportTypes.put(ReportsLiterals.COMPLIANCE_DATA_REPORT_FOR_INSTANCE, StringLiterals.TYPE_XLS);
+        this.reportTypes.put(ReportsLiterals.INSTANCE_COMPLIANCE_BILLING_REPORT, StringLiterals.TYPE_XLS); 
     }
 }
