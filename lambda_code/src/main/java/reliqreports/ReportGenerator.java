@@ -59,7 +59,9 @@ public class ReportGenerator {
             String jasperPath,
             String buildPath,
             String entityId,
+            String entityName,
             String organizationId,
+            String organizationName,
             String generationDate,
             String apiEndpoint,
             Boolean shouldStageReport
@@ -148,7 +150,7 @@ public class ReportGenerator {
             byte[] fileByteArray = generateReportFile(type, jpMaster, sheetNames.toArray(new String[0]));
             EReportCategory reportCategory = HelperFunctions.getReportCategory(reportName);
             String reportFileName = xmlFile.substring(xmlFile.lastIndexOf("/") + 1, xmlFile.lastIndexOf(".")) + "." + type; 
-            String folderPath = getReportFolderPath(reportCategory, buildPath, entityId, organizationId);
+            String folderPath = getReportFolderPath(reportCategory, buildPath, entityName, organizationName);
             String fileName = folderPath  + StringLiterals.FILE_SEPARATOR_FOR_S3_QUERIES + reportFileName;
 
             uploadFileToS3(fileName, fileByteArray);
@@ -165,12 +167,12 @@ public class ReportGenerator {
         }
     }
     
-    private String getReportFolderPath(EReportCategory reportCategory, String buildPath, String entityId, String organizationId) {        
+    private String getReportFolderPath(EReportCategory reportCategory, String buildPath, String entity, String organization) {        
         switch (reportCategory) {
             case PATIENT:
-                return (buildPath + (!StringUtils.isNullOrEmpty(organizationId) ? StringLiterals.FILE_SEPARATOR_FOR_S3_QUERIES + organizationId : ""));    
+                return (buildPath + (!StringUtils.isNullOrEmpty(organization) ? StringLiterals.FILE_SEPARATOR_FOR_S3_QUERIES + organization : ""));    
             default:
-                return (buildPath + (!StringUtils.isNullOrEmpty(entityId) ? StringLiterals.FILE_SEPARATOR_FOR_S3_QUERIES + entityId : ""));
+                return (buildPath + (!StringUtils.isNullOrEmpty(entity) ? StringLiterals.FILE_SEPARATOR_FOR_S3_QUERIES + entity : ""));
         }
     }
 

@@ -41,7 +41,9 @@ public class LambdaFunctionHandler implements RequestStreamHandler
 			String generationDate = objectMapper.readValue(rootNode.get("generationDate").toString(), String.class);
 			String reportPeriodDate = objectMapper.readValue(rootNode.get("reportPeriodDate").toString(), String.class);
 			String entityId = rootNode.get("entityId") != null ? objectMapper.readValue(rootNode.get("entityId").toString(), String.class) : "";
+			String entityName = rootNode.get("entityName") != null ? objectMapper.readValue(rootNode.get("entityName").toString(), String.class) : "";
 			String organizationId = rootNode.get("organizationId") != null ? objectMapper.readValue(rootNode.get("organizationId").toString(), String.class) : "";
+            String organizationName = rootNode.get("organizationName") != null ? objectMapper.readValue(rootNode.get("organizationName").toString(), String.class) : "";
 			Boolean shouldStageReport = rootNode.get("shouldStage") != null ? objectMapper.readValue(rootNode.get("shouldStage").toString(), Boolean.class) : false;
 
 			String logoPath = reportsToBeGenerated.length > 0 && Objects.equals(reportsToBeGenerated[0], ReportsLiterals.INDIVIDUAL_PATIENT_REPORT) ? "s3path.IUGOReport-Logo-individualPatientReport" : "s3path.IUGOReport-Logo";
@@ -49,9 +51,16 @@ public class LambdaFunctionHandler implements RequestStreamHandler
 
 			ReportsGeneratorHandler handler = new ReportsGeneratorHandler(
 					this.logger,
-					reportsToBeGenerated, xmlFiles,
-					environments, environmentsApiEndpoints,
-					generationDate, reportPeriodDate, entityId, organizationId,
+					reportsToBeGenerated,
+					xmlFiles,
+					environments,
+					environmentsApiEndpoints,
+					generationDate,
+					reportPeriodDate,
+					entityId,
+					entityName,
+					organizationId,
+					organizationName,
 					shouldStageReport);
 			handler.generateReports();
 		}

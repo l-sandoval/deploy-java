@@ -20,7 +20,9 @@ public class ReportsGeneratorHandler {
     private String generationDate;
     private String reportPeriodDate;
     private String entityId;
+    private String entityName;
     private String organizationId;
+    private String organizationName;
     private String[] environments;
     private JSONObject environmentsApiEndpoints;
     private Boolean shouldStageReport;
@@ -28,8 +30,8 @@ public class ReportsGeneratorHandler {
     public ReportsGeneratorHandler(LambdaLogger logger, 
                                    String[] reportsToBeGenerated, HashMap<String, HashMap<String, String[]>> xmlFiles,
                                    String[] environments, JSONObject environmentsApiEndpoints, String generationDate,
-                                   String reportPeriodDate, String entityId, String organizationId,
-                                   Boolean shouldStageReport) {
+                                   String reportPeriodDate, String entityId, String entityName, String organizationId,
+                                   String organizationName, Boolean shouldStageReport) {
         this.logger = logger;
         this.reportsToBeGenerated = reportsToBeGenerated;
         this.xmlFiles = xmlFiles;
@@ -37,7 +39,9 @@ public class ReportsGeneratorHandler {
         this.generationDate = generationDate;
         this.reportPeriodDate = reportPeriodDate;
         this.entityId = entityId;
+        this.entityName = entityName;
         this.organizationId = organizationId;
+        this.organizationName = organizationName;
         this.shouldStageReport = shouldStageReport;
         setReportTypes();
 
@@ -111,7 +115,9 @@ public class ReportsGeneratorHandler {
                         templatesPath,
                         outputFolder, 
                         this.entityId,
+                        this.entityName,
                         this.organizationId,
+                        this.organizationName,
                         this.generationDate,
                         apiEndpoint,
                         this.shouldStageReport);
