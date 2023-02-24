@@ -33,7 +33,7 @@ public class AmazonDynamoDBConsumer {
                 .region(region)
                 .build();
         this.tableName = System.getenv("DYNAMODB_TABLE");
-        this.bucketName = System.getenv("FILES_BUCKET");
+        this.bucketName = System.getenv("REPORTS_BUCKET");
     }
 
     public void stageRecord(String filePath, String apiEndpoint, EReportCategory reportCategory, String entityId)
