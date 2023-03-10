@@ -285,6 +285,7 @@ public class ReportGenerator {
      */
     private List<String> createSheetsFromCSVData (List<SubReportDto> subReportList, String jasperPath, JasperPrint jpMaster) throws JRException{
         List<String> sheetNames = new ArrayList<String>();
+        int pagesCount = 1;
         
         for(int i = 0; i < subReportList.size(); i++) {
             SubReportDto sr = subReportList.get(i);
@@ -293,7 +294,7 @@ public class ReportGenerator {
             sheetNames.add(sr.getSubReportSheetName());
 
             // set the page number in the report
-            parameters.put(StringLiterals.PAGE_NUMBER, Integer.toString(i + 1));            
+            parameters.put(StringLiterals.PAGE_NUMBER, Integer.toString(pagesCount));            
 
             InputStream sourceStream = getInputStreamFileFromS3(
                     jasperPath + StringLiterals.FILE_SEPARATOR_FOR_S3_QUERIES + sr.getSubReportName() + ".jrxml",
@@ -321,6 +322,7 @@ public class ReportGenerator {
                 for (int j = 0; j < pp.size(); j++) {
                     logger.log("fill... : Add page : " + sr.getSubReportName() + "|" + j + 1);
                     jpMaster.addPage(pp.get(j));
+                    pagesCount += 1;
                 }
             } else {
                 logger.log("Fill...Error - cannot load files\r\n");
