@@ -36,14 +36,14 @@ The following parameters used in the function invocation:
 
 * `reportsToBeGenerated`: Array of strings with the names of the reports to generate.
 *  `environments`: Array of strings with the names of the environments to which the reports belong.
-* `xmlFiles`: Array of objects with the xml path to generate each report.
+* `xmlFiles`: Object with the xml path to generate each report.
 * `generationDate`: Datetime when report generator was called. Used in the folder structure.
 * `reportPeriodDate`: Report year and month. Used for the folder structure.
 * `entityId`: Report entity id to which the reports belong . Used in the staged record process (optional).
 * `entityName`: Report entity name to which the reports belong. Used in the folder structure (optional).
 * `organizationId`: Entity organization id. Used in the staged record process (optional).
 * `organizationName`: Entity organization name. Used in the folder structure (optional). 
-* `shouldStageReport`: Indicates if the report needs to be saved in the staging DB, default is false (optional).
+* `shouldStage`: Indicates if the report needs to be saved in the staging DB, default is false (optional).
 
 Individual Patient report's json example:
 
@@ -62,6 +62,7 @@ Individual Patient report's json example:
   "entityName": "John Doe",
   "organizationId": "22222222-22B2-2B22-2222-222222222222",
   "organizationName": "Organization Clinic",
+  "shouldStage": true
 }
 ```
 
