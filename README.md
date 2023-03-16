@@ -32,21 +32,50 @@ To execute the report generator function locally:
 for the Local.java file, this might vary depending on the IDE you are using.
 
 ## Lambda function parameters
-The following parameters are expected in the function invocation:
+The following parameters used in the function invocation:
+
+* `reportsToBeGenerated`: Array of strings with the names of the reports to generate.
+*  `environments`: Array of strings with the names of the environments to which the reports belong.
+* `xmlFiles`: Object with the xml path to generate each report.
+* `generationDate`: Datetime when report generator was called. Used in the folder structure.
+* `reportPeriodDate`: Report year and month. Used for the folder structure.
+* `entityId`: Report entity id to which the reports belong . Used in the staged record process (optional).
+* `entityName`: Report entity name to which the reports belong. Used in the folder structure (optional).
+* `organizationId`: Entity organization id. Used in the staged record process (optional).
+* `organizationName`: Entity organization name. Used in the folder structure (optional). 
+* `shouldStage`: Indicates if the report needs to be saved in the staging DB, default is false (optional).
+
+Individual Patient report's json example:
 
 ```json
 {
-  "reportsToBeGenerated": ["report1", "report2"],
-  "environments": ["ReliqUsDev1", "Training"],
-  "xmlFiles": [
-    {
-    "ReliqUsDev1": {
-        "report1": ["pathToReport1File1.xml", "pathToReport1File2.xml"]
-      },
-    "Training": {
-        "report2": ["pathToReport2File1.xml", "pathToReport2File2.xml"]
-      }
+  "reportsToBeGenerated": ["IndividualPatient"], 
+  "environments": ["Reliq"], 
+  "xmlFiles": {
+    "Reliq": {
+      "IndividualPatient": ["raw-data/2023-02/2023-03-09T19:06:53.476695+00:00/Reliq/11111111-1111-1111-1111-111111111111/iUGO_Report_John_Doe_Individual-Patient-Report_2023-03-09T19:06.xml"]
     }
-  ]
+  }, 
+  "generationDate": "2023-03-09 19:06:53", 
+  "reportPeriodDate": "2023-02",
+  "entityId": "11111111-AA11-AA11-1111-111111111111",
+  "entityName": "John Doe",
+  "organizationId": "22222222-22B2-2B22-2222-222222222222",
+  "organizationName": "Organization Clinic",
+  "shouldStage": true
 }
 ```
+
+## Supported reports
+The following list contains the supported reports:
+* ComplianceBillingReport
+* CustomerBillingReport
+* EmergencyRecoveryReport
+* IndividualRPMReadingsReport
+* IndividualPatient
+* DailyCriticalReadingsReport
+* InstanceMonthlyDataReport
+* WeeklyAdherenceReport
+* InstanceComplianceBillingReport
+* InstanceRPMReadingsReport
+* InstanceCustomerBillingReport
