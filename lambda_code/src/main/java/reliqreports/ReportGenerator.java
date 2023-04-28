@@ -149,7 +149,10 @@ public class ReportGenerator {
 
             byte[] fileByteArray = generateReportFile(type, jpMaster, sheetNames.toArray(new String[0]));
             EReportCategory reportCategory = HelperFunctions.getReportCategory(reportName);
-            String reportFileName = xmlFile.substring(xmlFile.lastIndexOf("/") + 1, xmlFile.lastIndexOf(".")).replace(":", "") + "." + type;
+            String reportFileName = xmlFile.substring(
+                    xmlFile.lastIndexOf("/") + 1,
+                    xmlFile.lastIndexOf(".")
+            ).replace(":", "") + "." + type;
             String folderPath = getReportFolderPath(reportCategory, buildPath, entityName, organizationName);
             String fileName = folderPath  + StringLiterals.FILE_SEPARATOR_FOR_S3_QUERIES + reportFileName;
 
