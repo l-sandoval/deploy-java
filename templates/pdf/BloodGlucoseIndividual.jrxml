@@ -38,6 +38,12 @@
 	<variable name="PAGE_TOTAL" class="java.lang.Integer" resetType="Master">
 		<variableExpression><![CDATA[$V{PAGE_NUMBER}]]></variableExpression>
 	</variable>
+	<variable name="LowerLimit" class="java.math.BigDecimal" calculation="Lowest">
+		<variableExpression><![CDATA[$F{BloodGlucose}]]></variableExpression>
+	</variable>
+	<variable name="UpperLimit" class="java.math.BigDecimal" calculation="Highest">
+		<variableExpression><![CDATA[$F{BloodGlucose}]]></variableExpression>
+	</variable>
 	<group name="Group1" isReprintHeaderOnEachPage="true">
 		<groupExpression><![CDATA["CONSTANT"]]></groupExpression>
 		<groupHeader>
@@ -160,7 +166,7 @@
 			<property name="com.jaspersoft.studio.unit.height" value="px"/>
 			<lineChart>
 				<chart isShowLegend="false" evaluationTime="Report">
-					<reportElement isPrintRepeatedValues="false" x="0" y="10" width="592" height="235" isRemoveLineWhenBlank="true" uuid="988366c1-5d18-4bf3-af65-b776488328a9">
+					<reportElement stretchType="ContainerBottom" isPrintRepeatedValues="false" x="0" y="10" width="592" height="235" isRemoveLineWhenBlank="true" uuid="988366c1-5d18-4bf3-af65-b776488328a9">
 						<property name="com.jaspersoft.studio.unit.y" value="pixel"/>
 						<printWhenExpression><![CDATA[$V{PAGE_NUMBER}==1]]></printWhenExpression>
 					</reportElement>
@@ -193,7 +199,7 @@
 						</axisFormat>
 					</categoryAxisFormat>
 					<valueAxisFormat>
-						<axisFormat labelColor="#000000" tickLabelColor="#000000" axisLineColor="#000000">
+						<axisFormat labelColor="#000000" tickLabelColor="#000000" tickLabelMask="" axisLineColor="#000000">
 							<labelFont>
 								<font fontName="Tahoma"/>
 							</labelFont>
@@ -202,8 +208,8 @@
 							</tickLabelFont>
 						</axisFormat>
 					</valueAxisFormat>
-					<rangeAxisMinValueExpression><![CDATA[80]]></rangeAxisMinValueExpression>
-					<rangeAxisMaxValueExpression><![CDATA[300]]></rangeAxisMaxValueExpression>
+					<rangeAxisMinValueExpression><![CDATA[$V{LowerLimit}.subtract(new BigDecimal (10))]]></rangeAxisMinValueExpression>
+					<rangeAxisMaxValueExpression><![CDATA[$V{UpperLimit}.add(new BigDecimal(10))]]></rangeAxisMaxValueExpression>
 				</linePlot>
 			</lineChart>
 		</band>
