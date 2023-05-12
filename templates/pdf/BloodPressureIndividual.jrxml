@@ -47,6 +47,30 @@
 	<variable name="PAGE_TOTAL" class="java.lang.Integer" resetType="None" incrementType="Page">
 		<variableExpression><![CDATA[Integer.parseInt($P{IUGOReport-PageNumber})]]></variableExpression>
 	</variable>
+	<variable name="LowerLimitSystolic" class="java.math.BigDecimal" calculation="Lowest">
+		<variableExpression><![CDATA[$F{SystolicBloodPressure}]]></variableExpression>
+	</variable>
+	<variable name="LowerLimitDiastolic" class="java.math.BigDecimal" calculation="Lowest">
+		<variableExpression><![CDATA[$F{DiastolicBloodPressure}]]></variableExpression>
+	</variable>
+	<variable name="LowerLimitPulse" class="java.math.BigDecimal" calculation="Lowest">
+		<variableExpression><![CDATA[$F{Pulse}]]></variableExpression>
+	</variable>
+	<variable name="UpperLimitSystolic" class="java.math.BigDecimal" calculation="Highest">
+		<variableExpression><![CDATA[$F{SystolicBloodPressure}]]></variableExpression>
+	</variable>
+	<variable name="UpperLimitDiastolic" class="java.math.BigDecimal" calculation="Highest">
+		<variableExpression><![CDATA[$F{DiastolicBloodPressure}]]></variableExpression>
+	</variable>
+	<variable name="UpperLimitPulse" class="java.math.BigDecimal" calculation="Highest">
+		<variableExpression><![CDATA[$F{Pulse}]]></variableExpression>
+	</variable>
+	<variable name="Minimum" class="java.math.BigDecimal">
+		<variableExpression><![CDATA[$V{LowerLimitSystolic}.min($V{LowerLimitDiastolic}).min($V{LowerLimitPulse})]]></variableExpression>
+	</variable>
+	<variable name="Maximum" class="java.math.BigDecimal">
+		<variableExpression><![CDATA[$V{UpperLimitSystolic}.max($V{UpperLimitDiastolic}).max($V{UpperLimitPulse})]]></variableExpression>
+	</variable>
 	<group name="chartBP" isReprintHeaderOnEachPage="true">
 		<groupHeader>
 			<band height="53">
@@ -189,7 +213,7 @@
 			<property name="com.jaspersoft.studio.unit.height" value="px"/>
 			<lineChart>
 				<chart evaluationTime="Report">
-					<reportElement isPrintRepeatedValues="false" x="0" y="10" width="592" height="235" isRemoveLineWhenBlank="true" uuid="47bc5bc1-8adc-460a-a9a8-cf2293d57816">
+					<reportElement stretchType="ContainerBottom" isPrintRepeatedValues="false" x="0" y="10" width="592" height="235" isRemoveLineWhenBlank="true" uuid="47bc5bc1-8adc-460a-a9a8-cf2293d57816">
 						<property name="com.jaspersoft.studio.unit.height" value="px"/>
 						<printWhenExpression><![CDATA[$V{PAGE_NUMBER}==1]]></printWhenExpression>
 					</reportElement>
@@ -222,7 +246,7 @@
 				<linePlot>
 					<plot labelRotation="45.0"/>
 					<categoryAxisFormat labelRotation="45.0">
-						<axisFormat labelColor="#000000" tickLabelColor="#000000" axisLineColor="#000000">
+						<axisFormat labelColor="#000000" tickLabelColor="#000000" verticalTickLabels="false" axisLineColor="#000000">
 							<labelFont>
 								<font fontName="Tahoma"/>
 							</labelFont>
@@ -241,8 +265,8 @@
 							</tickLabelFont>
 						</axisFormat>
 					</valueAxisFormat>
-					<rangeAxisMinValueExpression><![CDATA[60]]></rangeAxisMinValueExpression>
-					<rangeAxisMaxValueExpression><![CDATA[160]]></rangeAxisMaxValueExpression>
+					<rangeAxisMinValueExpression><![CDATA[$V{Minimum}.subtract(new BigDecimal(10))]]></rangeAxisMinValueExpression>
+					<rangeAxisMaxValueExpression><![CDATA[$V{Maximum}.add(new BigDecimal(10))]]></rangeAxisMaxValueExpression>
 				</linePlot>
 			</lineChart>
 		</band>
