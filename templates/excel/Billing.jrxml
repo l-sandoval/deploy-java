@@ -28,7 +28,7 @@
 	<parameter name="IUGOReport-PeriodEnd" class="java.lang.String"/>
 	<parameter name="IUGOReport-Date" class="java.lang.String"/>
 	<parameter name="DateFormatOut" class="java.lang.String" isForPrompting="false">
-		<defaultValueExpression><![CDATA["MM/dd/YYYY"]]></defaultValueExpression>
+		<defaultValueExpression><![CDATA["MM/dd/yyyy"]]></defaultValueExpression>
 	</parameter>
 	<parameter name="IUGOReport-DateOfService" class="java.lang.String"/>
 	<parameter name="EmptyFieldExpression" class="java.lang.String" isForPrompting="false">

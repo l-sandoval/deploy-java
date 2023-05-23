@@ -13,7 +13,7 @@
 	<parameter name="IUGOReport-PageCount" class="java.lang.String"/>
 	<parameter name="IUGOReport-Logo" class="java.lang.String"/>
 	<parameter name="DateFormatOut" class="java.lang.String" isForPrompting="false">
-		<defaultValueExpression><![CDATA["MM/dd/YYYY"]]></defaultValueExpression>
+		<defaultValueExpression><![CDATA["MM/dd/yyyy"]]></defaultValueExpression>
 	</parameter>
 	<parameter name="EmptyFieldExpression" class="java.lang.String" isForPrompting="false">
 		<defaultValueExpression><![CDATA["-"]]></defaultValueExpression>
