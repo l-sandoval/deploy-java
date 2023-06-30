@@ -62,9 +62,14 @@ jobs:
           role-duration-seconds: 1200
           role-session-name: lambda_deployment
 
+      - name: Create Lambda Layer
+        run: |
+          aws lambda publish-layer-version --layer-name compiled-jar-file --compatible-runtimes java11 --zip-file fileb://lambda_code/target/$LAMBDA_PACKAGED_FILE
+
       - name: Deploy Code to AWS
         run: |
-          aws s3 cp lambda_code/target/$LAMBDA_PACKAGED_FILE s3://$TEMPLATES_S3_BUCKET/lambda/
+          # aws s3 cp lambda_code/target/$LAMBDA_PACKAGED_FILE s3://$TEMPLATES_S3_BUCKET/lambda/
           aws lambda update-function-configuration --function-name $AWS_LAMBDA_FUNCTION_NAME --environment "Variables={DYNAMODB_TABLE=$DYNAMODB_TABLE, FILES_BUCKET=$FILES_BUCKET, LAMBDA_BUCKET=$TEMPLATES_S3_BUCKET, REPORTS_BUCKET=$REPORTS_BUCKET}"
-          aws lambda update-function-code --function-name $AWS_LAMBDA_FUNCTION_NAME --s3-bucket $TEMPLATES_S3_BUCKET --s3-key lambda/$LAMBDA_PACKAGED_FILE
+          # aws lambda update-function-code --function-name $AWS_LAMBDA_FUNCTION_NAME --s3-bucket $TEMPLATES_S3_BUCKET --s3-key lambda/$LAMBDA_PACKAGED_FILE
+          aws lambda update-function-code --function-name $AWS_LAMBDA_FUNCTION_NAME --zip-file fileb://lambda_code/target/$LAMBDA_PACKAGED_FILE
 
