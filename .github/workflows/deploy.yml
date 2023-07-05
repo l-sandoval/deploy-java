@@ -63,13 +63,14 @@ jobs:
           role-session-name: lambda_deployment
 
       - name: Create Lambda Layer
+        id: create_layer
         run: |
-          aws lambda publish-layer-version --layer-name compiled-jar-file --compatible-runtimes java11 --zip-file fileb://lambda_code/target/$LAMBDA_PACKAGED_FILE
+          layer_result=$(aws lambda publish-layer-version --layer-name compiled-jar-file --compatible-runtimes java11 --zip-file fileb://lambda_code/target/$LAMBDA_PACKAGED_FILE)
+          layer_arn=$(echo "$layer_result" | jq -r '.LayerVersionArn')
+          echo "::set-output name=layer_arn::$layer_arn"
 
       - name: Deploy Code to AWS
         run: |
           # aws s3 cp lambda_code/target/$LAMBDA_PACKAGED_FILE s3://$TEMPLATES_S3_BUCKET/lambda/
           aws lambda update-function-configuration --function-name $AWS_LAMBDA_FUNCTION_NAME --environment "Variables={DYNAMODB_TABLE=$DYNAMODB_TABLE, FILES_BUCKET=$FILES_BUCKET, LAMBDA_BUCKET=$TEMPLATES_S3_BUCKET, REPORTS_BUCKET=$REPORTS_BUCKET}"
-          # aws lambda update-function-code --function-name $AWS_LAMBDA_FUNCTION_NAME --s3-bucket $TEMPLATES_S3_BUCKET --s3-key lambda/$LAMBDA_PACKAGED_FILE
-          aws lambda update-function-code --function-name $AWS_LAMBDA_FUNCTION_NAME --zip-file fileb://lambda_code/target/$LAMBDA_PACKAGED_FILE
-
+          aws lambda update-function-code --function-name $AWS_LAMBDA_FUNCTION_NAME --layers ${{ steps.create_layer.outputs.layer_arn }}
