@@ -6,6 +6,7 @@ import net.sf.jasperreports.engine.export.JRPdfExporter;
 import net.sf.jasperreports.engine.export.JRXlsExporter;
 import net.sf.jasperreports.engine.export.ooxml.JRXlsxExporter;
 import net.sf.jasperreports.engine.query.JRXPathQueryExecuterFactory;
+import net.sf.jasperreports.engine.util.JRLoader;
 import net.sf.jasperreports.engine.util.JRXmlUtils;
 import net.sf.jasperreports.export.*;
 import reliqreports.common.EReportCategory;
@@ -70,7 +71,7 @@ public class ReportGenerator {
 
         boolean shouldStage = HelperFunctions.shouldStageReport(reportName, shouldStageReport);
 
-        String jasperSource = jasperPath + StringLiterals.FILE_SEPARATOR_FOR_S3_QUERIES + reportName + ".jrxml";
+        String jasperSource = jasperPath + StringLiterals.FILE_SEPARATOR_FOR_S3_QUERIES + reportName + ".jasper";
 
         logger.log("GenerateReport: " + reportName + "t=" + (System.currentTimeMillis() - startTime));
 
@@ -131,7 +132,7 @@ public class ReportGenerator {
 
             InputStream templateStream = getInputStreamFileFromS3(jasperSource, StringLiterals.LAMBDA_BUCKET);
 
-            JasperReport jasperDesign = JasperCompileManager.compileReport(templateStream);
+            JasperReport jasperDesign = (JasperReport) JRLoader.loadObject(templateStream);
             JasperPrint jpMaster = JasperFillManager.fillReport(jasperDesign, parameters, (JRDataSource) null);
             logger.log("Report... : Fill from : " + jasperSource);
             logger.log("Filling time : " + (System.currentTimeMillis() - startTime));
