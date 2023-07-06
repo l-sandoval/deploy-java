@@ -23,7 +23,6 @@
             </configuration>
             <executions>
                <execution>
-                  <!-- Need to bind to the compile phase cuz the reports uses classes under target/classes. The default is the generate-resources phase. -->
                   <phase>compile</phase>
                   <goals>
                      <goal>compile-reports</goal>
