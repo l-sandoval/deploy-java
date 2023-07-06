@@ -37,8 +37,15 @@ jobs:
         run: |
           echo "TEMPLATES_S3_BUCKET=prod-billing-report-generator-templates-bucket" >> $GITHUB_ENV
           echo "ENVIRONMENTS_FILE=production_environments.json" >> $GITHUB_ENV
-          
+      
+      - name: Set up JDK
+        uses: actions/setup-java@v1
+        with:
+          java-version: 11
 
+      - name: build project
+        run: mvn -B package --file templates/pom.xml 
+          
       - name: Configure Secrets
         uses: aws-actions/configure-aws-credentials@v1
         with:
@@ -53,8 +60,8 @@ jobs:
 
       - name: Deploy Templates to AWS
         run: |
-          aws s3 sync templates/pdf s3://$TEMPLATES_S3_BUCKET/pdf-templates
-          aws s3 sync templates/excel s3://$TEMPLATES_S3_BUCKET/excel-templates
+          aws s3 sync templates/target/compiled/pdf s3://$TEMPLATES_S3_BUCKET/pdf-templates
+          aws s3 sync templates/target/compiled/excel s3://$TEMPLATES_S3_BUCKET/excel-templates
       - name: Upload Environments file to s3
         run: |
           aws s3 cp environments/$ENVIRONMENTS_FILE s3://$TEMPLATES_S3_BUCKET/environments/apiEndpoints.json
