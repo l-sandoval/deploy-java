@@ -50,6 +50,9 @@ jobs:
       - name: build project
         run: mvn -B package --file lambda_code/pom.xml 
 
+      - name: Zip JAR file
+        run: zip -j lambda_code/target/lambda-layer.zip lambda_code/target/$LAMBDA_PACKAGED_FILE
+
       - name: Configure Secrets
         uses: aws-actions/configure-aws-credentials@v1
         with:
@@ -65,7 +68,7 @@ jobs:
       - name: Create Lambda Layer
         id: create_layer
         run: |
-          layer_result=$(aws lambda publish-layer-version --layer-name compiled-jar-file --compatible-runtimes java11 --zip-file fileb://lambda_code/target/$LAMBDA_PACKAGED_FILE)
+          layer_result=$(aws lambda publish-layer-version --layer-name compiled-jar-file --compatible-runtimes java11 --zip-file fileb://lambda_code/target/lambda-layer.zip)
           layer_arn=$(echo "$layer_result" | jq -r '.LayerVersionArn')
           echo "::set-output name=layer_arn::$layer_arn"
 
