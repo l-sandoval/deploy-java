@@ -70,13 +70,8 @@ jobs:
           zip -r lambda-layer.zip . -i lambda_code/target/$LAMBDA_PACKAGED_FILE
           layer_result=$(aws lambda publish-layer-version --layer-name $AWS_LAMBDA_LAYER_NAME --compatible-runtimes java11 --zip-file fileb://lambda-layer.zip)
           layer=$(aws lambda list-layer-versions --layer-name $AWS_LAMBDA_LAYER_NAME --query 'max_by(LayerVersions, &Version).LayerVersionArn' | grep -P $AWS_LAMBDA_LAYER_NAME | sed -e 's/\"//g' -e 's/\,//g')
-          # layer_arn=$(echo "$layer_result" | jq -r '.LayerVersionArn')
-          # echo "::set-output name=layer_arn::$layer_arn"
-
-      - name: Deploy Code to AWS
-        run: |
           aws lambda update-function-configuration --function-name $AWS_LAMBDA_FUNCTION_NAME --layers $layer
-          
+
       - name: Trim Lambda Layer versions
         uses: callummackenzie/trim-lambda-layers-action@v0.3
         with:
