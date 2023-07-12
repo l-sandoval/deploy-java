@@ -28,6 +28,7 @@ jobs:
         if: endsWith(github.ref, '/main')
         run: |
           echo "AWS_LAMBDA_FUNCTION_NAME=Dev_ReportGenerator" >> $GITHUB_ENV
+          echo "AWS_LAMBDA_LAYER_NAME=Dev_ReportGeneratorLambdaLayer" >> $GITHUB_ENV
           echo "REPORTS_BUCKET=dev-billing-report-generator-files-bucket" >> $GITHUB_ENV
           echo "TEMPLATES_S3_BUCKET=dev-billing-report-generator-templates-bucket" >> $GITHUB_ENV
           echo "FILES_BUCKET=dev-billing-data-extractor" >> $GITHUB_ENV
@@ -37,6 +38,7 @@ jobs:
         if: endsWith(github.ref, '/release')
         run: |
           echo "AWS_LAMBDA_FUNCTION_NAME=Prod_ReportGenerator" >> $GITHUB_ENV
+          echo "AWS_LAMBDA_LAYER_NAME=Prod_ReportGeneratorLambdaLayer" >> $GITHUB_ENV
           echo "REPORTS_BUCKET=prod-billing-report-generator-files-bucket" >> $GITHUB_ENV          
           echo "TEMPLATES_S3_BUCKET=prod-billing-report-generator-templates-bucket" >> $GITHUB_ENV
           echo "FILES_BUCKET=prod-billing-data-extractor" >> $GITHUB_ENV
@@ -62,15 +64,24 @@ jobs:
           role-duration-seconds: 1200
           role-session-name: lambda_deployment
 
-      - name: Create Lambda Layer
+      - name: Create and Update New Lambda Layer Version
         id: create_layer
         run: |
           zip -r lambda-layer.zip . -i lambda_code/target/$LAMBDA_PACKAGED_FILE
-          layer_result=$(aws lambda publish-layer-version --layer-name compiled-jar-file --compatible-runtimes java11 --zip-file fileb://lambda-layer.zip)
-          layer_arn=$(echo "$layer_result" | jq -r '.LayerVersionArn')
-          echo "::set-output name=layer_arn::$layer_arn"
+          layer_result=$(aws lambda publish-layer-version --layer-name $AWS_LAMBDA_LAYER_NAME --compatible-runtimes java11 --zip-file fileb://lambda-layer.zip)
+          layer=$(aws lambda list-layer-versions --layer-name $AWS_LAMBDA_LAYER_NAME --query 'max_by(LayerVersions, &Version).LayerVersionArn' | grep -P $AWS_LAMBDA_LAYER_NAME | sed -e 's/\"//g' -e 's/\,//g')
+          # layer_arn=$(echo "$layer_result" | jq -r '.LayerVersionArn')
+          # echo "::set-output name=layer_arn::$layer_arn"
 
       - name: Deploy Code to AWS
         run: |
-          aws lambda update-function-configuration --function-name $AWS_LAMBDA_FUNCTION_NAME --layers ${{ steps.create_layer.outputs.layer_arn }}
+          aws lambda update-function-configuration --function-name $AWS_LAMBDA_FUNCTION_NAME --layers $layer
           
+      - name: Trim Lambda Layer versions
+        uses: callummackenzie/trim-lambda-layers-action@v0.3
+        with:
+          aws_access_key_id: ${{ secrets.AWS_SECRET_ID }}
+          aws_secret_access_key: ${{ secrets.AWS_SECRET_KEY }}
+          aws_region: us-west-2
+          layer_name: ${{ env.AWS_LAMBDA_LAYER_NAME }}
+          version_keep_count: 1
