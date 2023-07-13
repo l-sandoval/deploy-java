@@ -29,14 +29,14 @@
 	<field name="Systolic change" class="java.lang.String"/>
 	<field name="Diastolic change" class="java.lang.String"/>
 	<field name="Pulse change" class="java.lang.String"/>
-	<field name="Billable Reading Days BP" class="java.lang.Integer"/>
+	<field name="Days Adherent BP" class="java.lang.Integer"/>
 	<field name="Total Readings BP" class="java.lang.Integer"/>
 	<field name="# At Risk BP" class="java.lang.Integer"/>
 	<field name="# Critical BP" class="java.lang.Integer"/>
 	<field name="Adherence BP" class="java.math.BigDecimal"/>
 	<field name="Blood Glucose Avg" class="java.math.BigDecimal"/>
 	<field name="Blood Glucose Change" class="java.lang.String"/>
-	<field name="Billable Reading Days BG" class="java.lang.Integer"/>
+	<field name="Days Adherent BG" class="java.lang.Integer"/>
 	<field name="Total Readings BG" class="java.lang.Integer"/>
 	<field name="# At Risk BG" class="java.lang.Integer"/>
 	<field name="# Critical BG" class="java.lang.Integer"/>
@@ -44,28 +44,28 @@
 	<field name="Adherence BG" class="java.math.BigDecimal"/>
 	<field name="Weight Average" class="java.math.BigDecimal"/>
 	<field name="Weight Change" class="java.lang.String"/>
-	<field name="Billable Reading Days Weight" class="java.lang.Integer"/>
+	<field name="Days Adherent Weight" class="java.lang.Integer"/>
 	<field name="Total Readings Weight" class="java.lang.Integer"/>
 	<field name="# At Risk Weight" class="java.lang.Integer"/>
 	<field name="# Critical Weight" class="java.lang.Integer"/>
 	<field name="Adherence Weight" class="java.math.BigDecimal"/>
 	<field name="Heart Rate Average" class="java.math.BigDecimal"/>
 	<field name="Heart Rate Change" class="java.lang.String"/>
-	<field name="Billable Reading Days Heart Rate" class="java.lang.Integer"/>
+	<field name="Days Adherent Heart Rate" class="java.lang.Integer"/>
 	<field name="Total Readings Heart Rate" class="java.lang.Integer"/>
 	<field name="# At Risk Heart Rate" class="java.lang.Integer"/>
 	<field name="# Critical Heart Rate" class="java.lang.Integer"/>
 	<field name="Adherence Heart Rate" class="java.math.BigDecimal"/>
 	<field name="Oxygen Saturation Average" class="java.math.BigDecimal"/>
 	<field name="Oxygen Saturation Change" class="java.lang.String"/>
-	<field name="Billable Reading Days Oxygen Saturation" class="java.lang.Integer"/>
+	<field name="Days Adherent Oxygen Saturation" class="java.lang.Integer"/>
 	<field name="Total Readings Oxygen Saturation" class="java.lang.Integer"/>
 	<field name="# At Risk Oxygen Saturation" class="java.lang.Integer"/>
 	<field name="# Critical Oxygen Saturation" class="java.lang.Integer"/>
 	<field name="Adherence Oxygen Saturation" class="java.math.BigDecimal"/>
 	<field name="Temperature Average" class="java.math.BigDecimal"/>
 	<field name="Temperature Change" class="java.lang.String"/>
-	<field name="Billable Reading Days Temperature" class="java.lang.Integer"/>
+	<field name="Days Adherent Temperature" class="java.lang.Integer"/>
 	<field name="Total Readings Temperature" class="java.lang.Integer"/>
 	<field name="# At Risk Temperature" class="java.lang.Integer"/>
 	<field name="# Critical Temperature" class="java.lang.Integer"/>
@@ -551,7 +551,7 @@
 				<textElement textAlignment="Center" verticalAlignment="Middle">
 					<font fontName="Tahoma" size="8" isBold="false"/>
 				</textElement>
-				<text><![CDATA[Billable Days]]></text>
+				<text><![CDATA[Days Adherent]]></text>
 			</staticText>
 			<staticText>
 				<reportElement mode="Opaque" x="718" y="13" width="78" height="18" forecolor="#FFFFFF" backcolor="#007EC7" uuid="4fd2f757-5afa-420d-b7d5-6efc077c852f">
@@ -670,7 +670,7 @@
 				<textElement textAlignment="Center" verticalAlignment="Middle">
 					<font fontName="Tahoma" size="8" isBold="false"/>
 				</textElement>
-				<text><![CDATA[Billable Days]]></text>
+				<text><![CDATA[Days Adherent]]></text>
 			</staticText>
 			<staticText>
 				<reportElement mode="Opaque" x="1219" y="13" width="78" height="18" forecolor="#FFFFFF" backcolor="#007EC7" uuid="3394e010-5327-4a46-9add-51325b2951f6">
@@ -1010,7 +1010,7 @@
 				<textElement textAlignment="Center" verticalAlignment="Middle">
 					<font fontName="Tahoma" size="8" isBold="false"/>
 				</textElement>
-				<text><![CDATA[Billable Days]]></text>
+				<text><![CDATA[Days Adherent]]></text>
 			</staticText>
 			<staticText>
 				<reportElement mode="Opaque" x="1838" y="13" width="78" height="18" forecolor="#FFFFFF" backcolor="#007EC7" uuid="3535261e-d171-4e0f-b840-16425bc0838c">
@@ -1129,7 +1129,7 @@
 				<textElement textAlignment="Center" verticalAlignment="Middle">
 					<font fontName="Tahoma" size="8" isBold="false"/>
 				</textElement>
-				<text><![CDATA[Billable Days]]></text>
+				<text><![CDATA[Days Adherent]]></text>
 			</staticText>
 			<staticText>
 				<reportElement mode="Opaque" x="2338" y="13" width="78" height="18" forecolor="#FFFFFF" backcolor="#007EC7" uuid="bb87fe10-9cd7-43ef-afd2-d6706951c67e">
@@ -1248,7 +1248,7 @@
 				<textElement textAlignment="Center" verticalAlignment="Middle">
 					<font fontName="Tahoma" size="8" isBold="false"/>
 				</textElement>
-				<text><![CDATA[Billable Days]]></text>
+				<text><![CDATA[Days Adherent]]></text>
 			</staticText>
 			<staticText>
 				<reportElement mode="Opaque" x="2838" y="13" width="78" height="18" forecolor="#FFFFFF" backcolor="#007EC7" uuid="bae77610-b8dd-4567-ae48-f8294224a38e">
@@ -1367,7 +1367,7 @@
 				<textElement textAlignment="Center" verticalAlignment="Middle">
 					<font fontName="Tahoma" size="8" isBold="false"/>
 				</textElement>
-				<text><![CDATA[Billable Days]]></text>
+				<text><![CDATA[Days Adherent]]></text>
 			</staticText>
 			<staticText>
 				<reportElement mode="Opaque" x="3338" y="13" width="78" height="18" forecolor="#FFFFFF" backcolor="#007EC7" uuid="c373132c-bef2-4cf0-80a8-2adc7d0feaf4">
@@ -1658,7 +1658,7 @@
 					<font fontName="Arial" size="8"/>
 					<paragraph lineSpacing="Double"/>
 				</textElement>
-				<textFieldExpression><![CDATA[$F{Billable Reading Days BG}==null?$P{EmptyFieldExpression}:$F{Billable Reading Days BG}]]></textFieldExpression>
+				<textFieldExpression><![CDATA[$F{Days Adherent BG}==null?$P{EmptyFieldExpression}:$F{Days Adherent BG}]]></textFieldExpression>
 			</textField>
 			<textField textAdjust="StretchHeight" isBlankWhenNull="false">
 				<reportElement positionType="Float" stretchType="RelativeToTallestObject" x="1219" y="0" width="78" height="21" uuid="16f5951f-c858-4ca3-8bba-14c34c184c89">
@@ -1808,7 +1808,7 @@
 					<font fontName="Arial" size="8"/>
 					<paragraph lineSpacing="Double"/>
 				</textElement>
-				<textFieldExpression><![CDATA[$F{Billable Reading Days BP}==null?$P{EmptyFieldExpression}:$F{Billable Reading Days BP}]]></textFieldExpression>
+				<textFieldExpression><![CDATA[$F{Days Adherent BP}==null?$P{EmptyFieldExpression}:$F{Days Adherent BP}]]></textFieldExpression>
 			</textField>
 			<textField textAdjust="StretchHeight" isBlankWhenNull="false">
 				<reportElement positionType="Float" stretchType="RelativeToTallestObject" x="1624" y="0" width="68" height="21" uuid="9a1df4be-398d-4bd9-85d7-0a5f718a4e38">
@@ -1859,7 +1859,7 @@
 					<font fontName="Arial" size="8"/>
 					<paragraph lineSpacing="Double"/>
 				</textElement>
-				<textFieldExpression><![CDATA[$F{Billable Reading Days Weight}==null?$P{EmptyFieldExpression}:$F{Billable Reading Days Weight}]]></textFieldExpression>
+				<textFieldExpression><![CDATA[$F{Days Adherent Weight}==null?$P{EmptyFieldExpression}:$F{Days Adherent Weight}]]></textFieldExpression>
 			</textField>
 			<textField textAdjust="StretchHeight" isBlankWhenNull="false">
 				<reportElement positionType="Float" stretchType="RelativeToTallestObject" x="1838" y="0" width="78" height="21" uuid="0f40923c-cddd-4d9a-b581-94d4f4b49f25">
@@ -2012,7 +2012,7 @@
 					<font fontName="Arial" size="8"/>
 					<paragraph lineSpacing="Double"/>
 				</textElement>
-				<textFieldExpression><![CDATA[$F{Billable Reading Days Heart Rate}==null?$P{EmptyFieldExpression}:$F{Billable Reading Days Heart Rate}]]></textFieldExpression>
+				<textFieldExpression><![CDATA[$F{Days Adherent Heart Rate}==null?$P{EmptyFieldExpression}:$F{Days Adherent Heart Rate}]]></textFieldExpression>
 			</textField>
 			<textField textAdjust="StretchHeight" isBlankWhenNull="false">
 				<reportElement positionType="Float" stretchType="RelativeToTallestObject" x="2192" y="0" width="68" height="21" uuid="48904cf0-6c27-4ec3-af19-12aee5a8b511">
@@ -2097,7 +2097,7 @@
 					<font fontName="Arial" size="8"/>
 					<paragraph lineSpacing="Double"/>
 				</textElement>
-				<textFieldExpression><![CDATA[$F{Billable Reading Days Oxygen Saturation}==null?$P{EmptyFieldExpression}:$F{Billable Reading Days Oxygen Saturation}]]></textFieldExpression>
+				<textFieldExpression><![CDATA[$F{Days Adherent Oxygen Saturation}==null?$P{EmptyFieldExpression}:$F{Days Adherent Oxygen Saturation}]]></textFieldExpression>
 			</textField>
 			<textField textAdjust="StretchHeight" isBlankWhenNull="false">
 				<reportElement positionType="Float" stretchType="RelativeToTallestObject" x="2838" y="0" width="78" height="21" uuid="7141fcd7-62d5-4162-8e01-b3c49cafe395">
@@ -2250,7 +2250,7 @@
 					<font fontName="Arial" size="8"/>
 					<paragraph lineSpacing="Double"/>
 				</textElement>
-				<textFieldExpression><![CDATA[$F{Billable Reading Days Temperature}==null?$P{EmptyFieldExpression}:$F{Billable Reading Days Temperature}]]></textFieldExpression>
+				<textFieldExpression><![CDATA[$F{Days Adherent Temperature}==null?$P{EmptyFieldExpression}:$F{Days Adherent Temperature}]]></textFieldExpression>
 			</textField>
 			<textField textAdjust="StretchHeight" isBlankWhenNull="false">
 				<reportElement positionType="Float" stretchType="RelativeToTallestObject" x="3192" y="0" width="68" height="21" uuid="c6cc23a7-d1ad-4c1d-aefc-b10bfcb5f7e9">
