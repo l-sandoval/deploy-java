@@ -28,9 +28,9 @@
 	<field name="Device Readings" class="java.lang.Integer"/>
 	<field name="Other Readings" class="java.lang.Integer"/>
 	<field name="Total Readings" class="java.lang.Integer"/>
-	<field name="Device Billable Days" class="java.lang.Integer"/>
-	<field name="Other Billable Days" class="java.lang.Integer"/>
-	<field name="Total Billable Days" class="java.lang.Integer"/>
+	<field name="Device Days Adherent" class="java.lang.Integer"/>
+	<field name="Other Days Adherent" class="java.lang.Integer"/>
+	<field name="Total Days Adherent" class="java.lang.Integer"/>
 	<field name="Device Adherence" class="java.math.BigDecimal"/>
 	<field name="Other Adherence" class="java.math.BigDecimal"/>
 	<field name="Total Adherence" class="java.math.BigDecimal"/>
@@ -886,7 +886,7 @@
 				<textElement textAlignment="Center" verticalAlignment="Middle">
 					<font fontName="Tahoma" size="8" isBold="false"/>
 				</textElement>
-				<text><![CDATA[Billable Days]]></text>
+				<text><![CDATA[Days Adherent]]></text>
 			</staticText>
 			<staticText>
 				<reportElement mode="Opaque" x="2146" y="0" width="150" height="18" forecolor="#FFFFFF" backcolor="#007EC7" uuid="3394e010-5327-4a46-9add-51325b2951f6">
@@ -2245,7 +2245,7 @@
 					<font fontName="Arial" size="8"/>
 					<paragraph lineSpacing="Double"/>
 				</textElement>
-				<textFieldExpression><![CDATA[$F{Total Billable Days}==null?$P{EmptyFieldExpression}:$F{Total Billable Days}]]></textFieldExpression>
+				<textFieldExpression><![CDATA[$F{Total Days Adherent}==null?$P{EmptyFieldExpression}:$F{Total Days Adherent}]]></textFieldExpression>
 			</textField>
 			<textField textAdjust="StretchHeight" isBlankWhenNull="false">
 				<reportElement positionType="Float" stretchType="RelativeToTallestObject" x="446" y="0" width="25" height="21" uuid="67478e1d-c5a3-4a83-9184-c5df5ff833c2">
@@ -3417,7 +3417,7 @@
 					<font fontName="Arial" size="8"/>
 					<paragraph lineSpacing="Double"/>
 				</textElement>
-				<textFieldExpression><![CDATA[$F{Other Billable Days}==null?$P{EmptyFieldExpression}:$F{Other Billable Days}]]></textFieldExpression>
+				<textFieldExpression><![CDATA[$F{Other Days Adherent}==null?$P{EmptyFieldExpression}:$F{Other Days Adherent}]]></textFieldExpression>
 			</textField>
 			<textField textAdjust="StretchHeight" isBlankWhenNull="false">
 				<reportElement positionType="Float" stretchType="RelativeToTallestObject" x="1996" y="0" width="50" height="21" uuid="d15e6aa4-a757-4ca9-9239-a86dc14bcd5e">
@@ -3435,7 +3435,7 @@
 					<font fontName="Arial" size="8"/>
 					<paragraph lineSpacing="Double"/>
 				</textElement>
-				<textFieldExpression><![CDATA[$F{Device Billable Days}==null?$P{EmptyFieldExpression}:$F{Device Billable Days}]]></textFieldExpression>
+				<textFieldExpression><![CDATA[$F{Device Days Adherent}==null?$P{EmptyFieldExpression}:$F{Device Days Adherent}]]></textFieldExpression>
 			</textField>
 			<textField textAdjust="StretchHeight" isBlankWhenNull="false">
 				<reportElement positionType="Float" stretchType="RelativeToTallestObject" x="2146" y="0" width="50" height="21" uuid="ff9e3a00-2f63-463e-b272-0a6a3e74c009">
