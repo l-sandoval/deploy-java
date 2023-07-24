@@ -36,7 +36,7 @@
 	<field name="Complex Care" class="java.lang.String"/>
 	<field name="BHI" class="java.lang.String"/>
 	<field name="PCM" class="java.lang.String"/>
-	<field name="CoCM" class="java.lang.String"/>
+	<field name="RTM" class="java.lang.String"/>
 	<field name="Time Spent RPM Reliq" class="java.lang.String"/>
 	<field name="Time Spent RPM Total" class="java.lang.String"/>
 	<field name="Time Spent CCM Reliq" class="java.lang.String"/>
@@ -1075,7 +1075,7 @@
 				<textElement textAlignment="Center" verticalAlignment="Middle">
 					<font fontName="Tahoma" size="8" isBold="false"/>
 				</textElement>
-				<text><![CDATA[CoCM]]></text>
+				<text><![CDATA[RTM]]></text>
 			</staticText>
 			<staticText>
 				<reportElement mode="Opaque" x="2268" y="0" width="79" height="16" forecolor="#FFFFFF" backcolor="#007EC7" uuid="2b0e4e50-61bd-400e-9908-8b138a61b4e8">
@@ -1742,7 +1742,7 @@
 					<font fontName="Arial" size="8"/>
 					<paragraph lineSpacing="Double"/>
 				</textElement>
-				<textFieldExpression><![CDATA[$F{CoCM}.isBlank()?$P{EmptyFieldExpression}:$F{CoCM}]]></textFieldExpression>
+				<textFieldExpression><![CDATA[$F{RTM}.isBlank()?$P{EmptyFieldExpression}:$F{RTM}]]></textFieldExpression>
 			</textField>
 		</band>
 	</detail>
