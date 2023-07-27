@@ -81,6 +81,7 @@ public class ReportsGeneratorHandler {
 
     public void validateIfReportIsSupported(String report) {
         if(!this.reportTypes.containsKey(report)) {
+            this.logger.log("Report type " + report + " is not supported");
             throw new IllegalArgumentException("Report type " + report + " is not supported");
         }
     }
