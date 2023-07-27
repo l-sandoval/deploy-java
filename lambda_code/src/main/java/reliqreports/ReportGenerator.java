@@ -6,6 +6,7 @@ import net.sf.jasperreports.engine.export.JRPdfExporter;
 import net.sf.jasperreports.engine.export.JRXlsExporter;
 import net.sf.jasperreports.engine.export.ooxml.JRXlsxExporter;
 import net.sf.jasperreports.engine.query.JRXPathQueryExecuterFactory;
+import net.sf.jasperreports.engine.util.JRLoader;
 import net.sf.jasperreports.engine.util.JRXmlUtils;
 import net.sf.jasperreports.export.*;
 import reliqreports.common.EReportCategory;
@@ -70,7 +71,7 @@ public class ReportGenerator {
 
         boolean shouldStage = HelperFunctions.shouldStageReport(reportName, shouldStageReport);
 
-        String jasperSource = jasperPath + StringLiterals.FILE_SEPARATOR_FOR_S3_QUERIES + reportName + ".jrxml";
+        String jasperSource = jasperPath + StringLiterals.FILE_SEPARATOR_FOR_S3_QUERIES + reportName + ".jasper";
 
         logger.log("GenerateReport: " + reportName + "t=" + (System.currentTimeMillis() - startTime));
 
@@ -80,7 +81,7 @@ public class ReportGenerator {
         InputStream dataSource = getInputStreamFileFromS3(xmlFile, StringLiterals.FILES_BUCKET);
 
         if (dataSource != null) {
-            logger.log("Report... : Fill from : " + xmlFile);
+            logger.log("Report " + reportName + " : Fill from " + xmlFile);
             Document document = JRXmlUtils.parse(dataSource);
 
             parameters.put(JRXPathQueryExecuterFactory.PARAMETER_XML_DATA_DOCUMENT, document);
@@ -91,7 +92,7 @@ public class ReportGenerator {
 
             Node topNode = document.getChildNodes().item(0);
             if (HelperFunctions.extractXml(topNode, null, parameters)) {
-                logger.log("Report... : Map size=" + parameters.size());
+                logger.log("Report parameters size: " + parameters.size());
             }
 
             // get the sheet names & source files from the parameters
@@ -99,14 +100,16 @@ public class ReportGenerator {
             Map<String, Object> otherParams = new LinkedHashMap<String, Object>();
             List<SubReportDto> subReportList = new ArrayList<SubReportDto>();
             
+            logger.log("Start reading from xml params.");
+            
             for (String key : keys) {
                 if (key.toLowerCase().contains(StringLiterals.SUBREPORT)) {
-                    logger.log("Report... : key=" + key);
+                    logger.log("SubReport found: " + key);
                     // get the key and filename
                     if (key.toLowerCase().contains(StringLiterals.SHEET_NAME)) {
                         String tab = key.split(StringLiterals.FILENAME_FIELD_SEPARATOR)[2];
                         String subFileNameKey = keys.stream().filter(s -> s.contains(tab) &&  s.contains(StringLiterals.PATH)).findFirst().orElse("");
-                        logger.log("Report... : key=" + tab);                
+                        logger.log("SubReport sheet found: " + tab);                
 
                         String subFileName = parameters.get(subFileNameKey).toString();
                         fileNameList.add(subFileName);
@@ -116,25 +119,25 @@ public class ReportGenerator {
                 }
                 
                 if (key.contains(StringLiterals.PARAMETER_FILES)) {
-                    logger.log("Report... : key=" + key);
+                    logger.log("Report parameter found: " + key);
                     String parameterFileName = parameters.get(key).toString();
                     InputStream parametersSource = getInputStreamFileFromS3(parameterFileName, StringLiterals.FILES_BUCKET);
                     Map<String, String> p = getParametersFromCsvFile(parametersSource);
                     otherParams.putAll(p);
                 }
             }
+            logger.log("End reading from xml params.");
             
-            logger.log("Other Params: " + otherParams);
             parameters.putAll(otherParams);            
             parameters.put(StringLiterals.IUGOLOGO, StringLiterals.TMP_IMAGE);
             parameters.put(StringLiterals.PAGE_COUNT, Integer.toString(fileNameList.size()));        
 
+            logger.log("Load template from bucket: " + jasperSource);
             InputStream templateStream = getInputStreamFileFromS3(jasperSource, StringLiterals.LAMBDA_BUCKET);
 
-            JasperReport jasperDesign = JasperCompileManager.compileReport(templateStream);
+            JasperReport jasperDesign = (JasperReport) JRLoader.loadObject(templateStream);
             JasperPrint jpMaster = JasperFillManager.fillReport(jasperDesign, parameters, (JRDataSource) null);
-            logger.log("Report... : Fill from : " + jasperSource);
-            logger.log("Filling time : " + (System.currentTimeMillis() - startTime));
+            logger.log("Start filling template: " + (System.currentTimeMillis() - startTime));
 
             // convert sheetNames list to array, add the home item
             List<String> sheetNames = new ArrayList<String>();
@@ -156,14 +159,17 @@ public class ReportGenerator {
             String folderPath = getReportFolderPath(reportCategory, buildPath, entityName, organizationName);
             String fileName = folderPath  + StringLiterals.FILE_SEPARATOR_FOR_S3_QUERIES + reportFileName;
 
+            logger.log("Upload report to bucket:" + fileName);
             uploadFileToS3(fileName, fileByteArray);
 
             logger.log("Export " + type + " :" + buildPath + ", creation time : " + (System.currentTimeMillis() - startTime));
 
             if(shouldStage){
+                logger.log("Staging report");
                 stageRecord(fileName, apiEndpoint, reportCategory, entityId);
 
                 if(HelperFunctions.shouldSaveZipRecord(reportName) && !StringUtils.isNullOrEmpty(organizationId)) {
+                    logger.log("Staging zip file for pdf reports");
                     stageRecord(folderPath, apiEndpoint, EReportCategory.ORGANIZTION_ZIP, organizationId);
                 }
             }
@@ -184,69 +190,78 @@ public class ReportGenerator {
      * @throws JRException 
      */
     private byte[] generateReportFile (String type, JasperPrint jpMaster, String[] sheetNames) throws JRException{
-        File destFile = null;
-        // PDF
-        if (type != null && type.contains(StringLiterals.TYPE_PDF)) {
-            destFile = new File(StringLiterals.TMP_OUT_FILE_PDF);
-            JRPdfExporter exporter = new JRPdfExporter();
-
-            // export the final doc
-            exporter.setExporterInput(new SimpleExporterInput(jpMaster));
-            exporter.setExporterOutput(new SimpleOutputStreamExporterOutput(destFile));
-
-            // set the configuration for PDF
-            SimplePdfReportConfiguration configuration = new SimplePdfReportConfiguration();
-            configuration.setSizePageToContent(false);
-            configuration.setForceLineBreakPolicy(true);
-            exporter.setConfiguration(configuration);
-
-            exporter.exportReport();
-        }
-
-        // XLSX or XLS
-        if (type != null && type.contains(StringLiterals.TYPE_XLSX)) {
-            destFile = new File(StringLiterals.TMP_OUT_FILE_XLS);
-            JRXlsxExporter exporter = new JRXlsxExporter();
-
-            // export the final doc
-            exporter.setExporterInput(new SimpleExporterInput(jpMaster));
-            exporter.setExporterOutput(new SimpleOutputStreamExporterOutput(destFile));
-
-            // set the configuration for XLSX
-            SimpleXlsxReportConfiguration configuration = new SimpleXlsxReportConfiguration();
-            configuration.setOnePagePerSheet(true);
-            configuration.setDetectCellType(true);
-            configuration.setCollapseRowSpan(true);
-            configuration.setSheetNames(sheetNames);
-            exporter.setConfiguration(configuration);
-
-            exporter.exportReport();    
-        } // XLS
-        else if (type != null && type.contains(StringLiterals.TYPE_XLS)) {
-            destFile = new File(StringLiterals.TMP_OUT_FILE_XLS);
-            JRXlsExporter exporter = new JRXlsExporter();
-
-            // export the final doc
-            exporter.setExporterInput(new SimpleExporterInput(jpMaster));
-            exporter.setExporterOutput(new SimpleOutputStreamExporterOutput(destFile));
-
-            // set the configuration for XLS
-            SimpleXlsReportConfiguration configuration = new SimpleXlsReportConfiguration();
-            configuration.setOnePagePerSheet(true);
-            configuration.setDetectCellType(true);
-            configuration.setCollapseRowSpan(true);
-            configuration.setSheetNames(sheetNames);
-            exporter.setConfiguration(configuration);
-
-            exporter.exportReport();    
-        }       
-
         byte[] fileByteArray = null;
+
         try {
+            File destFile = null;
+            // PDF
+            if (type != null && type.contains(StringLiterals.TYPE_PDF)) {
+                logger.log("Export report to PDF");
+                
+                destFile = new File(StringLiterals.TMP_OUT_FILE_PDF);
+                JRPdfExporter exporter = new JRPdfExporter();
+    
+                // export the final doc
+                exporter.setExporterInput(new SimpleExporterInput(jpMaster));
+                exporter.setExporterOutput(new SimpleOutputStreamExporterOutput(destFile));
+    
+                // set the configuration for PDF
+                SimplePdfReportConfiguration configuration = new SimplePdfReportConfiguration();
+                configuration.setSizePageToContent(false);
+                configuration.setForceLineBreakPolicy(true);
+                exporter.setConfiguration(configuration);
+    
+                exporter.exportReport();
+            }
+    
+            // XLSX or XLS
+            if (type != null && type.contains(StringLiterals.TYPE_XLSX)) {
+                logger.log("Export report to XLSX");
+                destFile = new File(StringLiterals.TMP_OUT_FILE_XLS);
+                JRXlsxExporter exporter = new JRXlsxExporter();
+    
+                // export the final doc
+                exporter.setExporterInput(new SimpleExporterInput(jpMaster));
+                exporter.setExporterOutput(new SimpleOutputStreamExporterOutput(destFile));
+    
+                // set the configuration for XLSX
+                SimpleXlsxReportConfiguration configuration = new SimpleXlsxReportConfiguration();
+                configuration.setOnePagePerSheet(true);
+                configuration.setDetectCellType(true);
+                configuration.setCollapseRowSpan(true);
+                configuration.setSheetNames(sheetNames);
+                exporter.setConfiguration(configuration);
+    
+                exporter.exportReport();    
+            } // XLS
+            else if (type != null && type.contains(StringLiterals.TYPE_XLS)) {
+                logger.log("Export report to XLS");
+                destFile = new File(StringLiterals.TMP_OUT_FILE_XLS);
+                JRXlsExporter exporter = new JRXlsExporter();
+    
+                // export the final doc
+                exporter.setExporterInput(new SimpleExporterInput(jpMaster));
+                exporter.setExporterOutput(new SimpleOutputStreamExporterOutput(destFile));
+    
+                // set the configuration for XLS
+                SimpleXlsReportConfiguration configuration = new SimpleXlsReportConfiguration();
+                configuration.setOnePagePerSheet(true);
+                configuration.setDetectCellType(true);
+                configuration.setCollapseRowSpan(true);
+                configuration.setSheetNames(sheetNames);
+                exporter.setConfiguration(configuration);
+    
+                exporter.exportReport();    
+            }       
+
             fileByteArray = FileUtils.readFileToByteArray(destFile);
         } catch (IOException e) {
+            logger.log("Exception thrown runing report convertion to byte array");
             logger.log(e.getMessage());
-        }       
+        }   catch (Exception e) {
+            logger.log("Exception thrown runing report export to file");
+            logger.log(e.getMessage());
+        }    
 
         return fileByteArray;
     }    
@@ -256,6 +271,7 @@ public class ReportGenerator {
         try {
             s3File = getS3Consumer().getInputStreamFileFromS3(key_name, bucketType);
         } catch (IOException e) {
+            logger.log("Error when getting file from bucket: " + key_name);
             logger.log(e.getMessage());
         }
         return s3File;
@@ -269,6 +285,7 @@ public class ReportGenerator {
         try {
             s3Consumer.uploadFileToS3(key_name, bytes);
         } catch (IOException e) {
+            logger.log("Error when upload file to bucket: " + key_name);
             logger.log(e.getMessage());
         }
     }
@@ -278,6 +295,7 @@ public class ReportGenerator {
         try {
             dynamoDBConsumer.stageRecord(filePath, apiEndpoint, reportCategory, entityId);
         } catch (IOException e) {
+            logger.log("Error when staging record: " + filePath);
             logger.log(e.getMessage());
         }
     }
@@ -302,19 +320,20 @@ public class ReportGenerator {
             InputStream sourceStream = getInputStreamFileFromS3(
                     jasperPath + StringLiterals.FILE_SEPARATOR_FOR_S3_QUERIES + sr.getSubReportName() + ".jrxml",
                     StringLiterals.LAMBDA_BUCKET);
+            logger.log("Load subreport template from bucket: " + sr.getSubReportName() + ".jasper \r\n");
 
             InputStream dataStream = getInputStreamFileFromS3(
                     sr.getSubReportFilePath(),
                     StringLiterals.FILES_BUCKET);
 
-            logger.log("Retrieve from S3 template= " + sr.getSubReportName() + ".jrxml" + " csv= " + sr.getSubReportFilePath() + "\r\n");
+            logger.log("Load csv raw data from bucket: " + sr.getSubReportFilePath() + "\r\n");
 
             if (sourceStream != null && dataStream != null ) {
-                logger.log("Fill...t=" + (System.currentTimeMillis() - startTime));
+                logger.log("Start load subreport: " + sr.getSubReportName() + " at "  + (System.currentTimeMillis() - startTime));
                 JRCsvDataSource source = new JRCsvDataSource(dataStream);
                 source.setRecordDelimiter("\r\n");
                 source.setUseFirstRowAsHeader(true);
-                logger.log("Datasource loaded...");
+                logger.log("Datasource loaded end it at "  + (System.currentTimeMillis() - startTime));
 
                 JasperReport jasperDesign = JasperCompileManager.compileReport(sourceStream);
                 JasperPrint jasperPrint = JasperFillManager.fillReport(jasperDesign, parameters, source);
@@ -323,12 +342,12 @@ public class ReportGenerator {
                 List<JRPrintPage> pp = jasperPrint.getPages();
                 jpMaster.setName(sr.getSubReportSheetName());
                 for (int j = 0; j < pp.size(); j++) {
-                    logger.log("fill... : Add page : " + sr.getSubReportName() + "|" + j + 1);
                     jpMaster.addPage(pp.get(j));
+                    logger.log("Page added: " + sr.getSubReportName() + "|" + j + 1);
                     pagesCount += 1;
                 }
             } else {
-                logger.log("Fill...Error - cannot load files\r\n");
+                logger.log("Filling subreports error: Cannot load template or csv raw data files\r\n");
             }
         }
         return sheetNames;

@@ -28,6 +28,7 @@ jobs:
         if: endsWith(github.ref, '/main')
         run: |
           echo "AWS_LAMBDA_FUNCTION_NAME=Dev_ReportGenerator" >> $GITHUB_ENV
+          echo "AWS_LAMBDA_LAYER_NAME=Dev_ReportGeneratorLambdaLayer" >> $GITHUB_ENV
           echo "REPORTS_BUCKET=dev-billing-report-generator-files-bucket" >> $GITHUB_ENV
           echo "TEMPLATES_S3_BUCKET=dev-billing-report-generator-templates-bucket" >> $GITHUB_ENV
           echo "FILES_BUCKET=dev-billing-data-extractor" >> $GITHUB_ENV
@@ -37,6 +38,7 @@ jobs:
         if: endsWith(github.ref, '/release')
         run: |
           echo "AWS_LAMBDA_FUNCTION_NAME=Prod_ReportGenerator" >> $GITHUB_ENV
+          echo "AWS_LAMBDA_LAYER_NAME=Prod_ReportGeneratorLambdaLayer" >> $GITHUB_ENV
           echo "REPORTS_BUCKET=prod-billing-report-generator-files-bucket" >> $GITHUB_ENV          
           echo "TEMPLATES_S3_BUCKET=prod-billing-report-generator-templates-bucket" >> $GITHUB_ENV
           echo "FILES_BUCKET=prod-billing-data-extractor" >> $GITHUB_ENV
@@ -62,9 +64,20 @@ jobs:
           role-duration-seconds: 1200
           role-session-name: lambda_deployment
 
-      - name: Deploy Code to AWS
+      - name: Create and Update New Lambda Layer Version
+        id: create_layer
         run: |
-          aws s3 cp lambda_code/target/$LAMBDA_PACKAGED_FILE s3://$TEMPLATES_S3_BUCKET/lambda/
-          aws lambda update-function-configuration --function-name $AWS_LAMBDA_FUNCTION_NAME --environment "Variables={DYNAMODB_TABLE=$DYNAMODB_TABLE, FILES_BUCKET=$FILES_BUCKET, LAMBDA_BUCKET=$TEMPLATES_S3_BUCKET, REPORTS_BUCKET=$REPORTS_BUCKET}"
-          aws lambda update-function-code --function-name $AWS_LAMBDA_FUNCTION_NAME --s3-bucket $TEMPLATES_S3_BUCKET --s3-key lambda/$LAMBDA_PACKAGED_FILE
+          zip -r lambda-layer.zip . -i lambda_code/target/$LAMBDA_PACKAGED_FILE
+          aws s3 cp lambda-layer.zip s3://$TEMPLATES_S3_BUCKET/lambda/
+          layer_result=$(aws lambda publish-layer-version --layer-name $AWS_LAMBDA_LAYER_NAME --compatible-runtimes java11 --content S3Bucket=$TEMPLATES_S3_BUCKET,S3Key=lambda/lambda-layer.zip)
+          layer=$(aws lambda list-layer-versions --layer-name $AWS_LAMBDA_LAYER_NAME --query 'max_by(LayerVersions, &Version).LayerVersionArn' | grep -P $AWS_LAMBDA_LAYER_NAME | sed -e 's/\"//g' -e 's/\,//g')
+          aws lambda update-function-configuration --function-name $AWS_LAMBDA_FUNCTION_NAME --layers $layer
 
+      - name: Trim Lambda Layer versions
+        uses: callummackenzie/trim-lambda-layers-action@v0.3
+        with:
+          aws_access_key_id: ${{ secrets.AWS_SECRET_ID }}
+          aws_secret_access_key: ${{ secrets.AWS_SECRET_KEY }}
+          aws_region: us-west-2
+          layer_name: ${{ env.AWS_LAMBDA_LAYER_NAME }}
+          version_keep_count: 1
