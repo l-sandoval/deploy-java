@@ -60,8 +60,10 @@ jobs:
 
       - name: Deploy Templates to AWS
         run: |
-          aws s3 sync templates/target/compiled/pdf s3://$TEMPLATES_S3_BUCKET/pdf-templates
-          aws s3 sync templates/target/compiled/excel s3://$TEMPLATES_S3_BUCKET/excel-templates
+          aws s3 cp templates/pdf s3://$TEMPLATES_S3_BUCKET/pdf-templates --recursive
+          aws s3 cp templates/excel s3://$TEMPLATES_S3_BUCKET/excel-templates --recursive
+          aws s3 cp templates/target/compiled/pdf s3://$TEMPLATES_S3_BUCKET/pdf-templates --recursive
+          aws s3 cp templates/target/compiled/excel s3://$TEMPLATES_S3_BUCKET/excel-templates --recursive
       - name: Upload Environments file to s3
         run: |
           aws s3 cp environments/$ENVIRONMENTS_FILE s3://$TEMPLATES_S3_BUCKET/environments/apiEndpoints.json
