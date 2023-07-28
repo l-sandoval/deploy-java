@@ -315,10 +315,10 @@ public class ReportGenerator {
             sheetNames.add(sr.getSubReportSheetName());
 
             // set the page number in the report
-            parameters.put(StringLiterals.PAGE_NUMBER, Integer.toString(pagesCount));            
+            parameters.put(StringLiterals.PAGE_NUMBER, Integer.toString(pagesCount));                      
 
             InputStream sourceStream = getInputStreamFileFromS3(
-                    jasperPath + StringLiterals.FILE_SEPARATOR_FOR_S3_QUERIES + sr.getSubReportName() + ".jrxml",
+                    jasperPath + StringLiterals.FILE_SEPARATOR_FOR_S3_QUERIES + sr.getSubReportName() + ".jasper",
                     StringLiterals.LAMBDA_BUCKET);
             logger.log("Load subreport template from bucket: " + sr.getSubReportName() + ".jasper \r\n");
 
@@ -335,7 +335,7 @@ public class ReportGenerator {
                 source.setUseFirstRowAsHeader(true);
                 logger.log("Datasource loaded end it at "  + (System.currentTimeMillis() - startTime));
 
-                JasperReport jasperDesign = JasperCompileManager.compileReport(sourceStream);
+                JasperReport jasperDesign = (JasperReport) JRLoader.loadObject(sourceStream);
                 JasperPrint jasperPrint = JasperFillManager.fillReport(jasperDesign, parameters, source);
 
                 // add all the pages into the master doc
