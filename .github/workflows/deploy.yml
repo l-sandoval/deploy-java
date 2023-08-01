@@ -67,12 +67,15 @@ jobs:
       - name: Create and Update New Lambda Layer Version
         id: create_layer
         run: |
-          zip -r lambda-layer.zip . -i lambda_code/target/$LAMBDA_PACKAGED_FILE
-          aws s3 cp lambda-layer.zip s3://$TEMPLATES_S3_BUCKET/lambda/ --overwrite
-          layer_result=$(aws lambda publish-layer-version --layer-name $AWS_LAMBDA_LAYER_NAME --compatible-runtimes java11 --content S3Bucket=$TEMPLATES_S3_BUCKET,S3Key=lambda/lambda-layer.zip)
+          zip -r lambda_code/target/lambda-layer/lambda-layer.zip . -i lambda_code/target/$LAMBDA_PACKAGED_FILE
+          aws s3 sync lambda_code/target/lambda-layer s3://$TEMPLATES_S3_BUCKET/lambda/
+      - name: Create New Layer Version
+        run: |
+          aws lambda publish-layer-version --layer-name $AWS_LAMBDA_LAYER_NAME --compatible-runtimes java11 --content S3Bucket=$TEMPLATES_S3_BUCKET,S3Key=lambda/lambda-layer.zip          
+      - name: Update Lambda Function Layer Version to Lastest or Add Layer
+        run: |
           layer=$(aws lambda list-layer-versions --layer-name $AWS_LAMBDA_LAYER_NAME --query 'max_by(LayerVersions, &Version).LayerVersionArn' | grep -P $AWS_LAMBDA_LAYER_NAME | sed -e 's/\"//g' -e 's/\,//g')
           aws lambda update-function-configuration --function-name $AWS_LAMBDA_FUNCTION_NAME --layers $layer
-
       - name: Trim Lambda Layer versions
         uses: callummackenzie/trim-lambda-layers-action@v0.3
         with:
