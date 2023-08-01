@@ -60,14 +60,12 @@ jobs:
 
       - name: Deploy Templates to AWS
         run: |
-          aws s3 cp templates/pdf s3://$TEMPLATES_S3_BUCKET/pdf-templates --recursive
-          aws s3 cp templates/excel s3://$TEMPLATES_S3_BUCKET/excel-templates --recursive
-          aws s3 cp templates/target/compiled/pdf s3://$TEMPLATES_S3_BUCKET/pdf-templates --recursive
-          aws s3 cp templates/target/compiled/excel s3://$TEMPLATES_S3_BUCKET/excel-templates --recursive
+          aws s3 cp templates/target/compiled/pdf s3://$TEMPLATES_S3_BUCKET/pdf-templates --recursive --overwrite
+          aws s3 cp templates/target/compiled/excel s3://$TEMPLATES_S3_BUCKET/excel-templates --recursive --overwrite
       - name: Upload Environments file to s3
         run: |
-          aws s3 cp environments/$ENVIRONMENTS_FILE s3://$TEMPLATES_S3_BUCKET/environments/apiEndpoints.json
+          aws s3 cp environments/$ENVIRONMENTS_FILE s3://$TEMPLATES_S3_BUCKET/environments/apiEndpoints.json --overwrite
       - name: Upload templates logo image
         run: |
-          aws s3 cp templates/assets/$TEMPLATES_LOGO1 s3://$TEMPLATES_S3_BUCKET/images/$TEMPLATES_LOGO1
-          aws s3 cp templates/assets/$TEMPLATES_LOGO2 s3://$TEMPLATES_S3_BUCKET/images/$TEMPLATES_LOGO2
+          aws s3 cp templates/assets/$TEMPLATES_LOGO1 s3://$TEMPLATES_S3_BUCKET/images/$TEMPLATES_LOGO1 --overwrite
+          aws s3 cp templates/assets/$TEMPLATES_LOGO2 s3://$TEMPLATES_S3_BUCKET/images/$TEMPLATES_LOGO2 --overwrite
