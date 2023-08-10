@@ -63,24 +63,9 @@ jobs:
           role-external-id:  ${{ secrets.AWS_ROLE_EXTERNAL_ID }}
           role-duration-seconds: 1200
           role-session-name: lambda_deployment
-
-      - name: Create and Update New Lambda Layer Version
-        id: create_layer
+                
+      - name: Deploy Code to AWS
         run: |
-          zip -r lambda_code/target/lambda-layer/lambda-layer.zip . -i lambda_code/target/$LAMBDA_PACKAGED_FILE
-          aws s3 sync lambda_code/target/lambda-layer s3://$TEMPLATES_S3_BUCKET/lambda/
-      - name: Create New Layer Version
-        run: |
-          aws lambda publish-layer-version --layer-name $AWS_LAMBDA_LAYER_NAME --compatible-runtimes java11 --content S3Bucket=$TEMPLATES_S3_BUCKET,S3Key=lambda/lambda-layer.zip          
-      - name: Update Lambda Function Layer Version to Lastest or Add Layer
-        run: |
-          layer=$(aws lambda list-layer-versions --layer-name $AWS_LAMBDA_LAYER_NAME --query 'max_by(LayerVersions, &Version).LayerVersionArn' | grep -P $AWS_LAMBDA_LAYER_NAME | sed -e 's/\"//g' -e 's/\,//g')
-          aws lambda update-function-configuration --function-name $AWS_LAMBDA_FUNCTION_NAME --layers $layer
-      - name: Trim Lambda Layer versions
-        uses: callummackenzie/trim-lambda-layers-action@v0.3
-        with:
-          aws_access_key_id: ${{ secrets.AWS_SECRET_ID }}
-          aws_secret_access_key: ${{ secrets.AWS_SECRET_KEY }}
-          aws_region: us-west-2
-          layer_name: ${{ env.AWS_LAMBDA_LAYER_NAME }}
-          version_keep_count: 1
+          aws s3 cp lambda_code/target/$LAMBDA_PACKAGED_FILE s3://$TEMPLATES_S3_BUCKET/lambda/
+          aws lambda update-function-configuration --function-name $AWS_LAMBDA_FUNCTION_NAME --environment "Variables={DYNAMODB_TABLE=$DYNAMODB_TABLE, FILES_BUCKET=$FILES_BUCKET, LAMBDA_BUCKET=$TEMPLATES_S3_BUCKET, REPORTS_BUCKET=$REPORTS_BUCKET}"
+          aws lambda update-function-code --function-name $AWS_LAMBDA_FUNCTION_NAME --s3-bucket $TEMPLATES_S3_BUCKET --s3-key lambda/$LAMBDA_PACKAGED_FILE
