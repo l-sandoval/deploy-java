@@ -3,7 +3,7 @@ package reliqreports;
 import com.amazonaws.services.lambda.runtime.LambdaLogger;
 import com.amazonaws.util.StringUtils;
 
-import reliqreports.common.EReportCategory;
+import reliqreports.common.enums.EReportCategory;
 import software.amazon.awssdk.regions.Region;
 import software.amazon.awssdk.services.dynamodb.DynamoDbClient;
 import software.amazon.awssdk.services.dynamodb.model.*;

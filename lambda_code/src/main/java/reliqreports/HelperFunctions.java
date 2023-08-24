@@ -9,7 +9,7 @@ import java.util.regex.Pattern;
 import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
 
-import reliqreports.common.EReportCategory;
+import reliqreports.common.enums.EReportCategory;
 
 import java.util.List;
 

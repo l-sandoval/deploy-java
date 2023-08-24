@@ -9,8 +9,8 @@ import net.sf.jasperreports.engine.query.JRXPathQueryExecuterFactory;
 import net.sf.jasperreports.engine.util.JRLoader;
 import net.sf.jasperreports.engine.util.JRXmlUtils;
 import net.sf.jasperreports.export.*;
-import reliqreports.common.EReportCategory;
-import reliqreports.common.SubReportDto;
+import reliqreports.common.enums.EReportCategory;
+import reliqreports.common.dto.SubReportDto;
 
 import org.apache.commons.io.FileUtils;
 import org.w3c.dom.Document;
@@ -27,7 +27,6 @@ import java.io.InputStreamReader;
 import java.util.*;
 
 import net.sf.jasperreports.engine.JRException;
-import net.sf.jasperreports.engine.JasperCompileManager;
 import net.sf.jasperreports.engine.JasperFillManager;
 import net.sf.jasperreports.engine.JasperPrint;
 import net.sf.jasperreports.engine.JasperReport;
@@ -170,7 +169,7 @@ public class ReportGenerator {
 
                 if(HelperFunctions.shouldSaveZipRecord(reportName) && !StringUtils.isNullOrEmpty(organizationId)) {
                     logger.log("Staging zip file for pdf reports");
-                    stageRecord(folderPath, apiEndpoint, EReportCategory.ORGANIZTION_ZIP, organizationId);
+                    stageRecord(folderPath, apiEndpoint, EReportCategory.ORGANIZATION_ZIP, organizationId);
                 }
             }
         }

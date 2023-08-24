@@ -1,4 +1,4 @@
-package reliqreports.common;
+package reliqreports.common.dto;
 
 public class SubReportDto {
     

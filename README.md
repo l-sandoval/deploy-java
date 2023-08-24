@@ -31,11 +31,11 @@ To execute the report generator function locally:
 2. Add the environment variables, to do so select the `Run` tab in your IDE and then `edit configuration`
 for the Local.java file, this might vary depending on the IDE you are using.
 
-## Lambda function parameters
-The following parameters used in the function invocation:
+## Lambda function parameters for report generation
+The following parameters used in the function invocation to generate reports:
 
 * `reportsToBeGenerated`: Array of strings with the names of the reports to generate.
-*  `environments`: Array of strings with the names of the environments to which the reports belong.
+* `environments`: Array of strings with the names of the environments to which the reports belong.
 * `xmlFiles`: Object with the xml path to generate each report.
 * `generationDate`: Datetime when report generator was called. Used in the folder structure.
 * `reportPeriodDate`: Report year and month. Used for the folder structure.
@@ -63,6 +63,21 @@ Individual Patient report's json example:
   "organizationId": "22222222-22B2-2B22-2222-222222222222",
   "organizationName": "Organization Clinic",
   "shouldStage": true
+}
+```
+
+## Lambda function parameters for report staging
+The following parameters used in the function invocation to stage a report:
+
+* `reportPath`: String with the report path in s3
+* `deliveryEndpoint`: String with the url to deliver the report
+* `reportToBeStaged`: String with the name of the report to stage
+
+```json
+{
+  "reportPath": "output/2022-06/Monthly/2023-08-21 21:50:30/DigiiMed/Tenant_DigiiMed_MonthlyJSONReport_20230821.json",
+  "deliveryEndpoint": "digiimed-endpoint.com",
+  "reportToBeStaged": "MonthlyJSONReport"
 }
 ```
 

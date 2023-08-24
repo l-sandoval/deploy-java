@@ -8,13 +8,15 @@ import reliqreports.ReportGenerator;
 import reliqreports.ReportGeneratorConfig;
 import reliqreports.ReportsLiterals;
 import reliqreports.StringLiterals;
+import reliqreports.common.dto.ReportGeneratorDto;
+
 import java.util.HashMap;
 import java.util.Map;
 
 public class ReportsGeneratorHandler {
     private LambdaLogger logger;
     private String[] reportsToBeGenerated;
-    private Map<String, HashMap<String, String[]>> xmlFiles;
+    private Map<String, Map<String, String[]>> xmlFiles;
     private Map<String, String> reportTypes;
     private String[] reportsList;
     private String generationDate;
@@ -27,25 +29,21 @@ public class ReportsGeneratorHandler {
     private JSONObject environmentsApiEndpoints;
     private Boolean shouldStageReport;
 
-    public ReportsGeneratorHandler(LambdaLogger logger, 
-                                   String[] reportsToBeGenerated, HashMap<String, HashMap<String, String[]>> xmlFiles,
-                                   String[] environments, JSONObject environmentsApiEndpoints, String generationDate,
-                                   String reportPeriodDate, String entityId, String entityName, String organizationId,
-                                   String organizationName, Boolean shouldStageReport) {
+    public ReportsGeneratorHandler(LambdaLogger logger, ReportGeneratorDto payload) {
         this.logger = logger;
-        this.reportsToBeGenerated = reportsToBeGenerated;
-        this.xmlFiles = xmlFiles;
-        this.environments = environments;
-        this.generationDate = generationDate;
-        this.reportPeriodDate = reportPeriodDate;
-        this.entityId = entityId;
-        this.entityName = entityName;
-        this.organizationId = organizationId;
-        this.organizationName = organizationName;
-        this.shouldStageReport = shouldStageReport;
+        this.reportsToBeGenerated = payload.reportsToBeGenerated;
+        this.xmlFiles = payload.xmlFiles;
+        this.environments = payload.environments;
+        this.generationDate = payload.generationDate;
+        this.reportPeriodDate = payload.reportPeriodDate;
+        this.entityId = payload.entityId;
+        this.entityName = payload.entityName;
+        this.organizationId = payload.organizationId;
+        this.organizationName = payload.organizationName;
+        this.shouldStageReport = payload.shouldStageReport;
         setReportTypes();
 
-        this.environmentsApiEndpoints = environmentsApiEndpoints;
+        this.environmentsApiEndpoints = payload.environmentsApiEndpoints;
 
         this.reportsList = new String[]{
                 ReportsLiterals.CUSTOMER_BILLING_REPORT,
