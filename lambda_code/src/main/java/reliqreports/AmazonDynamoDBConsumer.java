@@ -3,6 +3,7 @@ package reliqreports;
 import com.amazonaws.services.lambda.runtime.LambdaLogger;
 import com.amazonaws.util.StringUtils;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
 import reliqreports.common.enums.EReportCategory;
 import software.amazon.awssdk.regions.Region;
 import software.amazon.awssdk.services.dynamodb.DynamoDbClient;
@@ -43,6 +44,8 @@ public class AmazonDynamoDBConsumer {
                 logger.log("Record already staged");
                 return;
             }
+
+            ObjectMapper objectMapper = new ObjectMapper();
             HashMap<String,AttributeValue> itemValues = new HashMap<String,AttributeValue>();
 
             SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy/MM/dd HH:mm:ss");
@@ -61,6 +64,8 @@ public class AmazonDynamoDBConsumer {
             itemValues.put("ApiEndpoint", AttributeValue.builder().s(apiEndpoint).build());
             itemValues.put("UploadAttemps", AttributeValue.builder().n("0").build());
             itemValues.put("Status", AttributeValue.builder().n("0").build());
+
+            this.logger.log("Staging record with payload: " + itemValues.toString());
 
             PutItemRequest request = PutItemRequest.builder()
                     .tableName(this.tableName).item(itemValues).build();

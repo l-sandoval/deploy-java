@@ -24,12 +24,14 @@ public class LambdaFunctionHandler implements RequestStreamHandler
 		try {			
 			AmazonS3Consumer s3Consumer = new AmazonS3Consumer(this.logger);
 			ReportGeneratorDto payload = new ReportGeneratorDto(inputStream);
+			ObjectMapper objectMapper = new ObjectMapper();
+
+			this.logger.log("Generating reports with payload: " + objectMapper.writeValueAsString(payload));
 			
 			if (payload.reportToBeStaged != null) {
 				AmazonDynamoDBConsumer dynamoConsumer = new AmazonDynamoDBConsumer(this.logger);
 				dynamoConsumer.stageRecord(payload.reportPath, payload.deliveryEndpoint, EReportCategory.API_DELIVERY, null);
 			} else {
-				ObjectMapper objectMapper = new ObjectMapper();
 				InputStream jsonDataSource = s3Consumer.getInputStreamFileFromS3(ReportGeneratorConfig.getValue("s3Path.Environments.ApiEndpoints"), StringLiterals.LAMBDA_BUCKET);			
 				payload.environmentsApiEndpoints = objectMapper.readValue(jsonDataSource, JSONObject.class);
 				s3Consumer.retrieveFileFromS3(ReportGeneratorConfig.getValue(payload.logoPath), StringLiterals.IMAGE, StringLiterals.LAMBDA_BUCKET);
