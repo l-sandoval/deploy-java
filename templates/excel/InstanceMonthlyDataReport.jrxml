@@ -24,15 +24,17 @@
 	<parameter name="DateFormatOut" class="java.lang.String" isForPrompting="false">
 		<defaultValueExpression><![CDATA["MM/dd/yyyy"]]></defaultValueExpression>
 	</parameter>
+	<parameter name="IUGOReport-TimeZone" class="java.lang.String"/>
 	<queryString>
 		<![CDATA[]]>
 	</queryString>
 	<title>
-		<band height="309" splitType="Stretch">
+		<band height="349" splitType="Stretch">
+			<property name="com.jaspersoft.studio.unit.height" value="px"/>
 			<frame>
-				<reportElement mode="Opaque" x="0" y="0" width="1585" height="309" forecolor="#FFFFFF" backcolor="#007EC7" uuid="8b0db8ca-3609-48bc-b0ab-742bc647cb88">
-					<property name="com.jaspersoft.studio.unit.height" value="px"/>
+				<reportElement mode="Opaque" x="0" y="0" width="1585" height="349" forecolor="#FFFFFF" backcolor="#007EC7" uuid="8b0db8ca-3609-48bc-b0ab-742bc647cb88">
 					<property name="com.jaspersoft.studio.unit.width" value="px"/>
+					<property name="com.jaspersoft.studio.unit.height" value="px"/>
 				</reportElement>
 				<textField pattern="MMM d, yyyy">
 					<reportElement x="187" y="149" width="1210" height="40" forecolor="#FFFFFF" uuid="233d769a-e9ae-42d2-a1ff-35f517fe2e06">
@@ -87,6 +89,17 @@
 					<box padding="1"/>
 					<imageExpression><![CDATA[$P{IUGOReport-Logo}]]></imageExpression>
 				</image>
+				<textField>
+					<reportElement x="190" y="269" width="1210" height="40" forecolor="#FFFFFF" uuid="44d523d0-5d15-4f23-a137-a2e3208db9e4">
+						<property name="com.jaspersoft.studio.unit.height" value="px"/>
+						<property name="com.jaspersoft.studio.unit.y" value="px"/>
+					</reportElement>
+					<box padding="1"/>
+					<textElement textAlignment="Center" verticalAlignment="Middle">
+						<font fontName="Arial" size="16"/>
+					</textElement>
+					<textFieldExpression><![CDATA[("Time Zone: ")+$P{IUGOReport-TimeZone}]]></textFieldExpression>
+				</textField>
 			</frame>
 		</band>
 	</title>

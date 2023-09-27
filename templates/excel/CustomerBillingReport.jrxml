@@ -24,6 +24,7 @@
 	<parameter name="DateFormatOut" class="java.lang.String" isForPrompting="false">
 		<defaultValueExpression><![CDATA["MM/dd/yyyy"]]></defaultValueExpression>
 	</parameter>
+	<parameter name="IUGOReport-TimeZone" class="java.lang.String"/>
 	<queryString>
 		<![CDATA[]]>
 	</queryString>
@@ -31,11 +32,12 @@
 		<band splitType="Stretch"/>
 	</background>
 	<title>
-		<band height="309" splitType="Stretch">
+		<band height="349" splitType="Stretch">
+			<property name="com.jaspersoft.studio.unit.height" value="px"/>
 			<frame>
-				<reportElement mode="Opaque" x="0" y="0" width="1585" height="309" forecolor="#FFFFFF" backcolor="#007EC7" uuid="1dbc9f83-b2a2-4c83-ae32-22fd2cad554b">
-					<property name="com.jaspersoft.studio.unit.height" value="px"/>
+				<reportElement mode="Opaque" x="0" y="0" width="1585" height="349" forecolor="#FFFFFF" backcolor="#007EC7" uuid="1dbc9f83-b2a2-4c83-ae32-22fd2cad554b">
 					<property name="com.jaspersoft.studio.unit.width" value="px"/>
+					<property name="com.jaspersoft.studio.unit.height" value="px"/>
 				</reportElement>
 				<image hAlign="Center" vAlign="Middle">
 					<reportElement x="698" y="41" width="189" height="54" uuid="b7a382f9-a81a-407f-97f9-a1f32547f9be">
@@ -91,6 +93,17 @@
 						<font fontName="Arial" size="16"/>
 					</textElement>
 					<textFieldExpression><![CDATA["Date: "+new java.text.SimpleDateFormat($P{DateFormatOut}).format(java.util.Date.from(java.time.OffsetDateTime.parse($P{IUGOReport-Date}).toInstant()))]]></textFieldExpression>
+				</textField>
+				<textField>
+					<reportElement x="190" y="269" width="1210" height="40" forecolor="#FFFFFF" uuid="2941f9cf-0397-4914-8c82-657df76916fe">
+						<property name="com.jaspersoft.studio.unit.height" value="px"/>
+						<property name="com.jaspersoft.studio.unit.y" value="px"/>
+					</reportElement>
+					<box padding="1"/>
+					<textElement textAlignment="Center" verticalAlignment="Middle">
+						<font fontName="Arial" size="16"/>
+					</textElement>
+					<textFieldExpression><![CDATA[("Time Zone: ")+$P{IUGOReport-TimeZone}]]></textFieldExpression>
 				</textField>
 			</frame>
 		</band>

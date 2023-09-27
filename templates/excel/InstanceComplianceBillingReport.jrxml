@@ -16,12 +16,14 @@
 	<parameter name="DateFormatOut" class="java.lang.String" isForPrompting="false">
 		<defaultValueExpression><![CDATA["MM/dd/yyyy"]]></defaultValueExpression>
 	</parameter>
+	<parameter name="IUGOReport-TimeZone" class="java.lang.String"/>
 	<title>
-		<band height="309" splitType="Stretch">
+		<band height="349" splitType="Stretch">
+			<property name="com.jaspersoft.studio.unit.height" value="px"/>
 			<frame>
-				<reportElement mode="Opaque" x="0" y="0" width="1585" height="309" forecolor="#FFFFFF" backcolor="#007EC7" uuid="d09e8cde-fe1c-4085-a0e9-8c8d0ae67b4b">
-					<property name="com.jaspersoft.studio.unit.height" value="px"/>
+				<reportElement mode="Opaque" x="0" y="0" width="1585" height="349" forecolor="#FFFFFF" backcolor="#007EC7" uuid="d09e8cde-fe1c-4085-a0e9-8c8d0ae67b4b">
 					<property name="com.jaspersoft.studio.unit.width" value="px"/>
+					<property name="com.jaspersoft.studio.unit.height" value="px"/>
 				</reportElement>
 				<image hAlign="Center" vAlign="Middle">
 					<reportElement x="698" y="41" width="189" height="54" uuid="9200def7-02b4-488e-a7e3-29f4f124e583">
@@ -76,6 +78,17 @@
 					</textElement>
 					<text><![CDATA[Compliance Billing Report]]></text>
 				</staticText>
+				<textField>
+					<reportElement x="190" y="269" width="1210" height="40" forecolor="#FFFFFF" uuid="13361842-6518-4564-b0fc-a51296d790bb">
+						<property name="com.jaspersoft.studio.unit.height" value="px"/>
+						<property name="com.jaspersoft.studio.unit.y" value="px"/>
+					</reportElement>
+					<box padding="1"/>
+					<textElement textAlignment="Center" verticalAlignment="Middle">
+						<font fontName="Arial" size="16"/>
+					</textElement>
+					<textFieldExpression><![CDATA[("Time Zone: ")+$P{IUGOReport-TimeZone}]]></textFieldExpression>
+				</textField>
 			</frame>
 		</band>
 	</title>
