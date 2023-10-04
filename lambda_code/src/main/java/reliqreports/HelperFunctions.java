@@ -16,7 +16,23 @@ import java.util.List;
 public class HelperFunctions {
 
 	private static String GUID_REG_EX = "\\p{XDigit}{8}-\\p{XDigit}{4}-\\p{XDigit}{4}-\\p{XDigit}{4}-\\p{XDigit}{12}";
-    private static List<String> INDIVIDUAL_PATIENT_REPORTS = new ArrayList<String>(Arrays.asList(ReportsLiterals.INDIVIDUAL_PATIENT_REPORT));
+    private static final List<String> INDIVIDUAL_PATIENT_REPORTS = new ArrayList<>(
+			List.of(
+					ReportsLiterals.INDIVIDUAL_PATIENT_REPORT
+			)
+	);
+	private static final List<String> BILLING_REPORTS = new ArrayList<>(
+			List.of(
+					ReportsLiterals.COMPLIANCE_BILLING_REPORT,
+					ReportsLiterals.INSTANCE_COMPLIANCE_BILLING_REPORT,
+					ReportsLiterals.CUSTOMER_BILLING_REPORT,
+					ReportsLiterals.INSTANCE_CUSTOMER_BILLING_REPORT,
+					ReportsLiterals.INDIVIDUAL_RPM_READINGS_REPORT,
+					ReportsLiterals.INSTANCE_RPM_READINGS_REPORT,
+					ReportsLiterals.MONTHLY_DATA_REPORT,
+					ReportsLiterals.INSTANCE_SUMMARY_REPORT
+			)
+	);
     private static List<String> NON_STAGING_REPORTS = new ArrayList<String>(
 			Arrays.asList(
 					ReportsLiterals.EMERGENCY_RECOVERY_REPORT,
@@ -79,6 +95,10 @@ public class HelperFunctions {
 	
 	public static boolean shouldSaveZipRecord(String reportType) {
 	    return INDIVIDUAL_PATIENT_REPORTS.contains(reportType);
+	}
+
+	public static boolean shouldSaveBillingZipRecord(String reportType) {
+	    return BILLING_REPORTS.contains(reportType);
 	}
 	
 	public static String getTypeOfReportFolderName(String reportType) {

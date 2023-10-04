@@ -4,6 +4,7 @@ import com.amazonaws.services.lambda.runtime.LambdaLogger;
 import com.amazonaws.util.StringUtils;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import reliqreports.common.enums.EProcessCategory;
 import reliqreports.common.enums.EReportCategory;
 import software.amazon.awssdk.regions.Region;
 import software.amazon.awssdk.services.dynamodb.DynamoDbClient;
@@ -37,7 +38,13 @@ public class AmazonDynamoDBConsumer {
         this.bucketName = System.getenv("REPORTS_BUCKET");
     }
 
-    public void stageRecord(String filePath, String apiEndpoint, EReportCategory reportCategory, String entityId)
+    public void stageRecord(
+            String filePath,
+            String apiEndpoint,
+            EReportCategory reportCategory,
+            String entityId,
+            EProcessCategory processCategory
+            )
             throws IOException {
         try{
             if(isRecordStaged(filePath)){
@@ -45,7 +52,6 @@ public class AmazonDynamoDBConsumer {
                 return;
             }
 
-            ObjectMapper objectMapper = new ObjectMapper();
             HashMap<String,AttributeValue> itemValues = new HashMap<String,AttributeValue>();
 
             SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy/MM/dd HH:mm:ss");
@@ -60,6 +66,7 @@ public class AmazonDynamoDBConsumer {
             itemValues.put("FilePath", AttributeValue.builder().s(filePath).build());
             itemValues.put("Created", AttributeValue.builder().s(date).build());
             itemValues.put("DocumentCategory", AttributeValue.builder().n(reportCategory.category).build());
+            itemValues.put("ProcessCategory", AttributeValue.builder().s(processCategory.category).build());
             itemValues.put("BucketName", AttributeValue.builder().s(this.bucketName).build());
             itemValues.put("ApiEndpoint", AttributeValue.builder().s(apiEndpoint).build());
             itemValues.put("UploadAttemps", AttributeValue.builder().n("0").build());

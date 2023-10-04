@@ -2,9 +2,7 @@ package reliqreports.common.enums;
 
 public enum EReportCategory {
     ORGANIZATION("12"),
-    PATIENT("10"),
-    ORGANIZATION_ZIP("13"),
-    API_DELIVERY("14");
+    PATIENT("10");
     
     public String category;
     

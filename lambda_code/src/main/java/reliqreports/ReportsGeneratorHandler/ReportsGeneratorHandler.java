@@ -9,6 +9,7 @@ import reliqreports.ReportGeneratorConfig;
 import reliqreports.ReportsLiterals;
 import reliqreports.StringLiterals;
 import reliqreports.common.dto.ReportGeneratorDto;
+import reliqreports.common.dto.ReportsGeneratorHandlerDto;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -25,11 +26,12 @@ public class ReportsGeneratorHandler {
     private String entityName;
     private String organizationId;
     private String organizationName;
+    private String primaryOrganizationId;
     private String[] environments;
     private JSONObject environmentsApiEndpoints;
     private Boolean shouldStageReport;
 
-    public ReportsGeneratorHandler(LambdaLogger logger, ReportGeneratorDto payload) {
+    public ReportsGeneratorHandler(LambdaLogger logger, ReportsGeneratorHandlerDto payload) {
         this.logger = logger;
         this.reportsToBeGenerated = payload.reportsToBeGenerated;
         this.xmlFiles = payload.xmlFiles;
@@ -41,6 +43,7 @@ public class ReportsGeneratorHandler {
         this.organizationId = payload.organizationId;
         this.organizationName = payload.organizationName;
         this.shouldStageReport = payload.shouldStageReport;
+        this.primaryOrganizationId = payload.primaryOrganizationId;
         setReportTypes();
 
         this.environmentsApiEndpoints = payload.environmentsApiEndpoints;
@@ -107,19 +110,22 @@ public class ReportsGeneratorHandler {
     
             for (String xmlFile : xmlFiles) {
                 logger.log("Found XML to retrieve parameters for " + reportName + ": " + xmlFile);
-                reportGenerator.generateReport(
-                        reportType,
-                        reportName,
-                        xmlFile,
-                        templatesPath,
-                        outputFolder, 
-                        this.entityId,
-                        this.entityName,
-                        this.organizationId,
-                        this.organizationName,
-                        this.generationDate,
-                        apiEndpoint,
-                        this.shouldStageReport);
+                ReportGeneratorDto generatorPayload = new ReportGeneratorDto();
+                generatorPayload.type = reportType;
+                generatorPayload.reportName = reportName;
+                generatorPayload.xmlFile = xmlFile;
+                generatorPayload.jasperPath = templatesPath;
+                generatorPayload.buildPath = outputFolder;
+                generatorPayload.entityId = this.entityId;
+                generatorPayload.entityName = this.entityName;
+                generatorPayload.organizationId = this.organizationId;
+                generatorPayload.organizationName = this.organizationName;
+                generatorPayload.generationDate = this.generationDate;
+                generatorPayload.apiEndpoint = apiEndpoint;
+                generatorPayload.shouldStageReport = shouldStageReport;
+                generatorPayload.primaryOrganizationId = this.primaryOrganizationId;
+
+                reportGenerator.generateReport(generatorPayload);
             }
         } catch (Exception e) {
             logger.log("Exception thrown runing report generation");

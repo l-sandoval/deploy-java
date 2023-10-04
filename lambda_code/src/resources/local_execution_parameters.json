@@ -1,15 +1,21 @@
 {
-  "reportsToBeGenerated": ["EmergencyRecoveryReport"],
-  "environments": ["Reliq"],
-  "xmlFiles":
-  {
-    "Reliq":
-    {
-      "EmergencyRecoveryReport": ["path to xml file"]
+  "reportsToBeGenerated": [
+    "InstanceComplianceBillingReport"
+  ],
+  "environments": [
+    "PAZ"
+  ],
+  "xmlFiles": {
+    "PAZ": {
+      "InstanceComplianceBillingReport": [
+        "raw-data/2022-06/2023-10-03T20:47:30.859909+00:00/PAZ/Tenant_PAZ_ComplianceRPT_20231003.xml"
+      ]
     }
   },
-  "generationDate": "2022-07-26 20:09:48",
+  "generationDate": "2023-10-03 20:47:30",
   "reportPeriodDate": "2022-06",
-  "entityId": "ENTITY-ID",
-  "shouldStage": false
+  "entityId": "D0AC6E18-8F27-444B-8575-B823214CC9FD",
+  "entityName": null,
+  "shouldStage": true,
+  "primaryOrganizationId": "D0AC6E18-8F27-444B-8575-B823214CC9FD"
 }
