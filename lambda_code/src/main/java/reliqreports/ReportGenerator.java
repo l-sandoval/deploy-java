@@ -10,6 +10,7 @@ import net.sf.jasperreports.engine.util.JRLoader;
 import net.sf.jasperreports.engine.util.JRXmlUtils;
 import net.sf.jasperreports.export.*;
 import reliqreports.common.dto.ReportGeneratorDto;
+import reliqreports.common.dto.StageZipRecordDto;
 import reliqreports.common.enums.EProcessCategory;
 import reliqreports.common.enums.EReportCategory;
 import reliqreports.common.dto.SubReportDto;
@@ -158,27 +159,9 @@ public class ReportGenerator {
                         EProcessCategory.UPLOAD
                 );
 
-                if(HelperFunctions.shouldSaveZipRecord(payload.reportName) && !StringUtils.isNullOrEmpty(payload.organizationId)) {
-                    logger.log("Staging zip file for pdf reports");
-                    dynamoDBConsumer.stageRecord(
-                            folderPath,
-                            payload.apiEndpoint,
-                            EReportCategory.ORGANIZATION,
-                            payload.organizationId,
-                            EProcessCategory.ORGANIZATION_ZIP
-                    );
-                }
-
-                if(HelperFunctions.shouldSaveBillingZipRecord(payload.reportName)) {
-                    logger.log("Staging zip file for billing reports");
-                    dynamoDBConsumer.stageRecord(
-                            payload.buildPath,
-                            payload.apiEndpoint,
-                            reportCategory,
-                            payload.primaryOrganizationId,
-                            EProcessCategory.BILLING_ZIP
-                    );
-                }
+                StageZipRecordDto stageZipRecordInput = new StageZipRecordDto(payload);
+                stageZipRecordInput.organizationFolderPath = folderPath;
+                dynamoDBConsumer.stageZipRecords(stageZipRecordInput);
             }
         }
     }

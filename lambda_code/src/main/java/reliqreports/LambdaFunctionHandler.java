@@ -11,6 +11,7 @@ import com.amazonaws.services.lambda.runtime.LambdaLogger;
 import com.amazonaws.services.lambda.runtime.RequestStreamHandler;
 
 import reliqreports.ReportsGeneratorHandler.ReportsGeneratorHandler;
+import reliqreports.common.dto.StageZipRecordDto;
 import reliqreports.common.enums.EProcessCategory;
 import reliqreports.common.enums.EReportCategory;
 import reliqreports.common.dto.ReportsGeneratorHandlerDto;
@@ -39,28 +40,11 @@ public class LambdaFunctionHandler implements RequestStreamHandler
 			if (payload.reportToBeStaged != null) {
 				AmazonDynamoDBConsumer dynamoConsumer = new AmazonDynamoDBConsumer(this.logger);
 
-				if (payload.deliveryEndpoint != null) {
-					dynamoConsumer.stageRecord(
-							payload.reportPath,
-							payload.deliveryEndpoint,
-							EReportCategory.ORGANIZATION,
-							null,
-							EProcessCategory.API_DELIVERY);
-				}
-
-				if (HelperFunctions.shouldSaveBillingZipRecord(payload.reportToBeStaged)) {
-					String[] pathArray = payload.reportPath.split("/");
-					String[] pathArrayWithoutLast = Arrays.copyOf(pathArray, pathArray.length - 1);
-					String objectPath = String.join("/", pathArrayWithoutLast);
-					String apiEndpoint = (String) payload.environmentsApiEndpoints.get(payload.environments[0]);
-					dynamoConsumer.stageRecord(
-							objectPath,
-							apiEndpoint,
-							EReportCategory.ORGANIZATION,
-							payload.primaryOrganizationId,
-							EProcessCategory.BILLING_ZIP
-					);
-				}
+				StageZipRecordDto stageZipRecordInput = new StageZipRecordDto(payload);
+				String[] pathArray = payload.reportPath.split("/");
+				String[] pathArrayWithoutLast = Arrays.copyOf(pathArray, pathArray.length - 1);
+				stageZipRecordInput.tenantFolderPath = String.join("/", pathArrayWithoutLast);
+				dynamoConsumer.stageZipRecords(stageZipRecordInput);
 
 			} else {
 				s3Consumer.retrieveFileFromS3(

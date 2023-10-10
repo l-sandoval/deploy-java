@@ -3,7 +3,7 @@ package reliqreports;
 import com.amazonaws.services.lambda.runtime.LambdaLogger;
 import com.amazonaws.util.StringUtils;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
+import reliqreports.common.dto.StageZipRecordDto;
 import reliqreports.common.enums.EProcessCategory;
 import reliqreports.common.enums.EReportCategory;
 import software.amazon.awssdk.regions.Region;
@@ -38,6 +38,26 @@ public class AmazonDynamoDBConsumer {
         this.bucketName = System.getenv("REPORTS_BUCKET");
     }
 
+    public void stageZipRecords(StageZipRecordDto payload){
+        ArrayList<EProcessCategory> categories = HelperFunctions.getRecordProcessCategories(payload);
+
+        for (EProcessCategory category : categories) {
+            String folderPath = HelperFunctions.getProcessCategoryFolderPath(category, payload);
+            try {
+                this.logger.log("Staging zip record for " + category);
+                this.stageRecord(
+                        folderPath,
+                        payload.apiEndpoint,
+                        EReportCategory.ORGANIZATION,
+                        payload.organizationId,
+                        category
+                );
+            } catch (IOException e) {
+                this.logger.log("There was a error trying to stage zip the record "+category+" : " + e.getMessage());
+            }
+        }
+    }
+
     public void stageRecord(
             String filePath,
             String apiEndpoint,
@@ -47,7 +67,7 @@ public class AmazonDynamoDBConsumer {
             )
             throws IOException {
         try{
-            if(isRecordStaged(filePath)){
+            if(isRecordStaged(filePath, processCategory)){
                 logger.log("Record already staged");
                 return;
             }
@@ -85,23 +105,27 @@ public class AmazonDynamoDBConsumer {
         }
     }
 
-    public boolean isRecordStaged(String filePath) {
+    public boolean isRecordStaged(String filePath, EProcessCategory processCategory) {
         Map<String, AttributeValue> itemValues = new HashMap<>();
 
         itemValues.put(":filePath", AttributeValue.builder().s(filePath).build());
+        itemValues.put(":category", AttributeValue.builder().s(processCategory.category).build());
 
         ScanRequest request = ScanRequest.builder()
                 .tableName(this.tableName)
-                .filterExpression("FilePath = :filePath")
+                .filterExpression("FilePath = :filePath and ProcessCategory = :category")
                 .expressionAttributeValues(itemValues)
                 .build();
 
         ScanResponse response = this.client.scan(request);
+
+        List<Map<String, AttributeValue>> items = new ArrayList<>(response.items());
         
-        List<Map<String, AttributeValue>> items = new ArrayList<Map<String, AttributeValue>>();
-        items.addAll(response.items());
-        
-        while(response.hasLastEvaluatedKey() && response.lastEvaluatedKey().get("RecordId") != null && !StringUtils.isNullOrEmpty(response.lastEvaluatedKey().get("RecordId").s())) {
+        while(
+                response.hasLastEvaluatedKey()
+                && response.lastEvaluatedKey().get("RecordId") != null
+                && !StringUtils.isNullOrEmpty(response.lastEvaluatedKey().get("RecordId").s())
+        ) {
             request = ScanRequest.builder()
                     .tableName(this.tableName)
                     .filterExpression("FilePath = :filePath")

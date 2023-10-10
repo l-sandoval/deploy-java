@@ -1,17 +1,16 @@
 package reliqreports;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Map;
+import java.util.*;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
+import com.amazonaws.util.StringUtils;
 import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
 
+import reliqreports.common.dto.StageZipRecordDto;
+import reliqreports.common.enums.EProcessCategory;
 import reliqreports.common.enums.EReportCategory;
-
-import java.util.List;
 
 public class HelperFunctions {
 
@@ -91,6 +90,48 @@ public class HelperFunctions {
 
 	public static boolean shouldStageReport(String report, Boolean shouldStageReport) {
 		return shouldStageReport && !NON_STAGING_REPORTS.contains(report);
+	}
+
+	public static String getPreferredString(String firstString, String secondString) {
+		if (!StringUtils.isNullOrEmpty(firstString)) {
+			return firstString;
+		}
+
+		return secondString;
+	}
+	public static String getProcessCategoryFolderPath(EProcessCategory processCategory, StageZipRecordDto payload) {
+		switch(processCategory) {
+			case API_DELIVERY:
+				return payload.reportPath;
+			case TENANT_INDIVIDUAL_ZIP:
+			case BILLING_ZIP:
+				return payload.tenantFolderPath;
+			case ORGANIZATION_ZIP:
+				return payload.organizationFolderPath;
+			default:
+				return "";
+		}
+	}
+
+	public static ArrayList<EProcessCategory> getRecordProcessCategories(StageZipRecordDto payload) {
+		ArrayList<EProcessCategory> categories = new ArrayList<>();
+
+		if (!StringUtils.isNullOrEmpty(payload.deliveryEndpoint)) {
+			categories.add(EProcessCategory.API_DELIVERY);
+		}
+
+		if (shouldSaveZipRecord(payload.reportName)) {
+			categories.add(EProcessCategory.TENANT_INDIVIDUAL_ZIP);
+			if (!StringUtils.isNullOrEmpty(payload.organizationId)) {
+				categories.add(EProcessCategory.ORGANIZATION_ZIP);
+			}
+		}
+
+		if (shouldSaveBillingZipRecord(payload.reportName)) {
+			categories.add(EProcessCategory.BILLING_ZIP);
+		}
+
+		return categories;
 	}
 	
 	public static boolean shouldSaveZipRecord(String reportType) {
