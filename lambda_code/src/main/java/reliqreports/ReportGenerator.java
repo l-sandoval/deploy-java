@@ -1,5 +1,7 @@
 package reliqreports;
 
+import com.amazonaws.services.lambda.runtime.LambdaLogger;
+import com.amazonaws.util.StringUtils;
 import net.sf.jasperreports.engine.*;
 import net.sf.jasperreports.engine.data.JRCsvDataSource;
 import net.sf.jasperreports.engine.export.JRPdfExporter;
@@ -9,31 +11,17 @@ import net.sf.jasperreports.engine.query.JRXPathQueryExecuterFactory;
 import net.sf.jasperreports.engine.util.JRLoader;
 import net.sf.jasperreports.engine.util.JRXmlUtils;
 import net.sf.jasperreports.export.*;
-import reliqreports.common.dto.ReportGeneratorDto;
-import reliqreports.common.dto.StageZipRecordDto;
-import reliqreports.common.enums.EProcessCategory;
-import reliqreports.common.enums.EReportCategory;
-import reliqreports.common.dto.SubReportDto;
-
 import org.apache.commons.io.FileUtils;
 import org.w3c.dom.Document;
 import org.w3c.dom.Node;
+import reliqreports.common.dto.ReportGeneratorDto;
+import reliqreports.common.dto.StageZipRecordDto;
+import reliqreports.common.dto.SubReportDto;
+import reliqreports.common.enums.EProcessCategory;
+import reliqreports.common.enums.EReportCategory;
 
-import com.amazonaws.services.lambda.runtime.LambdaLogger;
-import com.amazonaws.util.StringUtils;
-
-import java.io.BufferedReader;
-import java.io.File;
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.InputStreamReader;
+import java.io.*;
 import java.util.*;
-
-import net.sf.jasperreports.engine.JRException;
-import net.sf.jasperreports.engine.JasperFillManager;
-import net.sf.jasperreports.engine.JasperPrint;
-import net.sf.jasperreports.engine.JasperReport;
-import net.sf.jasperreports.engine.JRDataSource;
 
 public class ReportGenerator {
     private LambdaLogger logger;
@@ -154,7 +142,7 @@ public class ReportGenerator {
                 dynamoDBConsumer.stageRecord(
                         fileName,
                         payload.apiEndpoint,
-                        EReportCategory.ORGANIZATION,
+                        reportCategory,
                         payload.entityId,
                         EProcessCategory.UPLOAD
                 );
