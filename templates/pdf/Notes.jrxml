@@ -43,8 +43,6 @@
 	<field name="Note Title" class="java.lang.String"/>
 	<field name="Note Body" class="java.lang.String"/>
 	<field name="Note Tags" class="java.lang.String"/>
-	<field name="Status" class="java.lang.String"/>
-	<field name="Reason" class="java.lang.String"/>
 	<sortField name="Care Plan"/>
 	<sortField name="Date" order="Descending"/>
 	<variable name="PAGE_CURRENT" class="java.lang.Integer" incrementType="Page">
@@ -98,8 +96,18 @@
 		</band>
 	</pageHeader>
 	<detail>
-		<band height="130" splitType="Stretch">
+		<band height="128" splitType="Stretch">
 			<property name="com.jaspersoft.studio.unit.height" value="px"/>
+			<textField isBlankWhenNull="true">
+				<reportElement mode="Opaque" x="0" y="20" width="592" height="20" forecolor="#FFFFFF" backcolor="#127EC2" uuid="dd599cdb-6c6f-4aad-9b8e-9a6f148a6f98">
+					<property name="com.jaspersoft.studio.unit.height" value="px"/>
+				</reportElement>
+				<box topPadding="1" leftPadding="5" bottomPadding="1" rightPadding="1"/>
+				<textElement verticalAlignment="Middle">
+					<font fontName="Tahoma" size="10" isItalic="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA["Time Spent: "+$F{Time spent}]]></textFieldExpression>
+			</textField>
 			<textField isBlankWhenNull="true">
 				<reportElement mode="Opaque" x="0" y="0" width="270" height="20" forecolor="#FFFFFF" backcolor="#127EC2" uuid="435a7eb2-6afe-495a-a8a5-afb985600a38">
 					<property name="com.jaspersoft.studio.unit.height" value="px"/>
@@ -122,7 +130,7 @@
 				<textFieldExpression><![CDATA["By "+$F{Author}+" on "+java.time.format.DateTimeFormatter.ofPattern($P{DateFormatOut}).withZone(java.time.ZonedDateTime.parse($F{Date}).getZone()).format(java.time.ZonedDateTime.parse($F{Date}))+" "+java.time.format.DateTimeFormatter.ofPattern("HH:mm").withZone(java.time.ZonedDateTime.parse($F{Date}).getZone()).format(java.time.ZonedDateTime.parse($F{Date}))]]></textFieldExpression>
 			</textField>
 			<textField textAdjust="StretchHeight" isBlankWhenNull="true">
-				<reportElement positionType="Float" stretchType="RelativeToTallestObject" x="1" y="60" width="590" height="70" forecolor="#000000" uuid="4fb4d734-d8a4-4d3e-a102-e23c1971aa75">
+				<reportElement positionType="Float" stretchType="RelativeToTallestObject" x="1" y="40" width="590" height="70" forecolor="#000000" uuid="4fb4d734-d8a4-4d3e-a102-e23c1971aa75">
 					<property name="com.jaspersoft.studio.unit.width" value="px"/>
 					<property name="net.sf.jasperreports.style.paragraph.lineSpacing" value="1_1_2"/>
 					<property name="net.sf.jasperreports.consume.space.on.overflow" value="true"/>
@@ -137,27 +145,6 @@
 					<font fontName="Arial" size="10"/>
 				</textElement>
 				<textFieldExpression><![CDATA[($F{Note Title}.isBlank()?(""):($F{Note Title}+"<br><br>"))+$F{Note Body}.replace( "\\n", "<br>" )+($F{Note Tags}.isBlank()?(""):("<br><br>"+$F{Note Tags}))]]></textFieldExpression>
-			</textField>
-			<textField isBlankWhenNull="true">
-				<reportElement mode="Opaque" x="0" y="20" width="270" height="40" forecolor="#FFFFFF" backcolor="#127EC2" uuid="40bfb4d8-a991-4f1f-b31f-0010012b311f">
-					<property name="com.jaspersoft.studio.unit.width" value="px"/>
-				</reportElement>
-				<box topPadding="1" leftPadding="5" bottomPadding="1" rightPadding="1"/>
-				<textElement verticalAlignment="Top">
-					<font fontName="Tahoma" size="10" isItalic="true"/>
-				</textElement>
-				<textFieldExpression><![CDATA["Time Spent: "+$F{Time spent}]]></textFieldExpression>
-			</textField>
-			<textField isBlankWhenNull="true">
-				<reportElement mode="Opaque" x="270" y="20" width="322" height="40" forecolor="#FFFFFF" backcolor="#127EC2" uuid="fc14088d-207d-4c69-a99b-66dcc08db861">
-					<property name="com.jaspersoft.studio.unit.width" value="px"/>
-					<property name="com.jaspersoft.studio.unit.height" value="px"/>
-				</reportElement>
-				<box topPadding="1" leftPadding="1" bottomPadding="1" rightPadding="5"/>
-				<textElement textAlignment="Right" verticalAlignment="Top">
-					<font fontName="Tahoma" size="10" isItalic="true"/>
-				</textElement>
-				<textFieldExpression><![CDATA[$F{Status}.isBlank()?" ":("Status: "+$F{Status}+"\n Reason: "+($F{Reason}.isBlank()?"—":$F{Reason}))]]></textFieldExpression>
 			</textField>
 		</band>
 	</detail>
