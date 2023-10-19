@@ -1,20 +1,19 @@
 package reliqreports;
 
-import java.io.*;
-import java.util.Arrays;
-
-import org.json.simple.JSONObject;
-import com.fasterxml.jackson.databind.ObjectMapper;
-
 import com.amazonaws.services.lambda.runtime.Context;
 import com.amazonaws.services.lambda.runtime.LambdaLogger;
 import com.amazonaws.services.lambda.runtime.RequestStreamHandler;
-
+import com.fasterxml.jackson.databind.ObjectMapper;
+import org.json.simple.JSONObject;
 import reliqreports.ReportsGeneratorHandler.ReportsGeneratorHandler;
-import reliqreports.common.dto.StageZipRecordDto;
-import reliqreports.common.enums.EProcessCategory;
-import reliqreports.common.enums.EReportCategory;
 import reliqreports.common.dto.ReportsGeneratorHandlerDto;
+import reliqreports.common.dto.StageZipRecordDto;
+
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.OutputStream;
+import java.io.OutputStreamWriter;
+import java.util.Arrays;
 
 public class LambdaFunctionHandler implements RequestStreamHandler
 {

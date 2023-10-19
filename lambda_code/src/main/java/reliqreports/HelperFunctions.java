@@ -1,16 +1,18 @@
 package reliqreports;
 
-import java.util.*;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
-
 import com.amazonaws.util.StringUtils;
 import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
-
 import reliqreports.common.dto.StageZipRecordDto;
 import reliqreports.common.enums.EProcessCategory;
 import reliqreports.common.enums.EReportCategory;
+
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
+import java.util.Map;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 public class HelperFunctions {
 
