@@ -12,6 +12,6 @@ public class ReportsLiterals {
     public static final String INSTANCE_COMPLIANCE_BILLING_REPORT = "InstanceComplianceBillingReport";
     public static final String INSTANCE_RPM_READINGS_REPORT = "InstanceRPMReadingsReport";
     public static final String INSTANCE_CUSTOMER_BILLING_REPORT = "InstanceCustomerBillingReport";
-    public static final String MONTHLY_DATA_REPORT = "MonthlyJSONReport";
+    public static final String WEEKLY_DATA_REPORT = "WeeklyJSONReport";
     public static final String INSTANCE_SUMMARY_REPORT = "InstanceSummaryReport";
 }

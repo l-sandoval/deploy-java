@@ -30,7 +30,7 @@ public class HelperFunctions {
 					ReportsLiterals.INSTANCE_CUSTOMER_BILLING_REPORT,
 					ReportsLiterals.INDIVIDUAL_RPM_READINGS_REPORT,
 					ReportsLiterals.INSTANCE_RPM_READINGS_REPORT,
-					ReportsLiterals.MONTHLY_DATA_REPORT,
+					ReportsLiterals.WEEKLY_DATA_REPORT,
 					ReportsLiterals.INSTANCE_SUMMARY_REPORT
 			)
 	);
@@ -149,6 +149,7 @@ public class HelperFunctions {
 	        case ReportsLiterals.DAILY_CRITICAL_READINGS_REPORT:
 	            return StringLiterals.DAILY;
 	        case ReportsLiterals.WEEKLY_ADHERENCE_REPORT:
+            case ReportsLiterals.WEEKLY_DATA_REPORT:
 	            return StringLiterals.WEEKLY;
 	        case ReportsLiterals.CUSTOMER_BILLING_REPORT:
 	        case ReportsLiterals.EMERGENCY_RECOVERY_REPORT:
