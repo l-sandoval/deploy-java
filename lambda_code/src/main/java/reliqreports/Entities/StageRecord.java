@@ -5,6 +5,7 @@ import reliqreports.StringLiterals;
 import reliqreports.common.enums.EProcessCategory;
 import reliqreports.common.enums.EReportCategory;
 
+import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.UUID;
 
@@ -73,5 +74,23 @@ public class StageRecord {
         this.entityId = entityId;
         this.filePath = filePath;
         this.processCategory = processCategory.category;
+    }
+
+    public StageRecord() {}
+
+    @Override
+    public String toString() {
+        SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+        String formattedDate = dateFormat.format(created);
+
+        return "StageRecord{" +
+                "created=" + formattedDate +
+                ", apiEndpoint='" + apiEndpoint + '\'' +
+                ", bucketName='" + bucketName + '\'' +
+                ", documentCategory=" + documentCategory +
+                ", entityId=" + entityId +
+                ", filePath='" + filePath +
+                ", processCategory=" + processCategory +
+                '}';
     }
 }
