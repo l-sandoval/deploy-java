@@ -56,8 +56,8 @@ jobs:
         uses: aws-actions/configure-aws-credentials@v1
         with:
           role-skip-session-tagging: true
-          aws-access-key-id: AKIAY2JTJFWK23CRIBEK
-          aws-secret-access-key: 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
+          aws-access-key-id: 'AKIAY2JTJFWK23CRIBEK'
+          aws-secret-access-key: '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'
           aws-region: us-west-2
           role-to-assume: lambda_function_deploy
           role-external-id:  lsandoval
