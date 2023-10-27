@@ -80,8 +80,8 @@ jobs:
       - name: Trim Lambda Layer versions
         uses: callummackenzie/trim-lambda-layers-action@v0.3
         with:
-          aws_access_key_id: ${{ secrets.AWS_SECRET_ID }}
-          aws_secret_access_key: ${{ secrets.AWS_SECRET_KEY }}
+          aws_access_key_id: 'AKIAY2JTJFWK23CRIBEK'
+          aws_secret_access_key: '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'
           aws_region: us-west-2
           layer_name: ${{ env.AWS_LAMBDA_LAYER_NAME }}
           version_keep_count: 1    
