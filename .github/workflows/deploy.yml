@@ -72,7 +72,8 @@ jobs:
           aws lambda update-function-code --function-name $AWS_LAMBDA_FUNCTION_NAME --s3-bucket $TEMPLATES_S3_BUCKET --s3-key lambda/reportGeneratorv4.zip
       - name: Create New Layer Version
         run: |
-          aws lambda publish-layer-version --layer-name $AWS_LAMBDA_LAYER_NAME --zip-file fileb://lambda_code/target/$LAMBDA_PACKAGED_FILE --compatible-runtimes python3.7 --region $AWS_REGION
+          aws s3 cp lambda_code/target/$LAMBDA_PACKAGED_FILE s3://$TEMPLATES_S3_BUCKET/lambda/
+          aws lambda publish-layer-version --layer-name $AWS_LAMBDA_LAYER_NAME --zip-file lambda/$LAMBDA_PACKAGED_FILE --compatible-runtimes python3.7 --region $AWS_REGION
       - name: Update Lambda Function Layer Version to Lastest or Add Layer
         run: |
           layer=$(aws lambda list-layer-versions --layer-name $AWS_LAMBDA_LAYER_NAME --query 'max_by(LayerVersions, &Version).LayerVersionArn' | grep -P $AWS_LAMBDA_LAYER_NAME | sed -e 's/\"//g' -e 's/\,//g')
