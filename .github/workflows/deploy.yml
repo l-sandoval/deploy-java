@@ -29,10 +29,10 @@ jobs:
         run: |
           echo "AWS_LAMBDA_FUNCTION_NAME=Dev_ReportGenerator" >> $GITHUB_ENV
           echo "AWS_LAMBDA_LAYER_NAME=Dev_ReportGeneratorLambdaLayer" >> $GITHUB_ENV
-          echo "REPORTS_BUCKET=dev-billing-report-generator-files-bucket" >> $GITHUB_ENV
-          echo "TEMPLATES_S3_BUCKET=dev-billing-report-generator-templates-bucket" >> $GITHUB_ENV
-          echo "FILES_BUCKET=dev-billing-data-extractor" >> $GITHUB_ENV
-          echo "DYNAMODB_TABLE=Dev_BillingStagingRecords" >> $GITHUB_ENV          
+          echo "REPORTS_BUCKET=luis-data-extractor" >> $GITHUB_ENV
+          echo "TEMPLATES_S3_BUCKET=luis-report-generator-lambda" >> $GITHUB_ENV
+          echo "FILES_BUCKET=luis-data-extractor" >> $GITHUB_ENV
+          echo "DYNAMODB_TABLE=luis_BillingStagingRecords" >> $GITHUB_ENV          
 
       - name: Set variables for production
         if: endsWith(github.ref, '/release')
