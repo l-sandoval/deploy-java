@@ -66,7 +66,7 @@ jobs:
                 
       - name: Deploy Code to AWS
         run: |
-          zip -g reportGeneratorv4.zip lambda_code/target/classes
+          zip -r reportGeneratorv4.zip lambda_code/target/classes
           aws s3 cp reportGeneratorv4.zip s3://$TEMPLATES_S3_BUCKET/lambda/
           aws lambda update-function-configuration --function-name $AWS_LAMBDA_FUNCTION_NAME --environment "Variables={DYNAMODB_TABLE=$DYNAMODB_TABLE, FILES_BUCKET=$FILES_BUCKET, LAMBDA_BUCKET=$TEMPLATES_S3_BUCKET, REPORTS_BUCKET=$REPORTS_BUCKET}"
           aws lambda update-function-code --function-name $AWS_LAMBDA_FUNCTION_NAME --s3-bucket $TEMPLATES_S3_BUCKET --s3-key lambda/reportGeneratorv4.zip
