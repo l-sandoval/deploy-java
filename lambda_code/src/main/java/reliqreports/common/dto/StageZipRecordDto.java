@@ -1,8 +1,6 @@
 package reliqreports.common.dto;
 
-import com.amazonaws.util.StringUtils;
 import reliqreports.HelperFunctions;
-import reliqreports.common.enums.EReportCategory;
 
 public class StageZipRecordDto {
     public String tenantFolderPath;

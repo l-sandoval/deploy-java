@@ -1,10 +1,10 @@
 package reliqreports.Strategies;
 
-import com.amazonaws.util.StringUtils;
 import org.hibernate.boot.model.naming.Identifier;
 import org.hibernate.boot.model.naming.PhysicalNamingStrategyStandardImpl;
 import org.hibernate.engine.jdbc.env.spi.JdbcEnvironment;
 import reliqreports.StringLiterals;
+import software.amazon.awssdk.utils.StringUtils;
 
 
 public class StageTableNamingStrategy extends PhysicalNamingStrategyStandardImpl {
@@ -15,7 +15,7 @@ public class StageTableNamingStrategy extends PhysicalNamingStrategyStandardImpl
 
         if (
                 tableName.equals(StringLiterals.DEFAULT_STAGING_RECORDS_TABLE_NAME)
-                && !StringUtils.isNullOrEmpty(environmentTableName)
+                && !StringUtils.isEmpty(environmentTableName)
         ) {
             tableName = environmentTableName;
         }
