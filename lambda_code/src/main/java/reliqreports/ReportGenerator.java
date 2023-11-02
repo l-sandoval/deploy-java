@@ -14,7 +14,6 @@ import net.sf.jasperreports.export.*;
 import org.apache.commons.io.FileUtils;
 import org.w3c.dom.Document;
 import org.w3c.dom.Node;
-import reliqreports.Services.StagingService;
 import reliqreports.common.dto.ReportGeneratorDto;
 import reliqreports.common.dto.StageZipRecordDto;
 import reliqreports.common.dto.SubReportDto;
@@ -43,7 +42,7 @@ public class ReportGenerator {
 
 
         boolean shouldStage = HelperFunctions.shouldStageReport(payload.reportName, payload.shouldStageReport);
-        StagingService stagingService = new StagingService(this.logger);
+        AmazonDynamoDBConsumer dynamoDBConsumer = new AmazonDynamoDBConsumer(this.logger);
 
         String jasperSource = payload.jasperPath + StringLiterals.FILE_SEPARATOR_FOR_S3_QUERIES + payload.reportName + ".jasper";
 
@@ -140,7 +139,7 @@ public class ReportGenerator {
 
             if(shouldStage){
                 logger.log("Staging report");
-                stagingService.stageRecord(
+                dynamoDBConsumer.stageRecord(
                         fileName,
                         payload.apiEndpoint,
                         reportCategory,
@@ -150,7 +149,7 @@ public class ReportGenerator {
 
                 StageZipRecordDto stageZipRecordInput = new StageZipRecordDto(payload);
                 stageZipRecordInput.organizationFolderPath = folderPath;
-                stagingService.stageZipRecords(stageZipRecordInput);
+                dynamoDBConsumer.stageZipRecords(stageZipRecordInput);
             }
         }
     }
