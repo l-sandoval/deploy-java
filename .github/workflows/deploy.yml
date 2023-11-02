@@ -50,7 +50,9 @@ jobs:
           java-version: 11
 
       - name: build project
-        run: mvn -B package --file pom.xml
+        run: |
+          mvn install
+          mvn clean package
 
       - name: Configure Secrets
         uses: aws-actions/configure-aws-credentials@v1
