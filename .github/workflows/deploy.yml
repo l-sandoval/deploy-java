@@ -74,7 +74,8 @@ jobs:
 
       - name: Deploy Layer to AWS
         run: |
-          zip layer.zip -r lambda_code/target/java
+          zip v4ReportsLayer.zip lambda_code/target/java
+          aws s3 cp v4ReportsLayer.zip s3://$TEMPLATES_S3_BUCKET/lambda/
           aws lambda publish-layer-version --layer-name $AWS_LAMBDA_LAYER_NAME --content S3Bucket=$TEMPLATES_S3_BUCKET,S3Key=layer.zip --compatible-runtimes java11 --region $AWS_REGION
 
       - name: Update Lambda Function Layer Version to Lastest or Add Layer
