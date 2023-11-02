@@ -127,13 +127,11 @@
       <groupId>org.apache.poi</groupId>
       <artifactId>poi</artifactId>
       <version>4.1.1</version>
-      <scope>provided</scope>
     </dependency>
     <dependency>
       <groupId>org.apache.poi</groupId>
       <artifactId>poi-ooxml</artifactId>
       <version>3.16</version>
-      <scope>provided</scope>
     </dependency>
     <dependency>
       <groupId>net.sf.jasperreports</groupId>
@@ -151,7 +149,6 @@
       <groupId>org.hibernate</groupId>
       <artifactId>hibernate-core</artifactId>
       <version>6.3.1.Final</version>
-      <scope>provided</scope>
     </dependency>
 
     <!-- SQL Server JDBC Driver -->
@@ -159,7 +156,6 @@
       <groupId>com.microsoft.sqlserver</groupId>
       <artifactId>mssql-jdbc</artifactId>
       <version>12.2.0.jre11</version>
-      <scope>provided</scope>
     </dependency>
   </dependencies>
 </project>
