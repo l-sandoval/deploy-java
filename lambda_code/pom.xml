@@ -75,11 +75,13 @@
       <groupId>com.amazonaws</groupId>
       <artifactId>aws-lambda-java-core</artifactId>
       <version>1.2.1</version>
+      <scope>provided</scope>
     </dependency>
     <dependency>
       <groupId>software.amazon.awssdk</groupId>
       <artifactId>s3</artifactId>
       <version>2.21.9</version>
+      <scope>provided</scope>
     </dependency>
 
     <dependency>
@@ -127,21 +129,25 @@
       <groupId>org.apache.poi</groupId>
       <artifactId>poi</artifactId>
       <version>4.1.1</version>
+      <scope>provided</scope>
     </dependency>
     <dependency>
       <groupId>org.apache.poi</groupId>
       <artifactId>poi-ooxml</artifactId>
       <version>3.16</version>
+      <scope>provided</scope>
     </dependency>
     <dependency>
       <groupId>net.sf.jasperreports</groupId>
       <artifactId>jasperreports-fonts</artifactId>
       <version>6.17.0</version>
+      <scope>provided</scope>
     </dependency>
     <dependency>
       <groupId>net.sf.jasperreports</groupId>
       <artifactId>jasperreports-functions</artifactId>
       <version>6.17.0</version>
+      <scope>provided</scope>
     </dependency>
 
     <!-- Hibernate ORM -->
@@ -149,6 +155,7 @@
       <groupId>org.hibernate</groupId>
       <artifactId>hibernate-core</artifactId>
       <version>6.3.1.Final</version>
+      <scope>provided</scope>
     </dependency>
 
     <!-- SQL Server JDBC Driver -->
@@ -156,6 +163,7 @@
       <groupId>com.microsoft.sqlserver</groupId>
       <artifactId>mssql-jdbc</artifactId>
       <version>12.2.0.jre11</version>
+      <scope>provided</scope>
     </dependency>
   </dependencies>
 </project>
