@@ -27,7 +27,7 @@ jobs:
       - name: Set variables for development
         if: endsWith(github.ref, '/main')
         run: |
-          echo "AWS_LAMBDA_FUNCTION_NAME=Dev_ReportGenerator" >> $GITHUB_ENV
+          echo "AWS_LAMBDA_FUNCTION_NAME=report-generator-luis" >> $GITHUB_ENV
           echo "AWS_LAMBDA_LAYER_NAME=Dev_ReportGeneratorLambdaLayer" >> $GITHUB_ENV
           echo "REPORTS_BUCKET=luis-data-extractor" >> $GITHUB_ENV
           echo "TEMPLATES_S3_BUCKET=luis-report-generator-lambda" >> $GITHUB_ENV
