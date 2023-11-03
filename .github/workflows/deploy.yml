@@ -69,3 +69,24 @@ jobs:
           aws s3 cp lambda_code/target/$LAMBDA_PACKAGED_FILE s3://$TEMPLATES_S3_BUCKET/lambda/
           aws lambda update-function-configuration --function-name $AWS_LAMBDA_FUNCTION_NAME --environment "Variables={DYNAMODB_TABLE=$DYNAMODB_TABLE, FILES_BUCKET=$FILES_BUCKET, LAMBDA_BUCKET=$TEMPLATES_S3_BUCKET, REPORTS_BUCKET=$REPORTS_BUCKET}"
           aws lambda update-function-code --function-name $AWS_LAMBDA_FUNCTION_NAME --s3-bucket $TEMPLATES_S3_BUCKET --s3-key lambda/$LAMBDA_PACKAGED_FILE
+
+      - name: Deploy Layer to AWS
+        run: |
+          cd reports_layer/target
+          zip v4ReportsLayer.zip -r java/
+          aws s3 cp v4ReportsLayer.zip s3://$TEMPLATES_S3_BUCKET/lambda/
+          aws lambda publish-layer-version --layer-name $AWS_LAMBDA_LAYER_NAME --content S3Bucket=$TEMPLATES_S3_BUCKET,S3Key=lambda/v4ReportsLayer.zip --compatible-runtimes java11 --region $AWS_REGION
+  
+      - name: Update Lambda Function Layer Version to Lastest or Add Layer
+        run: |
+          layer=$(aws lambda list-layer-versions --layer-name $AWS_LAMBDA_LAYER_NAME --query 'max_by(LayerVersions, &Version).LayerVersionArn' | grep -P $AWS_LAMBDA_LAYER_NAME | sed -e 's/\"//g' -e 's/\,//g')
+          aws lambda update-function-configuration --function-name $AWS_LAMBDA_FUNCTION_NAME --layers $layer
+  
+      - name: Trim Lambda Layer versions
+        uses: callummackenzie/trim-lambda-layers-action@v0.3
+        with:
+          aws_access_key_id: ${{ secrets.AWS_SECRET_ID }}
+          aws_secret_access_key: ${{ secrets.AWS_SECRET_KEY }}
+          aws_region: us-west-2
+          layer_name: ${{ env.AWS_LAMBDA_LAYER_NAME }}
+          version_keep_count: 1
