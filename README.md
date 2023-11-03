@@ -12,10 +12,6 @@ DYNAMODB_TABLE=table_name
 FILES_BUCKET=file_bucket_name
 LAMBDA_BUCKET=lambda_bucket_name
 REPORTS_BUCKET=reports_bucket_name
-SQL_CONNECTION_URL=<jdbc:sqlserver://localhost;databaseName=Reports>;
-SQL_USERNAME=<user_password>
-SQL_PASSWORD=<username>
-STAGING_RECORDS_TABLE_NAME=<instance-table-name>
 ```
 5. Create s3 buckets mentioned above, the dynamodb table will be created automatically by the report generator
 6. The GitHub workflow will compile the code and upload the .jar file, the templates, assets and environment endpoints files to the `LAMBDA_BUCKET` and update the
@@ -28,35 +24,6 @@ STAGING_RECORDS_TABLE_NAME=<instance-table-name>
 * [Get AWS credentials](https://docs.aws.amazon.com/en_en/general/latest/gr/aws-sec-cred-types.html#access-keys-and-secret-access-keys).
 * [Configure AWS credentials for AWS-Cli](https://docs.aws.amazon.com/cli/latest/userguide/cli-configure-files.html).
 * Configure region for AWS-Cli ($aws configure set region <SELECTED_REGION>).
-* Install SQL Server
-* Install Microsoft SQL Server Managment Studio
-* Create a SQL Server Login:
-  * Launch Microsoft SQL Server Management Studio (SSMS).
-  * Log in using your Windows Authentication credentials.
-  * In the left sidebar, navigate to the `Server Explorer`.
-  * Expand the `Security` folder.
-  * Right-click on the `Logins` folder.
-  * Select `New Login...` from the context menu.
-  * In the `Login name` field, provide a name for the login.
-  * Choose the `SQL Server authentication` option.
-  * Set a secure password for the login.
-  * Uncheck the `Enforce password expiration` option to prevent the password from expiring.
-  * Navigate to the `Server Roles` tab.
-  * Select the `sysadmin` role to grant the login full administrative privileges.
-  * If the connection with SQL server fails, make sure you need to enable `TCP/IP` protocols.
-  * Open SQL Server Configuration Manager.
-  * Navigate to `SQL Server Network Configuration`.
-  * Select your server.
-  * Enable `TCP/IP`.
-  * Right-click on `TCP/IP`.
-  * Select `Properties`.
-  * Navigate to `IP Addresses`
-  * Navigate to the bottom.
-  * Change the port of `IPAII` to 1433
-  * Navigate to `SQL Server Services`.
-  * Right-click on your server.
-  * Select `restart`.
-
 
 To execute the report generator function locally:
 

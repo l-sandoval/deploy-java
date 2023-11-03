@@ -67,7 +67,7 @@
 	</dependency>
     <dependency>
       <groupId>software.amazon.awssdk</groupId>
-      <artifactId>s3</artifactId>
+      <artifactId>s3</artifactId>      
       <version>${aws.java.sdk.version}</version>
     </dependency>
     <dependency>
@@ -136,20 +136,6 @@
         <groupId>net.sf.jasperreports</groupId>
         <artifactId>jasperreports-functions</artifactId>
         <version>6.17.0</version>
-    </dependency>
-
-    <!-- Hibernate ORM -->
-    <dependency>
-      <groupId>org.hibernate</groupId>
-      <artifactId>hibernate-core</artifactId>
-      <version>6.3.1.Final</version>
-    </dependency>
-
-    <!-- SQL Server JDBC Driver -->
-    <dependency>
-      <groupId>com.microsoft.sqlserver</groupId>
-      <artifactId>mssql-jdbc</artifactId>
-      <version>12.2.0.jre11</version>
-    </dependency>
+    </dependency>  
   </dependencies>
 </project>
