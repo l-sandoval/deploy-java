@@ -127,21 +127,7 @@
       <groupId>potaymaster.aws.lambda</groupId>
       <artifactId>reliqreports-layer</artifactId>
       <version>1.0.0</version>
+      <scope>provided</scope>
     </dependency>
-<!--    &lt;!&ndash; Hibernate ORM &ndash;&gt;-->
-<!--    <dependency>-->
-<!--      <groupId>org.hibernate</groupId>-->
-<!--      <artifactId>hibernate-core</artifactId>-->
-<!--      <version>6.3.1.Final</version>-->
-<!--      <scope>provided</scope>-->
-<!--    </dependency>-->
-
-<!--    &lt;!&ndash; SQL Server JDBC Driver &ndash;&gt;-->
-<!--    <dependency>-->
-<!--      <groupId>com.microsoft.sqlserver</groupId>-->
-<!--      <artifactId>mssql-jdbc</artifactId>-->
-<!--      <version>12.2.0.jre11</version>-->
-<!--      <scope>provided</scope>-->
-<!--    </dependency>-->
   </dependencies>
 </project>
