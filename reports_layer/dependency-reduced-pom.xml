@@ -2,22 +2,35 @@
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
   <modelVersion>4.0.0</modelVersion>
   <groupId>potaymaster.aws.lambda</groupId>
-  <artifactId>jasperreports</artifactId>
-  <version>1.0.1</version>
+  <artifactId>reliqreports-layer</artifactId>
+  <name>reports-layer</name>
+  <version>1.0.0</version>
+  <description>Reports layer</description>
   <build>
-    <resources>
-      <resource>
-        <directory>src/resources/</directory>
-      </resource>
-    </resources>
     <plugins>
       <plugin>
         <artifactId>maven-compiler-plugin</artifactId>
         <version>3.8.0</version>
         <configuration>
-          <forceJavacCompilerUse>true</forceJavacCompilerUse>
-          <optimize>true</optimize>
+          <source>${maven.compiler.source}</source>
+          <target>${maven.compiler.target}</target>
         </configuration>
+      </plugin>
+      <plugin>
+        <artifactId>maven-dependency-plugin</artifactId>
+        <version>3.6.1</version>
+        <executions>
+          <execution>
+            <id>copy-dependencies</id>
+            <phase>prepare-package</phase>
+            <goals>
+              <goal>copy-dependencies</goal>
+            </goals>
+            <configuration>
+              <outputDirectory>${project.build.directory}/java/lib</outputDirectory>
+            </configuration>
+          </execution>
+        </executions>
       </plugin>
       <plugin>
         <artifactId>maven-shade-plugin</artifactId>
@@ -28,9 +41,6 @@
             <goals>
               <goal>shade</goal>
             </goals>
-            <configuration>
-              <shadedArtifactAttached>false</shadedArtifactAttached>
-            </configuration>
           </execution>
         </executions>
       </plugin>
@@ -38,22 +48,10 @@
   </build>
   <dependencies>
     <dependency>
-      <groupId>junit</groupId>
-      <artifactId>junit</artifactId>
-      <version>4.13.1</version>
-      <scope>test</scope>
-      <exclusions>
-        <exclusion>
-          <artifactId>hamcrest-core</artifactId>
-          <groupId>org.hamcrest</groupId>
-        </exclusion>
-      </exclusions>
-    </dependency>
-    <dependency>
-      <groupId>potaymaster.aws.lambda</groupId>
-      <artifactId>reliqreports-layer</artifactId>
-      <version>1.0.0</version>
-      <scope>provided</scope>
+      <groupId>org.hibernate</groupId>
+      <artifactId>hibernate-core</artifactId>
+      <version>6.3.1.Final</version>
+      <scope>compile</scope>
     </dependency>
   </dependencies>
   <properties>

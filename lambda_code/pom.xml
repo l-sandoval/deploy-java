@@ -43,7 +43,6 @@
             </goals>
             <configuration>
               <shadedArtifactAttached>false</shadedArtifactAttached>
-              <minimizeJar>true</minimizeJar>
             </configuration>
           </execution>
         </executions>
@@ -103,7 +102,7 @@
       <groupId>com.opencsv</groupId>
       <artifactId>opencsv</artifactId>
       <version>5.3</version>
-    </dependency>    
+    </dependency>
     <dependency>
         <groupId>org.apache.poi</groupId>
         <artifactId>poi</artifactId>
@@ -113,30 +112,36 @@
         <groupId>org.apache.poi</groupId>
         <artifactId>poi-ooxml</artifactId>
         <version>3.16</version>
-    </dependency>    
+    </dependency>
     <dependency>
     	<groupId>net.sf.jasperreports</groupId>
     	<artifactId>jasperreports-fonts</artifactId>
     	<version>6.17.0</version>
-	</dependency>  
+	</dependency>
 	<dependency>
         <groupId>net.sf.jasperreports</groupId>
         <artifactId>jasperreports-functions</artifactId>
         <version>6.17.0</version>
     </dependency>
-
-    <!-- Hibernate ORM -->
     <dependency>
-      <groupId>org.hibernate</groupId>
-      <artifactId>hibernate-core</artifactId>
-      <version>6.3.1.Final</version>
+      <groupId>potaymaster.aws.lambda</groupId>
+      <artifactId>reliqreports-layer</artifactId>
+      <version>1.0.0</version>
     </dependency>
+<!--    &lt;!&ndash; Hibernate ORM &ndash;&gt;-->
+<!--    <dependency>-->
+<!--      <groupId>org.hibernate</groupId>-->
+<!--      <artifactId>hibernate-core</artifactId>-->
+<!--      <version>6.3.1.Final</version>-->
+<!--      <scope>provided</scope>-->
+<!--    </dependency>-->
 
-    <!-- SQL Server JDBC Driver -->
-    <dependency>
-      <groupId>com.microsoft.sqlserver</groupId>
-      <artifactId>mssql-jdbc</artifactId>
-      <version>12.2.0.jre11</version>
-    </dependency>
+<!--    &lt;!&ndash; SQL Server JDBC Driver &ndash;&gt;-->
+<!--    <dependency>-->
+<!--      <groupId>com.microsoft.sqlserver</groupId>-->
+<!--      <artifactId>mssql-jdbc</artifactId>-->
+<!--      <version>12.2.0.jre11</version>-->
+<!--      <scope>provided</scope>-->
+<!--    </dependency>-->
   </dependencies>
 </project>

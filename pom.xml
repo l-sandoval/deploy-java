@@ -10,6 +10,7 @@
     
   <modules>
 	<module>templates</module>
-  	<module>lambda_code</module>      
+    <module>reports_layer</module>
+  	<module>lambda_code</module>
   </modules>
 </project>
