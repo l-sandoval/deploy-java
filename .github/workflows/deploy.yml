@@ -6,7 +6,7 @@ name: Deploy to Lambda Function
 on:
   # Triggers the workflow on push or pull request events but only for the "main" branch
   push:
-    branches: [ main , release]
+    branches: [ feat/ICV-4081-report-generator-returning-max-size-error , release]
 
 # A workflow run is made up of one or more jobs that can run sequentially or in parallel
 jobs:
@@ -25,30 +25,19 @@ jobs:
         uses: actions/checkout@v3
 
       - name: Set variables for development
-        if: endsWith(github.ref, '/main')
         run: |
-          echo "AWS_LAMBDA_FUNCTION_NAME=Dev_ReportGenerator" >> $GITHUB_ENV
+          echo "AWS_LAMBDA_FUNCTION_NAME=report-generator-luis" >> $GITHUB_ENV
           echo "AWS_LAMBDA_LAYER_NAME=Dev_ReportGeneratorLambdaLayer" >> $GITHUB_ENV
-          echo "REPORTS_BUCKET=dev-billing-report-generator-files-bucket" >> $GITHUB_ENV
-          echo "TEMPLATES_S3_BUCKET=dev-billing-report-generator-templates-bucket" >> $GITHUB_ENV
-          echo "FILES_BUCKET=dev-billing-data-extractor" >> $GITHUB_ENV
-          echo "DYNAMODB_TABLE=Dev_BillingStagingRecords" >> $GITHUB_ENV 
-          echo "RELIQ_DB_SERVER=${{ secrets.DEV_RELIQ_DB_SERVER }}" >> $GITHUB_ENV
-          echo "RELIQ_DB_USER=${{ secrets.DEV_RELIQ_DB_USER }}" >> $GITHUB_ENV
-          echo "RELIQ_DB_PWD=${{ secrets.DEV_RELIQ_DB_PWD }}" >> $GITHUB_ENV
-
-      - name: Set variables for production
-        if: endsWith(github.ref, '/release')
-        run: |
-          echo "AWS_LAMBDA_FUNCTION_NAME=Prod_ReportGenerator" >> $GITHUB_ENV
-          echo "AWS_LAMBDA_LAYER_NAME=Prod_ReportGeneratorLambdaLayer" >> $GITHUB_ENV
-          echo "REPORTS_BUCKET=prod-billing-report-generator-files-bucket" >> $GITHUB_ENV          
-          echo "TEMPLATES_S3_BUCKET=prod-billing-report-generator-templates-bucket" >> $GITHUB_ENV
-          echo "FILES_BUCKET=prod-billing-data-extractor" >> $GITHUB_ENV
-          echo "DYNAMODB_TABLE=Prod_BillingStagingRecords" >> $GITHUB_ENV
-          echo "RELIQ_DB_SERVER=${{ secrets.PROD_RELIQ_DB_SERVER }}" >> $GITHUB_ENV
-          echo "RELIQ_DB_USER=${{ secrets.PROD_RELIQ_DB_USER }}" >> $GITHUB_ENV
-          echo "RELIQ_DB_PWD=${{ secrets.PROD_RELIQ_DB_PWD }}" >> $GITHUB_ENV
+          echo "REPORTS_BUCKET=luis-data-extractor" >> $GITHUB_ENV
+          echo "TEMPLATES_S3_BUCKET=luis-report-generator-lambda" >> $GITHUB_ENV
+          echo "FILES_BUCKET=luis-data-extractor" >> $GITHUB_ENV
+          echo "DYNAMODB_TABLE=luis_BillingStagingRecords" >> $GITHUB_ENV 
+          echo "SQL_CONNECTION_URL=jdbc:sqlserver://localhost;databaseName=Reports;encrypt=false;" >> $GITHUB_ENV
+          echo "SQL_DATABASE_NAME=Reports" >> $GITHUB_ENV
+          echo "SQL_PASSWORD=admin" >> $GITHUB_ENV
+          echo "SQL_SERVER=localhost" >> $GITHUB_ENV
+          echo "SQL_USERNAME=admin" >> $GITHUB_ENV
+          echo "STAGING_RECORDS_TABLE_NAME=Dev_BillingStagingRecords" >> $GITHUB_ENV
 
       - name: Set up JDK
         uses: actions/setup-java@v1
@@ -56,17 +45,17 @@ jobs:
           java-version: 11
 
       - name: build project
-        run: mvn -B package --file lambda_code/pom.xml 
+        run: mvn -B package
 
       - name: Configure Secrets
         uses: aws-actions/configure-aws-credentials@v1
         with:
           role-skip-session-tagging: true
-          aws-access-key-id: ${{ secrets.AWS_SECRET_ID }}
-          aws-secret-access-key: ${{ secrets.AWS_SECRET_KEY }}
+          aws-access-key-id: 'AKIAY2JTJFWK23CRIBEK'
+          aws-secret-access-key: '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'
           aws-region: us-west-2
-          role-to-assume: ${{ secrets.AWS_ROLE_TO_ASSUME }}
-          role-external-id:  ${{ secrets.AWS_ROLE_EXTERNAL_ID }}
+          role-to-assume: lambda_function_deploy
+          role-external-id:  lsandoval
           role-duration-seconds: 1200
           role-session-name: lambda_deployment
                 
@@ -91,8 +80,8 @@ jobs:
       - name: Trim Lambda Layer versions
         uses: callummackenzie/trim-lambda-layers-action@v0.3
         with:
-          aws_access_key_id: ${{ secrets.AWS_SECRET_ID }}
-          aws_secret_access_key: ${{ secrets.AWS_SECRET_KEY }}
+          aws_access_key_id: 'AKIAY2JTJFWK23CRIBEK'
+          aws_secret_access_key: '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'
           aws_region: us-west-2
           layer_name: ${{ env.AWS_LAMBDA_LAYER_NAME }}
           version_keep_count: 1
