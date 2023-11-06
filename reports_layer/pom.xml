@@ -3,7 +3,7 @@
     <modelVersion>4.0.0</modelVersion>
     <groupId>potaymaster.aws.lambda</groupId>
     <artifactId>reliqreports-layer</artifactId>
-    <version>1.0.0</version>
+    <version>1.0.1</version>
     <name>reports-layer</name>
     <description>Reports layer</description>
     <properties>
