@@ -12,7 +12,7 @@ DYNAMODB_TABLE=table_name
 FILES_BUCKET=file_bucket_name
 LAMBDA_BUCKET=lambda_bucket_name
 REPORTS_BUCKET=reports_bucket_name
-SQL_CONNECTION_URL=<jdbc:sqlserver://localhost;databaseName=Reports>;
+SQL_CONNECTION_URL=jdbc:sqlserver://localhost;databaseName=<your-database-name>;
 SQL_USERNAME=<user_password>
 SQL_PASSWORD=<username>
 STAGING_RECORDS_TABLE_NAME=<instance-table-name>
@@ -28,12 +28,14 @@ STAGING_RECORDS_TABLE_NAME=<instance-table-name>
 * [Get AWS credentials](https://docs.aws.amazon.com/en_en/general/latest/gr/aws-sec-cred-types.html#access-keys-and-secret-access-keys).
 * [Configure AWS credentials for AWS-Cli](https://docs.aws.amazon.com/cli/latest/userguide/cli-configure-files.html).
 * Configure region for AWS-Cli ($aws configure set region <SELECTED_REGION>).
-* Install SQL Server
-* Install Microsoft SQL Server Managment Studio
+* Install SQL Server (v15 or above).
+* Install Microsoft SQL Server Managment Studio.
+* Create a database.
 * Create a SQL Server Login:
   * Launch Microsoft SQL Server Management Studio (SSMS).
   * Log in using your Windows Authentication credentials.
-  * In the left sidebar, navigate to the `Server Explorer`.
+  * In the left sidebar, navigate to the `Object Explorer`.
+  * Expand your connection dir.
   * Expand the `Security` folder.
   * Right-click on the `Logins` folder.
   * Select `New Login...` from the context menu.
@@ -43,7 +45,15 @@ STAGING_RECORDS_TABLE_NAME=<instance-table-name>
   * Uncheck the `Enforce password expiration` option to prevent the password from expiring.
   * Navigate to the `Server Roles` tab.
   * Select the `sysadmin` role to grant the login full administrative privileges.
-  * If the connection with SQL server fails, make sure you need to enable `TCP/IP` protocols.
+  * Click `OK`.
+  * Try to login is SSMS with the new username and password.
+  * If the login with username and password fails login with windows authentication.
+  * Right-click on your connection on `Object Explorer`.
+  * Select `Properties`.
+  * Navigate to `Security`.
+  * Enable `SQL Server and Windows Authentication mode`.
+  * Click `OK`.
+  * Make sure you have enable `TCP/IP` protocols for your SQL Server connection.
   * Open SQL Server Configuration Manager.
   * Navigate to `SQL Server Network Configuration`.
   * Select your server.
@@ -52,7 +62,8 @@ STAGING_RECORDS_TABLE_NAME=<instance-table-name>
   * Select `Properties`.
   * Navigate to `IP Addresses`
   * Navigate to the bottom.
-  * Change the port of `IPAII` to 1433
+  * Change all the ports to 1433.
+  * Click `OK`.
   * Navigate to `SQL Server Services`.
   * Right-click on your server.
   * Select `restart`.

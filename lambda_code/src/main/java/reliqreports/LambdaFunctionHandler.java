@@ -6,6 +6,7 @@ import com.amazonaws.services.lambda.runtime.RequestStreamHandler;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.json.simple.JSONObject;
 import reliqreports.ReportsGeneratorHandler.ReportsGeneratorHandler;
+import reliqreports.Services.StagingService;
 import reliqreports.common.dto.ReportsGeneratorHandlerDto;
 import reliqreports.common.dto.StageZipRecordDto;
 
@@ -23,7 +24,7 @@ public class LambdaFunctionHandler implements RequestStreamHandler
 		this.logger = context.getLogger();
 		JSONObject responseJson = new JSONObject();
 
-		try {			
+		try {
 			AmazonS3Consumer s3Consumer = new AmazonS3Consumer(this.logger);
 			ReportsGeneratorHandlerDto payload = new ReportsGeneratorHandlerDto(inputStream);
 			ObjectMapper objectMapper = new ObjectMapper();
@@ -37,13 +38,12 @@ public class LambdaFunctionHandler implements RequestStreamHandler
 			this.logger.log("Generating reports with payload: " + objectMapper.writeValueAsString(payload));
 			
 			if (payload.reportToBeStaged != null) {
-				AmazonDynamoDBConsumer dynamoConsumer = new AmazonDynamoDBConsumer(this.logger);
-
+				StagingService stagingService = new StagingService(this.logger);
 				StageZipRecordDto stageZipRecordInput = new StageZipRecordDto(payload);
 				String[] pathArray = payload.reportPath.split("/");
 				String[] pathArrayWithoutLast = Arrays.copyOf(pathArray, pathArray.length - 1);
 				stageZipRecordInput.tenantFolderPath = String.join("/", pathArrayWithoutLast);
-				dynamoConsumer.stageZipRecords(stageZipRecordInput);
+				stagingService.stageZipRecords(stageZipRecordInput);
 
 			} else {
 				s3Consumer.retrieveFileFromS3(
