@@ -47,4 +47,6 @@ public class StringLiterals {
     public static final String DAILY  ="Daily";
     public static final String WEEKLY = "Weekly";
     public static final String MONTLY = "Monthly";
+
+	public static final String DEFAULT_STAGING_RECORDS_TABLE_NAME = "BillingStagingRecords";
 }
