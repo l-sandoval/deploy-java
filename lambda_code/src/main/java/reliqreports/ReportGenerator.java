@@ -1,6 +1,7 @@
 package reliqreports;
 
 import com.amazonaws.services.lambda.runtime.LambdaLogger;
+import com.amazonaws.util.StringUtils;
 import net.sf.jasperreports.engine.*;
 import net.sf.jasperreports.engine.data.JRCsvDataSource;
 import net.sf.jasperreports.engine.export.JRPdfExporter;
@@ -13,13 +14,11 @@ import net.sf.jasperreports.export.*;
 import org.apache.commons.io.FileUtils;
 import org.w3c.dom.Document;
 import org.w3c.dom.Node;
-import reliqreports.Services.StagingService;
 import reliqreports.common.dto.ReportGeneratorDto;
 import reliqreports.common.dto.StageZipRecordDto;
 import reliqreports.common.dto.SubReportDto;
 import reliqreports.common.enums.EProcessCategory;
 import reliqreports.common.enums.EReportCategory;
-import software.amazon.awssdk.utils.StringUtils;
 
 import java.io.*;
 import java.util.*;
@@ -43,7 +42,7 @@ public class ReportGenerator {
 
 
         boolean shouldStage = HelperFunctions.shouldStageReport(payload.reportName, payload.shouldStageReport);
-        StagingService stagingService = new StagingService(this.logger);
+        AmazonDynamoDBConsumer dynamoDBConsumer = new AmazonDynamoDBConsumer(this.logger);
 
         String jasperSource = payload.jasperPath + StringLiterals.FILE_SEPARATOR_FOR_S3_QUERIES + payload.reportName + ".jasper";
 
@@ -140,7 +139,7 @@ public class ReportGenerator {
 
             if(shouldStage){
                 logger.log("Staging report");
-                stagingService.stageRecord(
+                dynamoDBConsumer.stageRecord(
                         fileName,
                         payload.apiEndpoint,
                         reportCategory,
@@ -150,7 +149,7 @@ public class ReportGenerator {
 
                 StageZipRecordDto stageZipRecordInput = new StageZipRecordDto(payload);
                 stageZipRecordInput.organizationFolderPath = folderPath;
-                stagingService.stageZipRecords(stageZipRecordInput);
+                dynamoDBConsumer.stageZipRecords(stageZipRecordInput);
             }
         }
     }
@@ -158,9 +157,9 @@ public class ReportGenerator {
     private String getReportFolderPath(EReportCategory reportCategory, String buildPath, String entity, String organization) {        
         switch (reportCategory) {
             case PATIENT:
-                return (buildPath + (!StringUtils.isEmpty(organization) ? StringLiterals.FILE_SEPARATOR_FOR_S3_QUERIES + organization : ""));
+                return (buildPath + (!StringUtils.isNullOrEmpty(organization) ? StringLiterals.FILE_SEPARATOR_FOR_S3_QUERIES + organization : ""));    
             default:
-                return (buildPath + (!StringUtils.isEmpty(entity) ? StringLiterals.FILE_SEPARATOR_FOR_S3_QUERIES + entity : ""));
+                return (buildPath + (!StringUtils.isNullOrEmpty(entity) ? StringLiterals.FILE_SEPARATOR_FOR_S3_QUERIES + entity : ""));
         }
     }
 

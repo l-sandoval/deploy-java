@@ -1,11 +1,11 @@
 package reliqreports;
 
+import com.amazonaws.util.StringUtils;
 import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
 import reliqreports.common.dto.StageZipRecordDto;
 import reliqreports.common.enums.EProcessCategory;
 import reliqreports.common.enums.EReportCategory;
-import software.amazon.awssdk.utils.StringUtils;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -95,7 +95,7 @@ public class HelperFunctions {
 	}
 
 	public static String getPreferredString(String firstString, String secondString) {
-		if (!StringUtils.isEmpty(firstString)) {
+		if (!StringUtils.isNullOrEmpty(firstString)) {
 			return firstString;
 		}
 
@@ -118,13 +118,13 @@ public class HelperFunctions {
 	public static ArrayList<EProcessCategory> getRecordProcessCategories(StageZipRecordDto payload) {
 		ArrayList<EProcessCategory> categories = new ArrayList<>();
 
-		if (!StringUtils.isEmpty(payload.deliveryEndpoint)) {
+		if (!StringUtils.isNullOrEmpty(payload.deliveryEndpoint)) {
 			categories.add(EProcessCategory.API_DELIVERY);
 		}
 
 		if (shouldSaveZipRecord(payload.reportName)) {
 			categories.add(EProcessCategory.TENANT_INDIVIDUAL_ZIP);
-			if (!StringUtils.isEmpty(payload.organizationId)) {
+			if (!StringUtils.isNullOrEmpty(payload.organizationId)) {
 				categories.add(EProcessCategory.ORGANIZATION_ZIP);
 			}
 		}

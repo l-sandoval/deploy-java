@@ -28,13 +28,12 @@
         <version>3.8.0</version>
         <configuration>
           <forceJavacCompilerUse>true</forceJavacCompilerUse>
-          <optimize>true</optimize>
         </configuration>
       </plugin>
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-shade-plugin</artifactId>
-        <version>3.2.4</version>
+        <version>3.0.0</version>
         <executions>
           <execution>
             <phase>package</phase>
@@ -43,6 +42,7 @@
             </goals>
             <configuration>
               <shadedArtifactAttached>false</shadedArtifactAttached>
+              <minimizeJar>true</minimizeJar>
             </configuration>
           </execution>
         </executions>
@@ -56,10 +56,20 @@
       <artifactId>aws-lambda-java-core</artifactId>
       <version>1.2.1</version>
     </dependency>
+	<dependency>
+	    <groupId>com.amazonaws</groupId>
+	    <artifactId>aws-java-sdk-s3</artifactId>
+	    <version>1.12.270</version>
+	</dependency>
     <dependency>
       <groupId>software.amazon.awssdk</groupId>
-      <artifactId>s3</artifactId>
-      <version>2.21.9</version>
+      <artifactId>s3</artifactId>      
+      <version>${aws.java.sdk.version}</version>
+    </dependency>
+    <dependency>
+      <groupId>software.amazon.awssdk</groupId>
+      <artifactId>dynamodb</artifactId>
+      <version>${aws.java.sdk.version}</version>
     </dependency>
 
     <dependency>
@@ -123,11 +133,19 @@
         <artifactId>jasperreports-functions</artifactId>
         <version>6.17.0</version>
     </dependency>
+
+    <!-- Hibernate ORM -->
     <dependency>
-      <groupId>potaymaster.aws.lambda</groupId>
-      <artifactId>reliqreports-layer</artifactId>
-      <version>1.0.0</version>
-      <scope>provided</scope>
+      <groupId>org.hibernate</groupId>
+      <artifactId>hibernate-core</artifactId>
+      <version>6.3.1.Final</version>
+    </dependency>
+
+    <!-- SQL Server JDBC Driver -->
+    <dependency>
+      <groupId>com.microsoft.sqlserver</groupId>
+      <artifactId>mssql-jdbc</artifactId>
+      <version>12.2.0.jre11</version>
     </dependency>
   </dependencies>
 </project>
