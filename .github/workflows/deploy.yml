@@ -32,7 +32,10 @@ jobs:
           echo "REPORTS_BUCKET=dev-billing-report-generator-files-bucket" >> $GITHUB_ENV
           echo "TEMPLATES_S3_BUCKET=dev-billing-report-generator-templates-bucket" >> $GITHUB_ENV
           echo "FILES_BUCKET=dev-billing-data-extractor" >> $GITHUB_ENV
-          echo "DYNAMODB_TABLE=Dev_BillingStagingRecords" >> $GITHUB_ENV          
+          echo "DYNAMODB_TABLE=Dev_BillingStagingRecords" >> $GITHUB_ENV 
+          echo "RELIQ_DB_SERVER=${{ secrets.DEV_RELIQ_DB_SERVER }}" >> $GITHUB_ENV
+          echo "RELIQ_DB_USER=${{ secrets.DEV_RELIQ_DB_USER }}" >> $GITHUB_ENV
+          echo "RELIQ_DB_PWD=${{ secrets.DEV_RELIQ_DB_PWD }}" >> $GITHUB_ENV
 
       - name: Set variables for production
         if: endsWith(github.ref, '/release')
@@ -43,6 +46,9 @@ jobs:
           echo "TEMPLATES_S3_BUCKET=prod-billing-report-generator-templates-bucket" >> $GITHUB_ENV
           echo "FILES_BUCKET=prod-billing-data-extractor" >> $GITHUB_ENV
           echo "DYNAMODB_TABLE=Prod_BillingStagingRecords" >> $GITHUB_ENV
+          echo "RELIQ_DB_SERVER=${{ secrets.PROD_RELIQ_DB_SERVER }}" >> $GITHUB_ENV
+          echo "RELIQ_DB_USER=${{ secrets.PROD_RELIQ_DB_USER }}" >> $GITHUB_ENV
+          echo "RELIQ_DB_PWD=${{ secrets.PROD_RELIQ_DB_PWD }}" >> $GITHUB_ENV
 
       - name: Set up JDK
         uses: actions/setup-java@v1
@@ -67,7 +73,7 @@ jobs:
       - name: Deploy Code to AWS
         run: |
           aws s3 cp lambda_code/target/$LAMBDA_PACKAGED_FILE s3://$TEMPLATES_S3_BUCKET/lambda/
-          aws lambda update-function-configuration --function-name $AWS_LAMBDA_FUNCTION_NAME --environment "Variables={DYNAMODB_TABLE=$DYNAMODB_TABLE, FILES_BUCKET=$FILES_BUCKET, LAMBDA_BUCKET=$TEMPLATES_S3_BUCKET, REPORTS_BUCKET=$REPORTS_BUCKET}"
+          aws lambda update-function-configuration --function-name $AWS_LAMBDA_FUNCTION_NAME --environment "Variables={DYNAMODB_TABLE=$DYNAMODB_TABLE, FILES_BUCKET=$FILES_BUCKET, LAMBDA_BUCKET=$TEMPLATES_S3_BUCKET, REPORTS_BUCKET=$REPORTS_BUCKET, SQL_SERVER=RELIQ_DB_SERVER, SQL_USERNAME=RELIQ_DB_USER, SQL_PASSWORD=RELIQ_DB_PWD, STAGING_RECORDS_TABLE_NAME=RELIQ_TABLE_NAME}"
           aws lambda update-function-code --function-name $AWS_LAMBDA_FUNCTION_NAME --s3-bucket $TEMPLATES_S3_BUCKET --s3-key lambda/$LAMBDA_PACKAGED_FILE
 
       - name: Deploy Layer to AWS
